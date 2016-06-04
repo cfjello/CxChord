@@ -1,10 +1,6 @@
 /// <reference path="references.ts" />
 
 namespace CxChord {
-
-    // declare var google:any
-    // vis = require('..\node_modules\vis\dist\vis.js');
-
     
     export class BayesCalculator {
         self = this
@@ -24,7 +20,6 @@ namespace CxChord {
         // create an even distribution
         // 
         createHypothesis() {      
-            // var likelyhoods = this.likelyhoods
             var idx: number = 0
             var _self = this.self
             
@@ -147,7 +142,6 @@ namespace CxChord {
             var labels: string[] = []
             var posteriorLastRow = this.getTopX(topX) 
             var bayesChart: BayesChart
-            // var tenColors:string[] =  ["PineGreen", "Cornflower", "Apricot", "Fuchsia",  "Maroon", "Gray",  "Mahogany", "Melon", "Beaver", "YellowOrange" ] 
 
             for( var i = 0; i < posteriorLastRow.length; i++ ) {
                 var hypo = this.getHypothesis(posteriorLastRow[i])
@@ -155,8 +149,7 @@ namespace CxChord {
                 labels.push( label )   
             }      
 
-            bayesChart = new BayesChart('visualization', labels)
-            // var colorSeed: number  = this.getRandomIntInclusive(0,100)          
+            bayesChart = new BayesChart('visualization', labels)     
             for( var dataSet = 1; dataSet < this.posterior.length;  dataSet++ ) {
                 var data: number[] = []
                 for( var i = 0 ; i < posteriorLastRow.length ; i++ ) {
@@ -166,8 +159,7 @@ namespace CxChord {
                 }
                 var randomColor = this.randomColorFactor() + ',' + this.randomColorFactor() + ',' + this.randomColorFactor()
                 bayesChart.addDataSet( this.rules[dataSet].rule  , randomColor ,  data)  
-            } 
-               
+            }            
             bayesChart.showChart()      
         }
 

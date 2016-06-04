@@ -1,7 +1,9 @@
 /// <reference path="references.ts" />
 
 namespace CxChord {
-      		
+      	
+		  
+		// TODO: move this to a Chord Progression module that uses CxChord	
 		export const rootNoteNamesB: RootNoteNames =  {
 			sharp: ["C", "C#", "D","D#","E","F","F#","G","G#","A", "A#", "B" ],
 			flat:  ["C", "Db", "D","Eb","E","F","Gb","G","Ab","A", "Bb", "B" ]

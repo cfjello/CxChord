@@ -68,7 +68,6 @@ namespace CxChord {
                 return score
                 }
             });
-
            //
            // Knockout Rule  
            //
@@ -83,34 +82,17 @@ namespace CxChord {
             //
             // Matched Notes rule
             // 
-            // matchedNotes:   { [key:string] : { invertions: any[], extensions: any[], knockouts: any[], group: number } } 
             this.set( 'MatchedNotes', { rule: 'MatchedNotes', chord: _chord, ruleFx: function(chord, bayes, row, col) {
                 var key        = bayes.hypothesis[col].key
                 var inv        = bayes.hypothesis[col].inv
-                // var hypoLen    = bayes.hypothesis[col].len
                 var chordLen   = chord.chordInv[0].length
                 var matches    = chord.matchedNotes[key].invertions[inv].length
                 var missing    = chordLen - matches 
-                // var fullMatchTax   = chord.fullMatch && missing > 0 ? -2 : 0 
-                // var score: number = matches / chord.chordInv[0].length  
                 var missingTax =  2
-                // var score: number = ( matches / bayes.hypothesis[col].len ) - missingTax 
-                var score: number = matches / ( bayes.hypothesis[col].len + ( missing * missingTax ) )             
-                // score += fullMatchTax
-                /*
-                if ( score < 1 )  {
-                        var remaining  = chordLen - matches
-                        var matchedExt = chord.matchedNotes[key].extensions[inv].length
-                        var scoreExt   = remaining == 0 || matchedExt == 0 ? 0 : remaining / matchedExt
-                        if ( scoreExt > 0 )  {
-                            score = ( score * 2 + scoreExt ) / 3     
-                        }
-                } 
-                */         
+                var score: number = matches / ( bayes.hypothesis[col].len + ( missing * missingTax ) )                   
                 return score
                 }
-            });
-            
+            });            
             //
             // Root is present Rule  
             //
@@ -137,16 +119,13 @@ namespace CxChord {
                 
                 return score
                 }
-            });
-            
+            });           
            //
            // Conflict Rule  
            //
            this.set( 'Conflicts', { rule: 'conclicts', chord: _chord, ruleFx: function(chord, bayes, row, col) {
                 var key        = bayes.hypothesis[col].key
                 var inv        = bayes.hypothesis[col].inv
-                // if ( ! _.isUndefined( ) ) 
-                // var knockouts  = chord.matchedNotes[key].knockouts[inv].length
                 var conflicts = chord.matchedNotes[key].conflicts[inv]
                 var score = 1 / ( conflicts == 0 ? 1 : conflicts * 100 ) 
                 return score

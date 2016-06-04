@@ -5,12 +5,7 @@ namespace CxChord {
     export class ChordInstance  {
 		offset: number[] = []
 		chordInv:       number[][] = []
-        // directMatch:    { [key:string] : number } = {}
         matchedNotes:   MatchedNotes = {}
-        // matchedExt:     { [key:string] : any } = {}
-        // knockouts     = {}
-		// public chordForms = new (ChordForms); // TODO Continue from here
-		
 	
 		constructor ( public midiChord: number[], public normalizeChord: boolean = true ) { 
 			this.validate(midiChord)
@@ -19,7 +14,6 @@ namespace CxChord {
 			}
 			this.chordInv = this.invert(midiChord)
 		}
-		
 						
 		addOffset( chord: number[], offset: number): number[] {
 			var res: number[] = []
@@ -40,15 +34,8 @@ namespace CxChord {
 		    else
 				return this.offset[inv] 
 		}
-		
-		/* TODO: Test this function 
-		getChordName( hypo: Hypothesis,  sharpOrFlat: string = 'flat' ): string {
-			var bass = 	this.offset[0]
-			return CxChord.getChordName( hypo.key, hypo.root, bass, sharpOrFlat)		
-		}
-		*/ 
-		
-		 getBassName( hypo: Hypothesis,  sharpOrFlat: string = 'flat' ): string {
+
+		getBassName( hypo: Hypothesis,  sharpOrFlat: string = 'flat' ): string {
 				var bass = this.offset[hypo.inv]
 				var bassName: string = CxChord.rootNoteNames[sharpOrFlat][bass]		
 				return bassName

@@ -158,7 +158,7 @@ namespace CxChord {
 			"Dim,7(HW)"	: [0,3,6,9]
 		}
 		
-	    export const conflicts: Conflicts = { // Each entry is one set off 2 conflciting notes 2 octaves 
+	    export const conflicts: Conflicts = { // Each entry is one set off 2 conflciting notes
 			// Major
 			/*
 			"Maj"  		: [[4,5],[10,11]],
@@ -204,7 +204,7 @@ namespace CxChord {
 			*/ 
 		}
 		
-		export const knockouts: {[key:string]: number[] }	 = { // Should be checked in two octaves
+		export const knockouts: {[key:string]: number[] }	 = { // Is checked in two octaves
 			// Major
 			"Maj"  			: [1,3,5,8,10],
 			"Maj,7" 		: [1,3,5,8,10], 

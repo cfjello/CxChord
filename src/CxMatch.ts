@@ -26,7 +26,6 @@ namespace CxChord {
         
         addRootOffset ( _arr: number [] = [] , root: number, addOctave: boolean = true): number[] {
             var arr: number[] = []
-            // if ( _.isUndefined(_arr) || _arr.length == 0 ) throw Error("addRootOffset input array is undefined or empty");
             if ( root == 0 ) { 
                 arr = _arr
             } 
@@ -58,7 +57,7 @@ namespace CxChord {
             var idx    = 0;
             _.forIn(this.chordMapWithInv, function(hypothesis : ChordMapEntry[], key : string) {
                 idx++
-                for ( var inv = 0; inv < hypothesis.length; inv++ ) { // { notes: _notes, root: invRootNote, inv: i, group: value.group } 
+                for ( var inv = 0; inv < hypothesis.length; inv++ ) { 
                     idx += inv
                      if ( ! _.has(chord.matchedNotes, key)  ) {
                             chord.matchedNotes[key] = { invertions: [], 
@@ -107,7 +106,6 @@ namespace CxChord {
                     // For chord with roots it should score higher if present 
                     //
                     var indexOfRoot =  chordToMatch.indexOf( invRoot ) >= 0 ? chordToMatch.indexOf( invRoot ) : chordToMatch.indexOf( invRoot + 12 )        
-                    // var rootFound: boolean = ( indexOfRoot >= 0 )
                     chord.matchedNotes[key].roots.push( indexOfRoot ) 
                     // 
                     // Check for must Have notes
@@ -116,7 +114,6 @@ namespace CxChord {
                     var mustHaveMatch : number[]
                     if ( ! _.isUndefined(mustHave[key]) ) {
                         mustHaveTrans = self.addRootOffset( mustHave[key], hypothesis[inv].root, false )
-                        // mustHaveMatch = _.intersection( hypoToMatch,  mustHaveTrans )
                         mustHaveMatch = _.intersection( chordToMatch,  mustHaveTrans )
                         chord.matchedNotes[key].mustHave.push( mustHaveMatch.length - mustHaveTrans.length )
                     }
@@ -140,7 +137,6 @@ namespace CxChord {
                     } 
                     if ( KOs.length > 0 ) {
                         knockoutTrans   = self.addRootOffset( knockouts[key], hypothesis[inv].root )
-                        // knockoutMatch   = _.intersection( hypoToMatch,  knockoutTrans )   
                         knockoutMatch   = _.intersection( chordToMatch,  knockoutTrans )      
                     }
                     chord.matchedNotes[key].knockouts.push(_.isUndefined(knockoutMatch) ? [] : knockoutMatch )
@@ -153,8 +149,7 @@ namespace CxChord {
                     var conflictLen = 0
                     if ( ! _.isUndefined(conflicts[key]) ) {
                         for ( var i = 0 ;   i < conflicts[key].length; i++ ) {
-                            conflictTrans =  self.addRootOffset( conflicts[key][i], hypothesis[inv].root )                                         
-                            // var conflictMatch  = _.intersection (chord.chordInv[0], conflictTrans )   
+                            conflictTrans =  self.addRootOffset( conflicts[key][i], hypothesis[inv].root )                                          
                             var conflictMatch  = _.intersection (chordToMatch, conflictTrans )           
                             if ( conflictMatch.length ==  conflictTrans.length ) { conflictCount +=  1 }
                             // Check in 2 octaves
@@ -197,7 +192,6 @@ namespace CxChord {
            //
            // Matched Notes rule
            // 
-           // matchedNotes:   { [key:string] : { invertions: any[], extensions: any[], knockouts: any[], group: number } } 
            var ruleM: Rule = this.rules.get('MatchedNotes') 
            this.bayes.applyRule(ruleM)
            //
@@ -221,7 +215,7 @@ namespace CxChord {
            // var ruleG: Rule = this.rules.get('ChordGroup')
            // this.bayes.applyRule(ruleG)          
            
-           this.priorChords.push(this.chord) 
+           // this.priorChords.push(this.chord) 
            //
            return this.chord;          
         }  
