@@ -14,7 +14,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "specRunner.html"
+    "test": "specRunner.html",
+    "build:tsc": "tsc -p ./",
+    "uglify:dist": "uglifyjs build/src/CxBayes.js build/src/CxChart.js build/src/CxChord.js build/src/CxForms.js build/src/CxMatch.js build/src/CxRules.js build/src/CxScales.js build/src/Interfaces.js build/src/references.js -b > ./index.js",
+    "build": "npm run build:tsc && npm run uglify:dist"
   },
   "keywords": [
     "Midi",

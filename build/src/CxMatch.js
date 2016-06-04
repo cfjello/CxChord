@@ -20,15 +20,6 @@ var CxChord;
         ChordMatcher.prototype.getChord = function () {
             return this.chord;
         };
-        /*
-        getTopTen () {
-            var self = this
-            var topTen = this.bayes.getTopTen()
-            _.forEach(topTen, function(value, key ) {
-                
-            })
-        }
-        */
         ChordMatcher.prototype.addRootOffset = function (_arr, root, addOctave) {
             if (_arr === void 0) { _arr = []; }
             if (addOctave === void 0) { addOctave = true; }
