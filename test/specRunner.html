@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Jasmine CxChord Test</title>
+    <link rel="stylesheet" href="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+  </head>
+  <body>
+    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+    <!-- script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/boot-without-onload.js"></script -->
+    <!-- script type="text/javascript" src="../node_modules/lodash/index.js"></script -->
+    <!-- script type="text/javascript" src="../node_modules/lodash/index.js"></script -->
+    <!-- script type="text/javascript" src="../node_modules/teoria/index.js"></script -->
+    
+    
+    <!-- script src="http://visjs.org/dist/vis.js"></script>
+    <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" / -->
+    
+    <!-- script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script -->
+    <script type="text/javascript"   src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
+    <!--  script type="text/javascript">
+        google.charts.load("current", {packages:['corechart']});
+        window.GOOGLE_REF = google
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            // document.getElementById('CxChord').
+            
+            var data = google.visualization.arrayToDataTable([
+                ['Name', 'Number'],
+                ['Ramanujan', 1729],
+                ['Gauss', 5050]
+            ]);
+            var csv = google.visualization.dataTableToCsv(data);
+            console.log(csv); 
+        }
+    </script -->
+    <!-- script src="../node/modules/commonjs-require/commonjs-require.js"></script -->
+    <!-- 
+        Here we load require.js but we do not use data-main. Instead we will load the
+        the specs separately. In short we need to load the spec files synchronously for this
+        to work.
+        -->
+        <script type="text/javascript" src="../node_modules/jasmine-node/node_modules/requirejs/require.js"></script>
+      
+        <!-- 
+        I put my require js config inline for simplicity
+        -->
+        <script type="text/javascript">
+          
+          require.config({
+            nodeRequire: require,
+            paths: {
+                'lodash': '../node_modules/lodash/lodash',
+                'CxChord'  : '../build/src/CxChord',
+                'CxBayes'  : '../build/src/CxBayes',
+                'CxChart'  : '../build/src/CxChart',
+                'CxForms'  : '../build/src/CxForms',
+                'CxMatch'  : '../build/src/CxMatch',
+                'CxRules'  : '../build/src/CxRules',
+                // 'googleG'    : '../lib/charts/loader',
+                'CxChordSpec': '../build/test/spec/CxChordSpec'     
+            },
+            shim: {
+                'CxChord' : {
+                       deps: ['lodash','CxBayes', 'CxRules', 'CxForms','CxMatch'],
+                        exports: 'CxChord'   
+                },
+                'CxBayes' : {
+                         deps: ['CxChart'], 
+                        exports: 'CxBayes'
+                },
+                'CxChordSpec': { 
+                    deps: ['lodash', 'CxChord', 'CxBayes', 'CxRules', 'CxForms','CxMatch' ]
+                 },
+                 'lodash': {
+                     exports: '_'
+                 }
+                 // 'googleG': {
+                 //     exports: 'google'
+                 // }
+                 
+            }
+          });
+          requirejs(['lodash','CxChord', 'CxBayes', 'CxChart','CxRules', 'CxForms','CxMatch', 'CxChordSpec' ],
+            function   () {
+                // google.charts.load("current", {packages:['corechart']});
+                // CxChord.BayesCalculator.setGoogle(google);
+                //foo and bar are loaded according to requirejs
+                //config, but if not found, then node's require
+                //is used to load the module.
+                console.log('lodash version: ' + _.VERSION );
+                console.log("Starting Jasmine");
+                // window.executeTests();
+                window.onload(); // triggers jasmine test execution
+                // jasmineEnv.execute();
+                // requirejs(['hk', 'test'], 
+                //     function   ( hk, test) { 
+                        //
+                // })
+            });
+
+        </script>
+    <!-- include source files here... -->
+    <!-- script src="C:/Work/leadsheet/build/src/CxPro.js"></script>
+    <!-- script src="C:/Work/leadsheet/build/src/CXProLeadsheet.js"></script>
+    <script src="C:/Work/leadsheet/build/src/CxProParser.js"></script -->
+    <!-- script src="C:/Work/leadsheet/build/src/HierarKey.js"></script>
+    <!-- script src="C:/Work/leadsheet/build/src/CxLeadSheet.js"></script>
+
+    <!-- include spec files here... -->
+    <!-- script src="C:/Work/leadsheet/build/test/spec/HierarKeySpec.js"></script>
+    <script src="C:/Work/leadsheet/build/test/spec/test.js"></script -->
+   
+    <blockquote>
+        <table>
+            <tr>
+                <td >
+                    <canvas id="visualization"  height="400"  width="1300" ></canvas>
+                </td>
+                <td>
+                    <div id="legend"></div>
+                </td>
+             </tr>
+         </table>
+    </blockquote>
+    
+   </body>
+</html>

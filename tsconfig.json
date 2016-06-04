@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		// "module": "amd",
+		"sourceMap": true,
+		"outDir": "build"
+		// ,
+		// "outFile": "CxChord.js"
+	} ,
+	"files": [
+		"src/Interfaces.ts",
+		"src/CxChart.ts",
+		"src/CxForms.ts",
+		"src/CxScales.ts",
+	 	"src/CxChord.ts", 
+		"src/CxMatch.ts",
+		"src/CxRules.ts",
+	    "src/CxBayes.ts",
+        "test/spec/CxChordSpec.ts"
+    ]
+}
