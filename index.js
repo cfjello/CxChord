@@ -730,6 +730,7 @@ var CxChord;
             this.offset = [];
             this.chordInv = [];
             this.matchedNotes = {};
+            this.favorJazzChords = false;
             this.validate(midiChord);
             for (var i = 0; i < midiChord.length; i++) {
                 this.offset.push(midiChord[i]);
@@ -870,240 +871,305 @@ var CxChord;
         return _.isUndefined(CxChord.knockouts[_key]) ? [] : CxChord.knockouts[_key];
     }
     CxChord.getKnockouts = getKnockouts;
+    (function(GR) {
+        GR[GR["shell"] = 1] = "shell";
+        GR[GR["standard"] = 2] = "standard";
+        GR[GR["altered"] = 4] = "altered";
+        GR[GR["extented"] = 8] = "extented";
+        GR[GR["rootLess"] = 16] = "rootLess";
+        GR[GR["reduced"] = 32] = "reduced";
+        GR[GR["cluster"] = 64] = "cluster";
+        GR[GR["passing"] = 128] = "passing";
+    })(CxChord.GR || (CxChord.GR = {}));
+    var GR = CxChord.GR;
     CxChord.chordMap = {
         Maj: {
             notes: [ 0, 4, 7 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.standard
         },
         "Maj,7": {
             notes: [ 0, 4, 7, 11 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.standard
         },
         "Maj,7,9": {
             notes: [ 0, 4, 7, 11, 14 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.extented
         },
         "Maj,7,9,#11": {
             notes: [ 0, 4, 7, 11, 14, 18 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.extented
         },
         "Maj,7,9,#11,13": {
             notes: [ 0, 4, 7, 11, 14, 18, 21 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.extented
         },
         "Maj,6": {
             notes: [ 0, 4, 7, 9 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.standard
         },
         "Maj,6,9": {
             notes: [ 0, 4, 7, 9, 14 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.extented
         },
         "Maj,add2": {
             notes: [ 0, 2, 4, 7 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.cluster
         },
         "Maj,add9": {
             notes: [ 0, 4, 7, 14 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.extented
         },
         "5": {
             notes: [ 0, 7 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.shell
         },
         Min: {
             notes: [ 0, 3, 7 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.standard
         },
         "Min,7": {
             notes: [ 0, 3, 7, 10 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.standard
         },
         "Min,7,9": {
             notes: [ 0, 3, 7, 10 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.altered
         },
         "Min,7,b5": {
             notes: [ 0, 3, 6, 10 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.standard
         },
         "Min,6": {
             notes: [ 0, 3, 7, 9 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.standard
         },
         "Min,6,9": {
             notes: [ 0, 3, 7, 9, 14 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.extented
         },
         "Min,M7": {
             notes: [ 0, 3, 7, 11 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.standard
         },
         "Dom,7": {
             notes: [ 0, 4, 7, 10 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.altered
         },
         "Dom,7,9": {
             notes: [ 0, 4, 7, 10, 14 ],
             root: 0,
             inv: 0,
-            group: 1
+            group: GR.extented
         },
         "Dom,7,#5": {
             notes: [ 0, 4, 8, 10 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.altered
         },
         "Dom,7,b5": {
             notes: [ 0, 4, 6, 10 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.altered
         },
         "Dom,7,sus4": {
             notes: [ 0, 5, 7, 10 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.altered
         },
         "Dom,7,sus2": {
             notes: [ 0, 2, 7, 10 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.altered
         },
         Dim: {
             notes: [ 0, 3, 6 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.passing
         },
         "Dim,7": {
             notes: [ 0, 3, 6, 9 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.passing
         },
         "Dim,7(HW)": {
             notes: [ 0, 3, 6, 9 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.passing
         },
         "Dim,7(WH)": {
             notes: [ 0, 3, 6, 9 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.passing
         },
         "Maj,#5": {
             notes: [ 0, 4, 8 ],
             root: 0,
             inv: 0,
-            group: 3
+            group: GR.altered
         },
         Sus2: {
             notes: [ 0, 2, 7 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.altered
         },
         Sus4: {
             notes: [ 0, 5, 7 ],
             root: 0,
             inv: 0,
-            group: 2
+            group: GR.altered
         },
-        "Maj,6,9,-1": {
+        "Maj,7,-5": {
+            notes: [ 0, 4, 11 ],
+            root: 0,
+            inv: 0,
+            group: GR.reduced
+        },
+        "Maj,6,-5": {
+            notes: [ 0, 4, 9 ],
+            root: 0,
+            inv: 0,
+            group: GR.reduced
+        },
+        "Min,6,-5": {
+            notes: [ 0, 3, 7 ],
+            root: 0,
+            inv: 0,
+            group: GR.reduced
+        },
+        "Min,7,-5": {
+            notes: [ 0, 3, 7, 10 ],
+            root: 0,
+            inv: 0,
+            group: GR.reduced
+        },
+        "Maj,6,9,-1(A)": {
             notes: [ 0, 3, 5, 10 ],
             root: -4,
             inv: 0,
-            group: 1
+            group: GR.rootLess
         },
-        "Maj,M7,9,-1": {
-            notes: [ 0, 3, 7, 11 ],
+        "Maj,6,9,-1(B)": {
+            notes: [ 0, 5, 7, 10 ],
+            root: -9,
+            inv: 0,
+            group: GR.rootLess
+        },
+        "Maj,7,9,-1(A)": {
+            notes: [ 0, 3, 7, 10 ],
             root: -4,
             inv: 0,
-            group: 3
+            group: GR.rootLess
         },
-        "Min,6,9,-1": {
+        "Maj,7,9,-1(B)": {
+            notes: [ 0, 3, 5, 8 ],
+            root: -11,
+            inv: 0,
+            group: GR.rootLess
+        },
+        "Min,6,9,-1(A)": {
             notes: [ 0, 4, 6, 11 ],
             root: -3,
             inv: 0,
-            group: 3
+            group: GR.rootLess
         },
-        "Min,7,9,-1": {
-            notes: [ 0, 4, 7, 11 ],
-            root: -3,
-            inv: 0,
-            group: 3
-        },
-        "MinCluster,7,9,-1": {
+        "Min,6,9,-1(B)": {
             notes: [ 0, 4, 5, 9 ],
             root: -10,
             inv: 0,
-            group: 3
+            group: GR.rootLess
+        },
+        "Min,7,9,-1(A)": {
+            notes: [ 0, 4, 7, 11 ],
+            root: -3,
+            inv: 0,
+            group: GR.rootLess
+        },
+        "Min,7,9,-1(B)": {
+            notes: [ 0, 4, 5, 9 ],
+            root: -10,
+            inv: 0,
+            group: GR.rootLess
+        },
+        "Dom,7,9(A)": {
+            notes: [ 0, 4, 6, 11 ],
+            root: -10,
+            inv: 0,
+            group: GR.rootLess
+        },
+        "Dom,7,9(B)": {
+            notes: [ 0, 5, 6, 10 ],
+            root: -4,
+            inv: 0,
+            group: GR.rootLess
         },
         "Dom,7,9,-1": {
             notes: [ 0, 3, 6, 10 ],
             root: -4,
             inv: 0,
-            group: 2
+            group: GR.rootLess
         },
         "Dom,7,b9,-1": {
             notes: [ 0, 3, 6, 9 ],
             root: -4,
             inv: 0,
-            group: 3
+            group: GR.rootLess
         },
         "Dom,7,#9,-1": {
             notes: [ 0, 3, 6, 11 ],
             root: -4,
             inv: 0,
-            group: 3
+            group: GR.rootLess
         },
         "Dom7Cluster,-1": {
             notes: [ 0, 4, 6, 9 ],
             root: -4,
             inv: 0,
-            group: 3
+            group: GR.rootLess
         }
     };
     CxChord.extensions = {
@@ -1145,12 +1211,13 @@ var CxChord;
         "Dom,7,b5": [ 4, 6, 10 ],
         "Dom,7,sus4": [ 5, 10 ],
         "Dom,7,sus2": [ 2, 10 ],
+        Dim: [ 0, 3, 6 ],
+        "Dim,7(WH)": [ 0, 3, 6, 9 ],
+        "Dim,7(HW)": [ 0, 3, 6, 9 ],
         "Dom,7,9,-1": [ 4, 10 ],
         "Dom,7,b9,-1": [ 4, 10 ],
         "Dom,7,#9,-1": [ 4, 10 ],
-        Dim: [ 0, 3, 6 ],
-        "Dim,7(WH)": [ 0, 3, 6, 9 ],
-        "Dim,7(HW)": [ 0, 3, 6, 9 ]
+        "Dom,7,9,13,-1,-5": [ 4, 10, 21 ]
     };
     CxChord.conflicts = {
         "Maj,#5": [ [ 7, 8 ] ],
@@ -1162,8 +1229,7 @@ var CxChord;
         "Min,7,9": [ [ 5, 6 ], [ 7, 8 ] ],
         "Min,7,9,-1": [ [ 5, 6 ], [ 7, 8 ] ],
         "Min,7,b5": [ [ 5, 6 ], [ 7, 8 ] ],
-        "Min,M7": [ [ 5, 6 ], [ 7, 8 ] ],
-        "MinCluster,7,9,-1": [ [ 5, 6 ], [ 7, 8 ] ]
+        "Min,M7": [ [ 5, 6 ], [ 7, 8 ] ]
     };
     CxChord.knockouts = {
         Maj: [ 1, 3, 5, 8, 10 ],
@@ -1196,10 +1262,15 @@ var CxChord;
         "Dom,7,b5": [ 5, 7, 11 ],
         Sus2: [ 1, 3, 4, 5, 8 ],
         Sus4: [ 1, 3, 4, 6, 8 ],
-        "Maj,6,9,-1": [ 0, 1, 3, 5, 6, 8, 10 ],
-        "Maj,M7,9,-1": [ 0, 1, 3, 5, 6, 8, 10 ],
+        "Maj,7,-5": [ 1, 3, 5, 6, 7, 8, 10 ],
+        "Maj,6,-5": [ 1, 3, 5, 6, 7, 8, 10 ],
+        "Min,6,-5": [ 1, 4, 6, 7, 8 ],
+        "Min,7,-5": [ 1, 4, 6, 7, 8, 11 ],
+        "Maj,6,9,-1(A)": [ 0, 1, 3, 5, 6, 8, 10 ],
+        "Maj,7,9,-1": [ 0, 1, 3, 5, 6, 8, 10 ],
         "Min,6,9,-1": [ 1, 4, 8 ],
         "Min,7,9,-1": [ 1, 4, 8 ],
+        "Dom,7,9,13,-1,-5": [ 0, 5, 7, 11 ],
         "Dom,7,9,-1": [ 0, 5, 7, 11 ],
         "Dom,7,b9,-1": [ 0, 5, 7, 11 ],
         "Dom,7,#9,-1": [ 0, 5, 7, 11 ],
@@ -1261,6 +1332,7 @@ var CxChord;
         function ChordMatcher() {
             _super.call(this);
             this.fullMatch = false;
+            this.favorJazzChords = false;
             this.priorChords = [];
             this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
         }
@@ -1269,6 +1341,15 @@ var CxChord;
         };
         ChordMatcher.prototype.getChord = function() {
             return this.chord;
+        };
+        ChordMatcher.prototype.favorJazz = function(favor) {
+            if (favor === void 0) {
+                favor = true;
+            }
+            this.favorJazzChords = favor;
+            if (!_.isUndefined(this.chord)) {
+                this.chord.favorJazzChords = favor;
+            }
         };
         ChordMatcher.prototype.addRootOffset = function(_arr, root, addOctave) {
             if (_arr === void 0) {
@@ -1323,11 +1404,13 @@ var CxChord;
                             group: hypothesis[inv].group
                         };
                     }
+                    if (key == "Dom,7,9,13,-1,-5") {
+                        var debugRoot = true;
+                    }
                     chord.matchedNotes[key].rootNotes.push(hypothesis[inv].root);
                     var intersection = _.intersection(chord.chordInv[0], hypothesis[inv].notes);
                     if (!_.isArray(intersection)) throw Error("inversion Intersection is not an array");
                     chord.matchedNotes[key].invertions.push(intersection);
-                    if (chord.chordInv[0].length == intersection.length) this.fullMatches = true;
                     var hypoToMatch = [];
                     var chordToMatch = [];
                     var invRoot = (hypothesis[inv].root < 0 ? 12 + hypothesis[inv].root : hypothesis[inv].root) % 12;
@@ -1339,9 +1422,6 @@ var CxChord;
                     } else {
                         hypoToMatch = hypothesis[inv].notes;
                         chordToMatch = chord.chordInv[0];
-                    }
-                    if (key == "Dim") {
-                        var debugRoot = true;
                     }
                     var indexOfRoot = chordToMatch.indexOf(invRoot) >= 0 ? chordToMatch.indexOf(invRoot) : chordToMatch.indexOf(invRoot + 12);
                     chord.matchedNotes[key].roots.push(indexOfRoot);
@@ -1359,12 +1439,9 @@ var CxChord;
                     var knockoutTrans;
                     var knockoutMatch;
                     var KOs = CxChord.getKnockouts(key);
-                    if (key == "Min") {
-                        var debugRoot = true;
-                    }
                     if (KOs.length > 0) {
                         knockoutTrans = self.addRootOffset(knockouts[key], hypothesis[inv].root);
-                        knockoutMatch = _.intersection(chordToMatch, knockoutTrans);
+                        knockoutMatch = _.intersection(chord.chordInv[0], knockoutTrans);
                     }
                     chord.matchedNotes[key].knockouts.push(_.isUndefined(knockoutMatch) ? [] : knockoutMatch);
                     var conflictCount = 0;
@@ -1391,6 +1468,7 @@ var CxChord;
         };
         ChordMatcher.prototype.match = function(midiChord) {
             this.chord = new CxChord.ChordInstance(midiChord);
+            this.chord.favorJazzChords = this.favorJazzChords;
             this.doMatch(this.chord);
             this.rules = new CxChord.Rules(this.chord);
             var ruleE = this.rules.get("EvenDistribution");
@@ -1401,9 +1479,12 @@ var CxChord;
             this.bayes.applyRule(ruleM);
             var ruleH = this.rules.get("MustHave");
             this.bayes.applyRule(ruleH);
+            if (this.favorJazzChords) {
+                var ruleJ = this.rules.get("FavorJazz");
+                this.bayes.applyRule(ruleJ);
+            }
             var ruleR = this.rules.get("RootFound");
             this.bayes.applyRule(ruleR);
-            this.priorChords.push(this.chord);
             return this.chord;
         };
         return ChordMatcher;
@@ -1422,7 +1503,6 @@ var CxChord;
             this.ruleMap = {};
             this.size = 0;
             this.set("EvenDistribution", {
-                rule: "EvenDistribution",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var evenDistibution = 1 / bayes.hypothesis.length;
@@ -1430,7 +1510,6 @@ var CxChord;
                 }
             });
             this.set("CountNotes", {
-                rule: "CountNotes",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var hypoLen = bayes.hypothesis[col].len;
@@ -1441,7 +1520,6 @@ var CxChord;
                 }
             });
             this.set("MustHave", {
-                rule: "MustHave",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
@@ -1452,7 +1530,6 @@ var CxChord;
                 }
             });
             this.set("Knockouts", {
-                rule: "Knockouts",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
@@ -1463,7 +1540,6 @@ var CxChord;
                 }
             });
             this.set("MatchedNotes", {
-                rule: "MatchedNotes",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
@@ -1477,15 +1553,15 @@ var CxChord;
                 }
             });
             this.set("RootFound", {
-                rule: "RootFound",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var indexOfRoot = chord.matchedNotes[key].roots[inv];
+                    var favorJazz = chord.favorJazzChords;
                     var score;
                     if (CxChord.isNoRootChord(bayes.hypothesis[col].key)) {
-                        score = indexOfRoot >= 0 ? .2 : .8;
+                        if (favorJazz) score = 1; else score = indexOfRoot >= 0 ? .2 : .8;
                     } else if (indexOfRoot == 0) {
                         score = 1;
                     } else {
@@ -1495,19 +1571,28 @@ var CxChord;
                     return score;
                 }
             });
+            this.set("FavorJazz", {
+                chord: _chord,
+                ruleFx: function(chord, bayes, row, col) {
+                    var key = bayes.hypothesis[col].key;
+                    var flavor = bayes.hypothesis[col].group;
+                    var jazzChord = flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced;
+                    var score = jazzChord ? 1 : .7;
+                    if (key.match(/^Min,6,9,-1.*/)) score -= .1;
+                    return score;
+                }
+            });
             this.set("Conflicts", {
-                rule: "conclicts",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var conflicts = chord.matchedNotes[key].conflicts[inv];
-                    var score = 1 / (conflicts == 0 ? 1 : conflicts * 100);
+                    var score = 1 / (conflicts == 0 ? 1 : conflicts * 10);
                     return score;
                 }
             });
             this.set("ChordGroup", {
-                rule: "ChordGroup",
                 chord: _chord,
                 ruleFx: function(chord, bayes, row, col) {
                     var score = 1 / chord.matchedNotes[bayes.hypothesis[col].key].group;
@@ -1522,6 +1607,7 @@ var CxChord;
             return _.has(this.ruleMap, key);
         };
         Rules.prototype.set = function(key, value) {
+            value.rule = key;
             this.ruleMap[key] = value;
             this.size = _.keys(this.ruleMap).length;
             return this.ruleMap[key];
