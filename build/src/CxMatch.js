@@ -11,20 +11,25 @@ var CxChord;
         function ChordMatcher() {
             _super.call(this);
             this.fullMatch = false;
+            this.favorJazzChords = false;
             this.priorChords = [];
             this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
         }
         ChordMatcher.prototype.getPosterior = function () {
             return this.bayes.getPosterior();
         };
-        ChordMatcher.prototype.getChord = function () {
-            return this.chord;
+        ChordMatcher.prototype.getChord = function () { return this.chord; };
+        ChordMatcher.prototype.favorJazz = function (favor) {
+            if (favor === void 0) { favor = true; }
+            this.favorJazzChords = favor;
+            if (!_.isUndefined(this.chord)) {
+                this.chord.favorJazzChords = favor;
+            }
         };
         ChordMatcher.prototype.addRootOffset = function (_arr, root, addOctave) {
             if (_arr === void 0) { _arr = []; }
             if (addOctave === void 0) { addOctave = true; }
             var arr = [];
-            // if ( _.isUndefined(_arr) || _arr.length == 0 ) throw Error("addRootOffset input array is undefined or empty");
             if (root == 0) {
                 arr = _arr;
             }
@@ -67,6 +72,9 @@ var CxChord;
                             roots: [],
                             group: hypothesis[inv].group };
                     }
+                    if (key == 'Dom,7,9,13,-1,-5') {
+                        var debugRoot = true;
+                    }
                     // Save the root note for the inversion
                     chord.matchedNotes[key].rootNotes.push(hypothesis[inv].root);
                     //
@@ -76,8 +84,7 @@ var CxChord;
                     if (!_.isArray(intersection))
                         throw Error('inversion Intersection is not an array');
                     chord.matchedNotes[key].invertions.push(intersection);
-                    if (chord.chordInv[0].length == intersection.length)
-                        this.fullMatches = true;
+                    // if ( chord.chordInv[0].length == intersection.length  ) this.fullMatches = true             
                     //
                     // The following checks should also check against the the root of no-root chords
                     //        
@@ -94,16 +101,12 @@ var CxChord;
                         hypoToMatch = hypothesis[inv].notes;
                         chordToMatch = chord.chordInv[0];
                     }
-                    if (key == "Dim") {
-                        var debugRoot = true;
-                    }
                     //
                     // Check for the root notes
                     // For chord without the root it should not be present
                     // For chord with roots it should score higher if present 
                     //
                     var indexOfRoot = chordToMatch.indexOf(invRoot) >= 0 ? chordToMatch.indexOf(invRoot) : chordToMatch.indexOf(invRoot + 12);
-                    // var rootFound: boolean = ( indexOfRoot >= 0 )
                     chord.matchedNotes[key].roots.push(indexOfRoot);
                     // 
                     // Check for must Have notes
@@ -112,7 +115,6 @@ var CxChord;
                     var mustHaveMatch;
                     if (!_.isUndefined(mustHave[key])) {
                         mustHaveTrans = self.addRootOffset(mustHave[key], hypothesis[inv].root, false);
-                        // mustHaveMatch = _.intersection( hypoToMatch,  mustHaveTrans )
                         mustHaveMatch = _.intersection(chordToMatch, mustHaveTrans);
                         chord.matchedNotes[key].mustHave.push(mustHaveMatch.length - mustHaveTrans.length);
                     }
@@ -131,13 +133,9 @@ var CxChord;
                     var knockoutTrans;
                     var knockoutMatch;
                     var KOs = CxChord.getKnockouts(key);
-                    if (key == 'Min') {
-                        var debugRoot = true;
-                    }
                     if (KOs.length > 0) {
                         knockoutTrans = self.addRootOffset(knockouts[key], hypothesis[inv].root);
-                        // knockoutMatch   = _.intersection( hypoToMatch,  knockoutTrans )   
-                        knockoutMatch = _.intersection(chordToMatch, knockoutTrans);
+                        knockoutMatch = _.intersection(chord.chordInv[0], knockoutTrans);
                     }
                     chord.matchedNotes[key].knockouts.push(_.isUndefined(knockoutMatch) ? [] : knockoutMatch);
                     // 
@@ -149,7 +147,6 @@ var CxChord;
                     if (!_.isUndefined(conflicts[key])) {
                         for (var i = 0; i < conflicts[key].length; i++) {
                             conflictTrans = self.addRootOffset(conflicts[key][i], hypothesis[inv].root);
-                            // var conflictMatch  = _.intersection (chord.chordInv[0], conflictTrans )   
                             var conflictMatch = _.intersection(chordToMatch, conflictTrans);
                             if (conflictMatch.length == conflictTrans.length) {
                                 conflictCount += 1;
@@ -169,6 +166,7 @@ var CxChord;
         };
         ChordMatcher.prototype.match = function (midiChord) {
             this.chord = new CxChord.ChordInstance(midiChord);
+            this.chord.favorJazzChords = this.favorJazzChords;
             //
             // Do chord tone matches 
             //     
@@ -194,7 +192,6 @@ var CxChord;
             //
             // Matched Notes rule
             // 
-            // matchedNotes:   { [key:string] : { invertions: any[], extensions: any[], knockouts: any[], group: number } } 
             var ruleM = this.rules.get('MatchedNotes');
             this.bayes.applyRule(ruleM);
             //
@@ -202,6 +199,13 @@ var CxChord;
             //  
             var ruleH = this.rules.get('MustHave');
             this.bayes.applyRule(ruleH);
+            //
+            // FAvor Jazz Chords
+            // 
+            if (this.favorJazzChords) {
+                var ruleJ = this.rules.get('FavorJazz');
+                this.bayes.applyRule(ruleJ);
+            }
             //
             // Conflict Notes rule
             //  
@@ -217,7 +221,7 @@ var CxChord;
             //
             // var ruleG: Rule = this.rules.get('ChordGroup')
             // this.bayes.applyRule(ruleG)          
-            this.priorChords.push(this.chord);
+            // this.priorChords.push(this.chord) 
             //
             return this.chord;
         };

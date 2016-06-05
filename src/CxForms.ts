@@ -47,54 +47,69 @@ namespace CxChord {
 			return _.isUndefined( CxChord.knockouts[_key]) ? [] : CxChord.knockouts[_key] 
 		}
 		
+		export enum GR { shell = 1, standard = 2 , altered = 4, extented = 8, rootLess = 16, reduced = 32, cluster = 64 , passing = 128 } 
+		
         export const chordMap: ChordMap = {
-			"Maj" 				: {notes: [0,4,7],    root: 0, inv:0, group: 1 },
-			"Maj,7" 			: {notes: [0,4,7,11], root: 0, inv:0, group: 1 },
-			"Maj,7,9" 			: {notes: [0,4,7,11,14], root: 0, inv:0, group: 2 },
-			"Maj,7,9,#11"		: {notes: [0,4,7,11,14,18], root: 0, inv:0, group: 3 },
-			"Maj,7,9,#11,13"	: {notes: [0,4,7,11,14,18,21], root: 0, inv:0, group: 3 },
-			"Maj,6"				: {notes: [0,4,7,9], root: 0, inv:0, group: 1 }, 
-			"Maj,6,9"			: {notes: [0,4,7,9,14], root: 0, inv:0, group: 1 },
-			
-			"Maj,add2"		   	: {notes: [0,2,4,7],  root: 0, inv:0, group: 3 },
-			"Maj,add9"		   	: {notes: [0,4,7,14],  root: 0, inv:0, group: 3 },
-			"5"                 : {notes: [0,7], root: 0, inv:0, group: 3 },
+			"Maj" 				: {notes: [0,4,7],    			root: 0, inv:0, group: GR.standard },
+			"Maj,7" 			: {notes: [0,4,7,11], 			root: 0, inv:0, group: GR.standard },
+			"Maj,7,9" 			: {notes: [0,4,7,11,14], 		root: 0, inv:0, group: GR.extented },
+			"Maj,7,9,#11"		: {notes: [0,4,7,11,14,18], 	root: 0, inv:0, group: GR.extented },
+			"Maj,7,9,#11,13"	: {notes: [0,4,7,11,14,18,21], 	root: 0, inv:0, group: GR.extented },
+			"Maj,6"				: {notes: [0,4,7,9], 			root: 0, inv:0, group: GR.standard }, 
+			"Maj,6,9"			: {notes: [0,4,7,9,14], 		root: 0, inv:0, group: GR.extented },		
+			"Maj,add2"		   	: {notes: [0,2,4,7],  			root: 0, inv:0, group: GR.cluster },
+			"Maj,add9"		   	: {notes: [0,4,7,14],  			root: 0, inv:0, group: GR.extented },
+			"5"                 : {notes: [0,7], 				root: 0, inv:0, group: GR.shell },
 			// Minor
-			"Min"				: {notes: [0,3,7],    root: 0, inv:0, group: 1 },
-			"Min,7"				: {notes: [0,3,7,10], root: 0, inv:0, group: 1 },
-			"Min,7,9"			: {notes: [0,3,7,10], root: 0, inv:0, group: 1 },
-			"Min,7,b5"			: {notes: [0,3,6,10], root: 0, inv:0, group: 2 },
-			"Min,6"				: {notes: [0,3,7,9],  root: 0, inv:0, group: 2 },
-			"Min,6,9"			: {notes: [0,3,7,9,14],  root: 0, inv:0, group: 2 },
-			"Min,M7"			: {notes: [0,3,7,11], root: 0, inv:0, group: 3 },
+			"Min"				: {notes: [0,3,7],    			root: 0, inv:0, group: GR.standard },
+			"Min,7"				: {notes: [0,3,7,10], 			root: 0, inv:0, group: GR.standard },
+			"Min,7,9"			: {notes: [0,3,7,10], 			root: 0, inv:0, group: GR.altered },
+			"Min,7,b5"			: {notes: [0,3,6,10], 			root: 0, inv:0, group: GR.standard },
+			"Min,6"				: {notes: [0,3,7,9],  			root: 0, inv:0, group: GR.standard },
+			"Min,6,9"			: {notes: [0,3,7,9,14],  		root: 0, inv:0, group: GR.extented },
+			"Min,M7"			: {notes: [0,3,7,11], 			root: 0, inv:0, group: GR.standard },
 			// Dominant 
-			"Dom,7"				: {notes: [0,4,7,10], root: 0, inv:0, group: 1 },
-			"Dom,7,9"			: {notes: [0,4,7,10,14], root: 0, inv:0, group: 1 },
-			"Dom,7,#5"			: {notes: [0,4,8,10], root: 0, inv:0, group: 2 },
-			"Dom,7,b5"			: {notes: [0,4,6,10], root: 0, inv:0, group: 3 }, 
-			"Dom,7,sus4"		: {notes: [0,5,7,10], root: 0, inv:0, group: 2 },
-			"Dom,7,sus2"		: {notes: [0,2,7,10], root: 0, inv:0, group: 2 },
-			"Dim"				: {notes: [0,3,6],    root: 0, inv:0, group: 2 },
-			"Dim,7"				: {notes: [0,3,6,9],  root: 0, inv:0, group: 2 },
-			"Dim,7(HW)"			: {notes: [0,3,6,9],  root: 0, inv:0, group: 2 },
-			"Dim,7(WH)"			: {notes: [0,3,6,9],  root: 0, inv:0, group: 2 },
+			"Dom,7"				: {notes: [0,4,7,10], 			root: 0, inv:0, group: GR.altered },
+			"Dom,7,9"			: {notes: [0,4,7,10,14], 		root: 0, inv:0, group: GR.extented },
+			"Dom,7,#5"			: {notes: [0,4,8,10], 			root: 0, inv:0, group: GR.altered },
+			"Dom,7,b5"			: {notes: [0,4,6,10], 			root: 0, inv:0, group: GR.altered }, 
+			"Dom,7,sus4"		: {notes: [0,5,7,10], 			root: 0, inv:0, group: GR.altered },
+			"Dom,7,sus2"		: {notes: [0,2,7,10], 			root: 0, inv:0, group: GR.altered },
+			"Dim"				: {notes: [0,3,6],    			root: 0, inv:0, group: GR.passing },
+			"Dim,7"				: {notes: [0,3,6,9],  			root: 0, inv:0, group: GR.passing },
+			"Dim,7(HW)"			: {notes: [0,3,6,9],  			root: 0, inv:0, group: GR.passing },
+			"Dim,7(WH)"			: {notes: [0,3,6,9],  			root: 0, inv:0, group: GR.passing },
 			// "Dimø"			: {notes: [0,3,6,10], root: 0, inv:0, group: 2 },
-			"Maj,#5"			: {notes: [0,4,8],    root: 0, inv:0, group: 3 },
-			"Sus2"				: {notes: [0,2,7],    root: 0, inv:0, group: 2 },
-			"Sus4"				: {notes: [0,5,7],    root: 0, inv:0, group: 2 },
+			"Maj,#5"			: {notes: [0,4,8],    			root: 0, inv:0, group: GR.altered },
+			"Sus2"				: {notes: [0,2,7],    			root: 0, inv:0, group: GR.altered },
+			"Sus4"				: {notes: [0,5,7],    			root: 0, inv:0, group: GR.altered },
 			// "Quater"			: {notes: [0,5,10],   root: 0, inv:0, group: 3 },
+			// Jazz reduced chords
+			"Maj,7,-5" 			: {notes: [0,4,11], 			root: 0, inv:0, group: GR.reduced },
+			"Maj,6,-5" 			: {notes: [0,4,9], 				root: 0, inv:0, group: GR.reduced },
+			"Min,6,-5"			: {notes: [0,3,7],    			root: 0, inv:0, group: GR.reduced },
+			"Min,7,-5"			: {notes: [0,3,7,10], 			root: 0, inv:0, group: GR.reduced },	
 			// Jazz block chords
-			"Maj,6,9,-1"	    : {notes: [0,3,5,10], root: -4, inv:0, group: 1 },
-			"Maj,M7,9,-1"		: {notes: [0,3,7,11], root: -4, inv:0, group: 3 },
-			"Min,6,9,-1"		: {notes: [0,4,6,11], root: -3, inv:0, group: 3 },
-			"Min,7,9,-1"		: {notes: [0,4,7,11], root: -3, inv:0, group: 3 },
-			"MinCluster,7,9,-1" : {notes: [0,4,5,9],  root: -10, inv:0, group: 3 },
-			"Dom,7,9,-1"		: {notes: [0,3,6,10], root: -4, inv:0, group: 2 },
-			"Dom,7,b9,-1"	    : {notes: [0,3,6,9],  root: -4, inv:0, group: 3 },
-			"Dom,7,#9,-1"	    : {notes: [0,3,6,11], root: -4, inv:0, group: 3 },
+			// Major A and B Voicings
+			"Maj,6,9,-1(A)"		: {notes: [0,3,5,10],			root: -4, inv:0, group: GR.rootLess },
+			"Maj,6,9,-1(B)"		: {notes: [0,5,7,10],			root: -9, inv:0, group: GR.rootLess },
+			"Maj,7,9,-1(A)"		: {notes: [0,3,7,10], 			root: -4, inv:0, group: GR.rootLess },
+			"Maj,7,9,-1(B)"		: {notes: [0,3,5,8],			root: -11, inv:0, group: GR.rootLess },
+			// Minor A and B Voicings
+			"Min,6,9,-1(A)"		: {notes: [0,4,6,11], 			root: -3, inv:0, group: GR.rootLess },
+			"Min,6,9,-1(B)"		: {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
+			"Min,7,9,-1(A)"		: {notes: [0,4,7,11], 			root: -3, inv:0, group: GR.rootLess },
+			"Min,7,9,-1(B)"		: {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
+			// "MinCluster,7,9,-1" : {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
+			// Dominant A and B Voicings
+			"Dom,7,9(A)" 		: {notes: [0,4,6,11], 			root: -10, inv:0, group: GR.rootLess },
+			"Dom,7,9(B)" 		: {notes: [0,5,6,10], 			root: -4, inv:0, group: GR.rootLess },
+			"Dom,7,9,-1"		: {notes: [0,3,6,10], 			root: -4, inv:0, group:  GR.rootLess },
+			"Dom,7,b9,-1"	    : {notes: [0,3,6,9],  			root: -4, inv:0, group:  GR.rootLess },
+			"Dom,7,#9,-1"	    : {notes: [0,3,6,11], 			root: -4, inv:0, group:  GR.rootLess },
 			// "MinCluster"		   	: {notes: [0,2,3,7],  root: 0, inv:0, group: 3 },
 			// "MajCluster"		   	: {notes: [0,2,4,7],  root: 0, inv:0, group: 3 },
-			"Dom7Cluster,-1"   : {notes: [0,4,6,9],  root: -4, inv:0, group: 3 }
+			"Dom7Cluster,-1"   : {notes: [0,4,6,9],  			root: -4, inv:0, group:  GR.rootLess }
 		}
         
 		// Note: Extension don't live with a half or whole step between each other
@@ -149,13 +164,14 @@ namespace CxChord {
 			"Dom,7,b5"		: [4,6,10],
 			"Dom,7,sus4"	: [5,10],
 			"Dom,7,sus2"	: [2,10],
+			"Dim"		: [0,3,6],
+			"Dim,7(WH)"	: [0,3,6,9],
+			"Dim,7(HW)"	: [0,3,6,9],
 			// Jazz type no-root chords
 			"Dom,7,9,-1"  : [4,10],
 			"Dom,7,b9,-1" : [4,10],
 			"Dom,7,#9,-1" : [4,10],
-			"Dim"		: [0,3,6],
-			"Dim,7(WH)"	: [0,3,6,9],
-			"Dim,7(HW)"	: [0,3,6,9]
+			"Dom,7,9,13,-1,-5":  [4,10,21],
 		}
 		
 	    export const conflicts: Conflicts = { // Each entry is one set off 2 conflciting notes
@@ -186,7 +202,7 @@ namespace CxChord {
 			"Min,7,9,-1"	: [[5,6], [7,8]],
 			"Min,7,b5" 		: [[5,6], [7,8]],
 			"Min,M7"		: [[5,6], [7,8]],
-			"MinCluster,7,9,-1": [[5,6], [7,8]]
+			// "MinCluster,7,9,-1": [[5,6], [7,8]]
 			// Dominant
 			/*
 			"Dom7"		: [],
@@ -226,8 +242,7 @@ namespace CxChord {
 			"Min,7" 		: [1,4,6,8,11],
 			"Min,7,9" 		: [1,4,6,8,11],
 			"Min,7,b5" 		: [4,7,8,11],
-			"Min,M7"		: [1,4,6,8,10],
-			
+			"Min,M7"		: [1,4,6,8,10],			
 			"MinCluster,7,9,-1": [1,4,8],
 			// Diminished
 			"Dim"  			: [4,7,9,10,11],
@@ -245,15 +260,33 @@ namespace CxChord {
 			"Sus2"			: [1,3,4,5,8],
 			"Sus4"			: [1,3,4,6,8],
 			// "Quater"	: [1,3,4,5,8,],
+			// Jazz reduced chords
+			"Maj,7,-5" 		: [1,3,5,6,7,8,10], 
+			"Maj,6,-5" 		: [1,3,5,6,7,8,10], 	
+			"Min,6,-5"		: [1,4,6,7,8],   
+			"Min,7,-5"		: [1,4,6,7,8,11], 
 			// Jazz type no-root chords
-			"Maj,6,9,-1"    : [0,1,3,5,6,8,10],
-			"Maj,M7,9,-1"   : [0,1,3,5,6,8,10],
+			/*
+			"Maj,6,9,-1"    : [0,1,3,5,8,11],
+			"Maj,7,9,-1"   : [1,4,6,8,11],
+			"Min,6,9,-1"	: [1,4,9,10],
+			"Min,7,9,-1"	: [1,4,9,10],
+			"Dom,7,9,-1"  	: [1,4,7,8,9],
+			"Dom,7,b9,-1" 	: [1,4,7,8,10],
+			"Dom,7,#9,-1" 	: [1,4,7,8,10],
+			"Dom7Cluster,-1": [1,4,7,8,10],
+			*/ 
+			"Maj,6,9,-1(A)" : [0,1,3,5,6,8,10],
+			// TODO fix and test from here 
+			"Maj,7,9,-1"   : [0,1,3,5,6,8,10],
 			"Min,6,9,-1"	: [1,4,8],
 			"Min,7,9,-1"	: [1,4,8],
+			"Dom,7,9,13,-1,-5":  [0,5,7,11],
 			"Dom,7,9,-1"  	: [0,5,7,11],
 			"Dom,7,b9,-1" 	: [0,5,7,11],
 			"Dom,7,#9,-1" 	: [0,5,7,11],
 			"Dom7Cluster,-1": [0,5,7,11]
+
 		} 
 		
 	export class ChordForms {

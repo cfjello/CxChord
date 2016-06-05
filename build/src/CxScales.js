@@ -1,6 +1,7 @@
 /// <reference path="references.ts" />
 var CxChord;
 (function (CxChord) {
+    // TODO: move this to a Chord Progression module that uses CxChord	
     CxChord.rootNoteNamesB = {
         sharp: ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
         flat: ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]

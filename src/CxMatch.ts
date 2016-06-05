@@ -4,11 +4,12 @@ namespace CxChord {
     
    export class ChordMatcher extends CxChord.ChordForms {
         
-        chord:       ChordInstance
-        bayes:       CxChord.BayesCalculator 
-        rules:       CxChord.Rules 
-        fullMatch:   boolean = false
-        priorChords: ChordInstance[] = []
+        chord:          ChordInstance
+        bayes:          CxChord.BayesCalculator 
+        rules:          CxChord.Rules 
+        fullMatch:      boolean = false
+        favorJazzChords:boolean = false
+        priorChords:    ChordInstance[] = []
          
         constructor() { 
             super() 
@@ -19,10 +20,14 @@ namespace CxChord {
             return this.bayes.getPosterior()      
         }
         
-        getChord() {
-            return this.chord
-        }
+        getChord() { return this.chord }
         
+        favorJazz(favor: boolean = true ) {
+            this.favorJazzChords = favor
+            if ( !_.isUndefined( this.chord ) ) {
+                this.chord.favorJazzChords = favor 
+            }
+        }       
         
         addRootOffset ( _arr: number [] = [] , root: number, addOctave: boolean = true): number[] {
             var arr: number[] = []
@@ -69,6 +74,10 @@ namespace CxChord {
                                                         roots:      [], 
                                                         group: hypothesis[inv].group }
                     }
+                    
+                    if ( key == 'Dom,7,9,13,-1,-5' ) { 
+                        var debugRoot = true 
+                    } 
                     // Save the root note for the inversion
                     chord.matchedNotes[key].rootNotes.push(hypothesis[inv].root)                
                     //
@@ -78,7 +87,7 @@ namespace CxChord {
 
                     if ( ! _.isArray(intersection) ) throw Error ('inversion Intersection is not an array')
                     chord.matchedNotes[key].invertions.push(intersection) 
-                    if ( chord.chordInv[0].length == intersection.length  ) this.fullMatches = true             
+                    // if ( chord.chordInv[0].length == intersection.length  ) this.fullMatches = true             
                     //
                     // The following checks should also check against the the root of no-root chords
                     //        
@@ -96,10 +105,6 @@ namespace CxChord {
                         hypoToMatch = hypothesis[inv].notes
                         chordToMatch =  chord.chordInv[0]
                     }
-                    
-                    if ( key == "Dim" ) { 
-                        var debugRoot = true 
-                    } 
                     //
                     // Check for the root notes
                     // For chord without the root it should not be present
@@ -132,12 +137,10 @@ namespace CxChord {
                     var knockoutTrans: number[]
                     var knockoutMatch : number[]
                     var KOs = CxChord.getKnockouts( key )
-                    if ( key == 'Min' ) { 
-                        var debugRoot = true 
-                    } 
+
                     if ( KOs.length > 0 ) {
                         knockoutTrans   = self.addRootOffset( knockouts[key], hypothesis[inv].root )
-                        knockoutMatch   = _.intersection( chordToMatch,  knockoutTrans )      
+                        knockoutMatch   = _.intersection( chord.chordInv[0],  knockoutTrans )      
                     }
                     chord.matchedNotes[key].knockouts.push(_.isUndefined(knockoutMatch) ? [] : knockoutMatch )
                     // 
@@ -166,7 +169,8 @@ namespace CxChord {
 
         match( midiChord: number[] ) : ChordInstance {
            
-           this.chord  = new ChordInstance(midiChord)  
+           this.chord  = new ChordInstance(midiChord)
+           this.chord.favorJazzChords = this.favorJazzChords  
            //
            // Do chord tone matches 
            //     
@@ -199,6 +203,13 @@ namespace CxChord {
            //  
            var ruleH: Rule = this.rules.get('MustHave') 
            this.bayes.applyRule(ruleH)
+           //
+           // FAvor Jazz Chords
+           // 
+           if ( this.favorJazzChords ) { 
+                var ruleJ: Rule = this.rules.get('FavorJazz') 
+                this.bayes.applyRule(ruleJ)
+           }
            //
            // Conflict Notes rule
            //  

@@ -2,17 +2,14 @@
 var CxChord;
 (function (CxChord) {
     var ChordInstance = (function () {
-        // matchedExt:     { [key:string] : any } = {}
-        // knockouts     = {}
-        // public chordForms = new (ChordForms); // TODO Continue from here
         function ChordInstance(midiChord, normalizeChord) {
             if (normalizeChord === void 0) { normalizeChord = true; }
             this.midiChord = midiChord;
             this.normalizeChord = normalizeChord;
             this.offset = [];
             this.chordInv = [];
-            // directMatch:    { [key:string] : number } = {}
             this.matchedNotes = {};
+            this.favorJazzChords = false;
             this.validate(midiChord);
             for (var i = 0; i < midiChord.length; i++) {
                 this.offset.push(midiChord[i]);
@@ -36,12 +33,6 @@ var CxChord;
             else
                 return this.offset[inv];
         };
-        /* TODO: Test this function
-        getChordName( hypo: Hypothesis,  sharpOrFlat: string = 'flat' ): string {
-            var bass = 	this.offset[0]
-            return CxChord.getChordName( hypo.key, hypo.root, bass, sharpOrFlat)
-        }
-        */
         ChordInstance.prototype.getBassName = function (hypo, sharpOrFlat) {
             if (sharpOrFlat === void 0) { sharpOrFlat = 'flat'; }
             var bass = this.offset[hypo.inv];
@@ -70,7 +61,6 @@ var CxChord;
             }
         };
         ChordInstance.prototype.normalize = function (notes) {
-            // this.validate(notes)
             var target = [];
             try {
                 var offset = notes[0];
@@ -98,7 +88,6 @@ var CxChord;
             for (var d = 1; d < notes.length; d++) {
                 var currNotes = _.drop(target[d - 1]);
                 var invNote = _.head(target[d - 1]);
-                // while ( invNote < _.last(currNotes) ) 
                 invNote += 12;
                 currNotes.push(invNote);
                 target[d] = this.normalizeChord ? this.normalize(currNotes) : currNotes;

@@ -3,9 +3,10 @@
 namespace CxChord {
 
     export class ChordInstance  {
-		offset: number[] = []
+		offset: 		number[] = []
 		chordInv:       number[][] = []
         matchedNotes:   MatchedNotes = {}
+		favorJazzChords:boolean = false
 	
 		constructor ( public midiChord: number[], public normalizeChord: boolean = true ) { 
 			this.validate(midiChord)
@@ -66,7 +67,6 @@ namespace CxChord {
 		}
 		
 		normalize(notes : number[]): number[] {
-			// this.validate(notes)
 			var target: number[] = []
 			try {
 				var offset = notes[0]
@@ -93,7 +93,6 @@ namespace CxChord {
 			for ( var d = 1 ; d < notes.length ; d++ ) {
 				var currNotes = _.drop(target[d-1])
                 var invNote   = _.head(target[d-1])
-                // while ( invNote < _.last(currNotes) ) 
 				invNote += 12
 				currNotes.push( invNote )
 				target[d] = this.normalizeChord ? this.normalize(currNotes): currNotes

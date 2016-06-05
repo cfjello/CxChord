@@ -44,10 +44,9 @@ namespace CxChord {
     }
 
     export interface Rule {
-            rule:      string,
+            rule?:      string,
             chord:     ChordInstance,
-            // bayes:     BayesCalculator,
-            ruleFx:    RuleFx
+            ruleFx:    RuleFx,
     }
 
     export interface Hypothesis {

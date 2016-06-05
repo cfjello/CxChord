@@ -1,8 +1,6 @@
 /// <reference path="references.ts" />
 var CxChord;
 (function (CxChord) {
-    // declare var google:any
-    // vis = require('..\node_modules\vis\dist\vis.js');
     var BayesCalculator = (function () {
         function BayesCalculator(bayesChordMap) {
             this.bayesChordMap = bayesChordMap;
@@ -23,7 +21,6 @@ var CxChord;
         // create an even distribution
         // 
         BayesCalculator.prototype.createHypothesis = function () {
-            // var likelyhoods = this.likelyhoods
             var idx = 0;
             var _self = this.self;
             for (var key in this.bayesChordMap) {
@@ -131,14 +128,12 @@ var CxChord;
             var labels = [];
             var posteriorLastRow = this.getTopX(topX);
             var bayesChart;
-            // var tenColors:string[] =  ["PineGreen", "Cornflower", "Apricot", "Fuchsia",  "Maroon", "Gray",  "Mahogany", "Melon", "Beaver", "YellowOrange" ] 
             for (var i = 0; i < posteriorLastRow.length; i++) {
                 var hypo = this.getHypothesis(posteriorLastRow[i]);
                 var label = chord.getRootName(hypo) + hypo.key + "_i" + hypo.inv; // + chord.getBassName(hypo)
                 labels.push(label);
             }
             bayesChart = new CxChord.BayesChart('visualization', labels);
-            // var colorSeed: number  = this.getRandomIntInclusive(0,100)          
             for (var dataSet = 1; dataSet < this.posterior.length; dataSet++) {
                 var data = [];
                 for (var i = 0; i < posteriorLastRow.length; i++) {
