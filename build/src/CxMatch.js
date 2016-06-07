@@ -72,7 +72,7 @@ var CxChord;
                             roots: [],
                             group: hypothesis[inv].group };
                     }
-                    if (key == 'Dom,7,9,13,-1,-5') {
+                    if (key == 'Dom,7,9(A)') {
                         var debugRoot = true;
                     }
                     // Save the root note for the inversion

@@ -162,6 +162,45 @@ namespace CxChord {
             }            
             bayesChart.showChart()      
         }
+        
+          visualizeForm( form: string, chord: ChordInstance ) {
+            // var container = new BayesChart('visualization') // document.getElementById('visualization');
+            var labels: string[] = []
+            var posteriorLastRow =this.getPosterior();
+            var bayesChart: BayesChart
+            
+            var lastRow = _.filter( posteriorLastRow, 
+                function(p) { 
+                    return ( p.hypo.key == form ) 
+                })
+            
+            var bestMatch = this.getBestMatch()
+            var bestHypo  = this.getHypothesis(bestMatch)
+            var bestLabel = chord.getRootName(bestHypo) + bestHypo.key + "_i" + bestHypo.inv 
+            labels.push(bestLabel)
+            
+            for( var i = 0; i < lastRow.length; i++ ) {
+                var hypo = this.getHypothesis(lastRow[i])
+                var label =  chord.getRootName(hypo) + hypo.key + "_i" + hypo.inv // + chord.getBassName(hypo)
+                labels.push( label )   
+            }      
+
+            bayesChart = new BayesChart('visualization', labels)     
+            for( var dataSet = 1; dataSet < this.posterior.length;  dataSet++ ) {
+                var data: number[] = []  
+                var bestIdx  = bestMatch.idx
+                var bestPost = this.posterior[dataSet][bestIdx].post
+                data.push( bestPost )
+                for( var i = 0 ; i < lastRow.length ; i++ ) {
+                    var idx  = lastRow[i].idx
+                    var post = this.posterior[dataSet][idx].post
+                    data.push( post )
+                }
+                var randomColor = this.randomColorFactor() + ',' + this.randomColorFactor() + ',' + this.randomColorFactor()
+                bayesChart.addDataSet( this.rules[dataSet].rule  , randomColor ,  data)  
+            }            
+            bayesChart.showChart()
+        }
 
     }
 }

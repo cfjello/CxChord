@@ -114,8 +114,8 @@ var CxChord;
         "Min,7,9,-1(B)": { notes: [0, 4, 5, 9], root: -10, inv: 0, group: GR.rootLess },
         // "MinCluster,7,9,-1" : {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
         // Dominant A and B Voicings
-        "Dom,7,9(A)": { notes: [0, 4, 6, 11], root: -10, inv: 0, group: GR.rootLess },
-        "Dom,7,9(B)": { notes: [0, 5, 6, 10], root: -4, inv: 0, group: GR.rootLess },
+        "Dom,7,9,-1(A)": { notes: [0, 4, 6, 11], root: -10, inv: 0, group: GR.rootLess },
+        "Dom,7,9,-1(B)": { notes: [0, 5, 6, 10], root: -4, inv: 0, group: GR.rootLess },
         "Dom,7,9,-1": { notes: [0, 3, 6, 10], root: -4, inv: 0, group: GR.rootLess },
         "Dom,7,b9,-1": { notes: [0, 3, 6, 9], root: -4, inv: 0, group: GR.rootLess },
         "Dom,7,#9,-1": { notes: [0, 3, 6, 11], root: -4, inv: 0, group: GR.rootLess },
