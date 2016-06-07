@@ -455,16 +455,6 @@ expect(inv2.root).toEqual(-7)
         expect(p0.hypo.key).toEqual('5');
     });
     it('ChordMatcher can match a few jazz block chords', function () {
-        /*
-       "Maj,6,9,-1"    : [1,4,6,8],
-        "Maj,M7,9,-1"   : [1,4,6,8],
-        "Min,6,9,-1"	: [1,4,8],
-        "Min,7,9,-1"	: [1,4,8],
-        "Dom,7,9,-1"  	: [0,5,7,11],
-        "Dom,7,b9,-1" 	: [0,5,7,11],
-        "Dom,7,#9,-1" 	: [0,5,7,11],
-        "Dom7Cluster,-1": [0,5,7,11]
-        */
         midiChord = [64, 67, 69, 74]; // Cmaj,7,9,-1
         var cm = new CxChord.ChordMatcher();
         cm.favorJazz(true);
@@ -504,38 +494,17 @@ expect(inv2.root).toEqual(-7)
         cm.favorJazz(true);
         cm.match(midiChord);
         p0 = cm.bayes.getBestMatch();
+        // cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
+        // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
+        expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)');
+        midiChord = [28, 29, 33, 35];
+        cm = new CxChord.ChordMatcher();
+        cm.favorJazz(true);
+        cm.match(midiChord);
+        p0 = cm.bayes.getBestMatch();
         cm.bayes.visualizeTopX("Match", cm.getChord(), 15);
         // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
         expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)');
-        /*
-        midiChord = [67, 69,74, 76 ]
-        var cm =   new CxChord.ChordMatcher()
-        cm.match(midiChord)
-        var p0 = cm.bayes.getBestMatch()
-        expect(p0.hypo.key).toEqual('Maj,6,9,-1')
-        */
-        /*
-        midiChord = [69, 74, 76, 79 ]
-        var cm =   new CxChord.ChordMatcher()
-        cm.match(midiChord)
-        var p0 = cm.bayes.getBestMatch()
-        cm.bayes.visualizeTopX("Match", cm.getChord(),  30)
-        expect(p0.hypo.key).toEqual('Maj,6,9,-1')
-        */
-        /*
-         midiChord = [55, 60, 67]
-        var cm =   new CxChord.ChordMatcher()
-        cm.match(midiChord)
-        var p0 = cm.bayes.getBestMatch()
-        expect(p0.hypo.key).toEqual('5')
-        
-         midiChord = [55, 60, 67, 72]
-        var cm =   new CxChord.ChordMatcher()
-        cm.match(midiChord)
-        var p0 = cm.bayes.getBestMatch()
-        expect(p0.hypo.key).toEqual('5')
-           cm.bayes.visualizeTopX("Match", cm.getChord(),  20)
-         */
     });
 });
 //# sourceMappingURL=CxChordSpec.js.map
