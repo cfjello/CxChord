@@ -570,7 +570,7 @@
           var p0 = cm.bayes.getBestMatch()
           expect(p0.hypo.key).toEqual('5')  
           
-           midiChord = [55, 60, 67, 72]
+          midiChord = [55, 60, 67, 72]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
           var p0 = cm.bayes.getBestMatch()
@@ -580,17 +580,6 @@
          
 
         it('ChordMatcher can match a few jazz block chords', function () {
-            /*
-           "Maj,6,9,-1"    : [1,4,6,8],
-			"Maj,M7,9,-1"   : [1,4,6,8],
-			"Min,6,9,-1"	: [1,4,8],
-			"Min,7,9,-1"	: [1,4,8],
-			"Dom,7,9,-1"  	: [0,5,7,11],
-			"Dom,7,b9,-1" 	: [0,5,7,11],
-			"Dom,7,#9,-1" 	: [0,5,7,11],
-			"Dom7Cluster,-1": [0,5,7,11]
-            */ 
-            
 
           midiChord = [64, 67, 69,74 ] // Cmaj,7,9,-1
           var cm =   new CxChord.ChordMatcher()
@@ -621,10 +610,27 @@
           cm.favorJazz( true )
           cm.match(midiChord)
           p0 = cm.bayes.getBestMatch()
-          cm.bayes.visualizeTopX("Match", cm.getChord(),  10)
+          cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
           // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)')      
 
+          midiChord = [21, 23, 28 , 29 ]
+          cm =   new CxChord.ChordMatcher()
+          cm.favorJazz( true )
+          cm.match(midiChord)
+          p0 = cm.bayes.getBestMatch()
+          cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
+          // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
+          expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)')      
+
+          midiChord = [23, 28 , 29, 33]
+          cm =   new CxChord.ChordMatcher()
+          cm.favorJazz( true )
+          cm.match(midiChord)
+          p0 = cm.bayes.getBestMatch()
+          cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
+          // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
+          expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)')      
           /*
           midiChord = [67, 69,74, 76 ]
           var cm =   new CxChord.ChordMatcher()
