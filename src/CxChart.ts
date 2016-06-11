@@ -281,6 +281,7 @@ export function colourToHex(colour)
       
         constructor( htmlElement : string = 'visualization',  labels: string [] = [] ) {
             super( labels )
+            document.getElementById(htmlElement).innerHTML = '&nbsp;';
             this.canvas = <HTMLCanvasElement>document.getElementById(htmlElement)
             this.ctx = this.canvas.getContext('2d')
         }

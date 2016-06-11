@@ -72,7 +72,7 @@ var CxChord;
                             roots: [],
                             group: hypothesis[inv].group };
                     }
-                    if (key == 'Dom,7,9(A)') {
+                    if (key == 'Min,7,b5') {
                         var debugRoot = true;
                     }
                     // Save the root note for the inversion
@@ -202,10 +202,10 @@ var CxChord;
             //
             // FAvor Jazz Chords
             // 
-            if (this.favorJazzChords) {
-                var ruleJ = this.rules.get('FavorJazz');
-                this.bayes.applyRule(ruleJ);
-            }
+            // if ( this.favorJazzChords ) { 
+            //      var ruleJ: Rule = this.rules.get('FavorJazz') 
+            //      this.bayes.applyRule(ruleJ)
+            // }
             //
             // Conflict Notes rule
             //  

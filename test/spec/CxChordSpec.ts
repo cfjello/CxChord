@@ -68,7 +68,6 @@
               }
           });
       });
-      
    
       it('ChordMatcher.doMatch can do a full match', function () {
           midiChord = [60, 64, 67, 71]
@@ -95,9 +94,7 @@
           });
       });
       
-      
-      
-       it('ChordMatcher.doMatch can do a partial match with chord extensions', function () {
+      it('ChordMatcher.doMatch can do a partial match with chord extensions', function () {
           midiChord = [60, 67, 71, 74 ]
           chordInst = new CxChord.ChordInstance(midiChord) 
           expect(chordInst.chordInv.length).toEqual(4);
@@ -121,7 +118,7 @@
       });
       
 
-       it('ChordMatcher.doMatch can do multiple extensions', function () {
+      it('ChordMatcher.doMatch can do multiple extensions', function () {
           midiChord = [60, 71, 74, 78, 81 ]
           chordInst = new CxChord.ChordInstance(midiChord)        
           var cm =   new CxChord.ChordMatcher()
@@ -201,14 +198,6 @@
         var inv1 = cm.chordMapWithInv["Min,7,9,-1(B)"][1]
         expect(inv1.inv).toEqual(1)
         expect(inv1.root).toEqual(-2)
-                /*
-        var inv2 = cm.chordMapWithInv["MinCluster,7,9,-1"][2]
-        expect(inv2.inv).toEqual(2)
-        expect(inv2.root).toEqual(-3)
-        var inv2 = cm.chordMapWithInv["MinCluster,7,9,-1"][3]
-        expect(inv2.inv).toEqual(3)
-        expect(inv2.root).toEqual(-7)
-        */ 
      });  
 
     
@@ -564,7 +553,7 @@
           var p0 = cm.bayes.getBestMatch()
           expect(p0.hypo.key).toEqual('5')  
           
-           midiChord = [55, 60, 67]
+          midiChord = [55, 60, 67]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
           var p0 = cm.bayes.getBestMatch()
@@ -579,7 +568,7 @@
          });
          
 
-        it('ChordMatcher can match a few jazz block chords', function () {
+       it('ChordMatcher can match major jazz block chords', function () {
 
           midiChord = [64, 67, 69,74 ] // Cmaj,7,9,-1
           var cm =   new CxChord.ChordMatcher()
@@ -598,19 +587,86 @@
           p0 = cm.bayes.getBestMatch()
           expect(p0.hypo.key).toEqual("Maj,6,9,-1(A)" )  
                
-          midiChord = [ 63, 67, 69, 74]
+        
+          
+        });
+         
+        it('ChordMatcher can match minor jazz block chords', function () { 
+          /*
+          	"Min,6,9,-1(A)"		: {notes: [0,4,6,11], 			root: -3, inv:0, group: GR.rootLess },
+            // "Min,6,9,-1(B)"		: {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
+			"Min,7,9,-1(A)"		: {notes: [0,4,7,11], 			root: -3, inv:0, group: GR.rootLess },
+			"Min,7,9,-1(B)"		: {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
+			"Min,7,b5(A)"		: {notes: [0,3,7,9], 			root: -3, inv:0, group: GR.rootLess },
+			"Min,7,b5(B)"		: {notes: [0,2,5,8], 			root: -10, inv:0, group: GR.rootLess },
+          */
+          
+          var midiChord = [ 63, 67, 69, 74]  // This one has an invariant dominant chord version
+          var cm =   new CxChord.ChordMatcher()
+          cm.favorJazz(true)
+          cm.match(midiChord)
+          var p0 = cm.bayes.getBestMatch()
+          expect(p0.hypo.key).toEqual("Min,6,9,-1(A)" ) // invariant of "Min,6,9,-1(A)"
+          
+          midiChord = [ 63, 67, 70, 74]
           cm =   new CxChord.ChordMatcher()
+          cm.favorJazz(true)
           cm.match(midiChord)
           p0 = cm.bayes.getBestMatch()
+          // cm.bayes.visualizeTopX("Match", cm.getChord(),  10)
+ 
+          expect(p0.hypo.key).toEqual("Min,7,9,-1(A)" ) 
+  
+          midiChord = [ 60, 64, 65, 69]
+          var cm =   new CxChord.ChordMatcher()
+          cm.match(midiChord)
+          cm.favorJazz(true)
+          var p0 = cm.bayes.getBestMatch()
+          expect(p0.hypo.key).toEqual("Min,7,9,-1(B)" ) 
+          
+          midiChord = [ 60, 64, 65, 69]
+          var cm =   new CxChord.ChordMatcher()
+          cm.favorJazz(true)
+          cm.match(midiChord)
+          var p0 = cm.bayes.getBestMatch()
+          expect(p0.hypo.key).toEqual("Min,7,9,-1(B)" ) 
+          
+          
+  
+          midiChord = [ 60, 62, 65, 68]
+          var cm =   new CxChord.ChordMatcher()
+          // cm.favorJazz(true)
+          cm.match(midiChord)
+          var p0 = cm.bayes.getBestMatch()
+          
+          expect(p0.hypo.key).toEqual("Min,6" ) 
+          p0 = cm.bayes.getBestMatch(1)
+           expect(p0.hypo.key).toEqual('Min,7,b5' ) 
 
-          expect(p0.hypo.key).toEqual("Min,6,9,-1(A)" ) 
+          midiChord = [ 60, 62, 65, 68]
+          var cm =   new CxChord.ChordMatcher()
+          cm.favorJazz(true)
+          cm.match(midiChord)
+         
+          // cm.bayes.visualizeForm('Min,7,9,-1(A)', cm.getChord())
+         
+          //
+          p0 = cm.bayes.getBestMatch()
+          expect(p0.hypo.key).toEqual("Min,6" ) 
+          // p0 = cm.bayes.getBestMatch(1)
+          //  expect(p0.hypo.key).toEqual('Min,7,b5' ) 
 
-          midiChord = [17, 21, 23, 28 ]
-          cm =   new CxChord.ChordMatcher()
+       });
+       
+       
+       
+       it('ChordMatcher can match dominant jazz block chords', function () { 
+          var midiChord = [17, 21, 23, 28 ]
+          var cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true )
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
-          cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
+          var p0 = cm.bayes.getBestMatch(1) // pick the dominant version rather than the min 6,6 invariant
+          // cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
           // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)')      
 
@@ -618,19 +674,17 @@
           cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true )
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
-          cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
-          // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
-          expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)')      
+          p0 = cm.bayes.getBestMatch(1) // pick the dominant version rather than the min6 invariant
+          
+          expect(p0.hypo.key == 'Dom,7,9,-1(A)' || p0.hypo.key == 'Min,6,9,-1(A)' ).toBeTruthy()     
 
           midiChord = [23, 28 , 29, 33]
           cm =   new CxChord.ChordMatcher()
-          cm.favorJazz( true )
+          cm.favorJazz( true )   
           cm.match(midiChord)
           p0 = cm.bayes.getBestMatch()
-          // cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
-          // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)')      
+          
           
           midiChord = [28 , 29, 33, 35]
           cm =   new CxChord.ChordMatcher()
@@ -638,10 +692,8 @@
           cm.match(midiChord)
           p0 = cm.bayes.getBestMatch()
           cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
-          // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
+          // cm.bayes.visualizeForm("Min,7,b5", cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)')      
           
          });
-
-
   });

@@ -273,6 +273,7 @@ var CxChord;
             if (htmlElement === void 0) { htmlElement = 'visualization'; }
             if (labels === void 0) { labels = []; }
             _super.call(this, labels);
+            document.getElementById(htmlElement).innerHTML = '&nbsp;';
             this.canvas = document.getElementById(htmlElement);
             this.ctx = this.canvas.getContext('2d');
         }

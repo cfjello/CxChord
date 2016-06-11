@@ -75,22 +75,29 @@ var CxChord;
                     var indexOfRoot = chord.matchedNotes[key].roots[inv];
                     var favorJazz = chord.favorJazzChords;
                     var score;
+                    // Check if it is a jazzchord
+                    var flavor = bayes.hypothesis[col].group;
+                    var jazzChord = (flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced);
                     //
                     // Score root as first note in chord higher than inversions
                     // and special handling for Jazz left hand chords (negative root)
                     // 
-                    if (CxChord.isNoRootChord(bayes.hypothesis[col].key)) {
-                        if (favorJazz)
-                            score = 1;
-                        else
-                            score = indexOfRoot >= 0 ? 0.2 : 0.8;
+                    if (key == 'Min,7,b5') {
+                        var debug = true;
+                    }
+                    var inversionTax = 0.1 * inv;
+                    inversionTax = inversionTax < 1 ? inversionTax : 0.8;
+                    if (jazzChord) {
+                        score = indexOfRoot >= 0 ? 0.2 : 1 - inversionTax;
                     }
                     else if (indexOfRoot == 0) {
-                        score = 1;
+                        score = favorJazz ? 0.7 : 1;
+                    }
+                    else if (indexOfRoot > 0) {
+                        score = favorJazz ? 0.7 - inversionTax : 1 - inversionTax;
                     }
                     else {
-                        var inversionTax = 0.1 * inv;
-                        score = indexOfRoot > 0 ? 1 - (inversionTax < 1 ? inversionTax : 0.8) : 0.2;
+                        score = 0.6 - inversionTax;
                     }
                     return score;
                 }
@@ -102,9 +109,10 @@ var CxChord;
                     var key = bayes.hypothesis[col].key;
                     var flavor = bayes.hypothesis[col].group;
                     var jazzChord = (flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced);
+                    if (key == 'Maj,7' || key == 'Min,7,9,-1(A)') {
+                        var debug = true;
+                    }
                     var score = jazzChord ? 1 : 0.70;
-                    if (key.match(/^Min,6,9,-1.*/))
-                        score -= 0.1; // A little knock down, a hack for enharmonic jazz chords
                     return score;
                 }
             });

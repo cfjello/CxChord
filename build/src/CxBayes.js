@@ -28,6 +28,7 @@ var CxChord;
                     _self.hypothesis.push({ idx: idx++,
                         key: key,
                         inv: inv,
+                        group: this.bayesChordMap[key][inv].group,
                         len: this.bayesChordMap[key][inv].notes.length,
                         root: this.bayesChordMap[key][inv].root });
                 }

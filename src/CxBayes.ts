@@ -28,12 +28,13 @@ namespace CxChord {
                     _self.hypothesis.push( { idx: idx++, 
                                              key: key, 
                                              inv: inv, 
+                                             group: this.bayesChordMap[key][inv].group ,
                                              len: this.bayesChordMap[key][inv].notes.length, 
                                              root:this.bayesChordMap[key][inv].root} 
                     )       
                 }
             }
-        }
+        } 
         
         getChordMapNotes(idx: number): number[] {
             return this.bayesChordMap[this.hypothesis[idx].key][this.hypothesis[idx].inv].notes           

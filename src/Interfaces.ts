@@ -2,11 +2,11 @@
 namespace CxChord {  
     
     export interface ChordMapEntry {
-        notes: number[]
-        root:  number
-        inv:   number
-        group: number
-        count?: number
+        notes: number[],
+        root:  number,
+        inv:   number,
+        group: number,
+        count?: number,
         probability?: number
     }
     
@@ -55,6 +55,7 @@ namespace CxChord {
         inv:  number, 
         len : number
         root: number,
+        group: number
     }
             
     export interface Posterior {

@@ -109,11 +109,11 @@ var CxChord;
         "Maj,7,9,-1(B)": { notes: [0, 3, 5, 8], root: -11, inv: 0, group: GR.rootLess },
         // Minor A and B Voicings
         "Min,6,9,-1(A)": { notes: [0, 4, 6, 11], root: -3, inv: 0, group: GR.rootLess },
-        "Min,6,9,-1(B)": { notes: [0, 4, 5, 9], root: -10, inv: 0, group: GR.rootLess },
+        // "Min,6,9,-1(B)"		: {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess }, // TODO - Check this one
         "Min,7,9,-1(A)": { notes: [0, 4, 7, 11], root: -3, inv: 0, group: GR.rootLess },
         "Min,7,9,-1(B)": { notes: [0, 4, 5, 9], root: -10, inv: 0, group: GR.rootLess },
-        "Min,7,b5(A)": { notes: [0, 3, 7, 9], root: -3, inv: 0, group: GR.rootLess },
-        "Min,7,b5(B)": { notes: [0, 2, 6, 8], root: -10, inv: 0, group: GR.rootLess },
+        // "Min,7,b5(A)"		: {notes: [0,3,7,9], 			root: -3, inv:0, group: GR.standard },
+        // "Min,7,b5(B)"		: {notes: [0,2,5,8], 			root: -10, inv:0, group: GR.standard },
         // "MinCluster,7,9,-1" : {notes: [0,4,5,9], 			root: -10, inv:0, group: GR.rootLess },
         // Dominant A and B Voicings
         "Dom,7,9,-1(A)": { notes: [0, 4, 6, 11], root: -10, inv: 0, group: GR.rootLess },
@@ -123,9 +123,6 @@ var CxChord;
         "Dom,7,b9,b13,-1(B)": { notes: [0, 4, 6, 9], root: -4, inv: 0, group: GR.rootLess },
         "Dom,7,b9,-1": { notes: [0, 3, 6, 9], root: -4, inv: 0, group: GR.rootLess },
         "Dom,7,#9,-1": { notes: [0, 3, 6, 11], root: -4, inv: 0, group: GR.rootLess },
-        // "MinCluster"		   	: {notes: [0,2,3,7],  root: 0, inv:0, group: 3 },
-        // "MajCluster"		   	: {notes: [0,2,4,7],  root: 0, inv:0, group: 3 },
-        "Dom7Cluster,-1": { notes: [0, 4, 6, 9], root: -4, inv: 0, group: GR.rootLess }
     };
     // Note: Extension don't live with a half or whole step between each other
     // except for (mostly altered) dominant chords
@@ -261,16 +258,6 @@ var CxChord;
         "Min,6,-5": [1, 4, 6, 7, 8],
         "Min,7,-5": [1, 4, 6, 7, 8, 11],
         // Jazz type no-root chords
-        /*
-        "Maj,6,9,-1"    : [0,1,3,5,8,11],
-        "Maj,7,9,-1"    : [1,4,6,8,11],
-        "Min,6,9,-1"	: [1,4,9,10],
-        "Min,7,9,-1"	: [1,4,9,10],
-        "Dom,7,9,-1"  	: [1,4,7,8,9],
-        "Dom,7,b9,-1" 	: [1,4,7,8,10],
-        "Dom,7,#9,-1" 	: [1,4,7,8,10],
-        "Dom7Cluster,-1": [1,4,7,8,10],
-        */
         "Maj,6,9,-1(A)": [0, 1, 3, 5, 6, 8, 10],
         "Maj,6,9,-1(B)": [0, 1, 3, 5, 6, 8, 10],
         "Maj,7,9,-1(A)": [0, 1, 3, 5, 6, 8, 10],
@@ -280,8 +267,8 @@ var CxChord;
         "Min,6,9,-1(B)": [0, 4, 6, 8, 10, 11],
         "Min,7,9,-1(A)": [0, 4, 6, 8, 11],
         "Min,7,9,-1(B)": [0, 4, 6, 8, 11],
-        "Min,7,b5(A)": [0, 4, 7, 8, 11],
-        "Min,7,b5(B)": [0, 4, 7, 8, 11],
+        // "Min,7,b5(A)"	: [0,4,7,8,11],
+        // "Min,7,b5(B)"	: [0,4,7,8,11],			
         "Min,6,9,-1": [1, 4, 8],
         "Min,7,9,-1": [1, 4, 8],
         "Dom,7,9,-1(A)": [0, 1, 3, 5, 8, 11],
@@ -292,7 +279,6 @@ var CxChord;
         "Dom,7,9,-1": [0, 5, 7, 11],
         "Dom,7,b9,-1": [0, 5, 7, 11],
         "Dom,7,#9,-1": [0, 5, 7, 11],
-        "Dom7Cluster,-1": [0, 5, 7, 11]
     };
     var ChordForms = (function () {
         function ChordForms() {

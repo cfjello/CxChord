@@ -25,6 +25,7 @@ var CxChord;
                         idx: idx++,
                         key: key,
                         inv: inv,
+                        group: this.bayesChordMap[key][inv].group,
                         len: this.bayesChordMap[key][inv].notes.length,
                         root: this.bayesChordMap[key][inv].root
                     });
@@ -132,6 +133,38 @@ var CxChord;
                 var data = [];
                 for (var i = 0; i < posteriorLastRow.length; i++) {
                     var idx = posteriorLastRow[i].idx;
+                    var post = this.posterior[dataSet][idx].post;
+                    data.push(post);
+                }
+                var randomColor = this.randomColorFactor() + "," + this.randomColorFactor() + "," + this.randomColorFactor();
+                bayesChart.addDataSet(this.rules[dataSet].rule, randomColor, data);
+            }
+            bayesChart.showChart();
+        };
+        BayesCalculator.prototype.visualizeForm = function(form, chord) {
+            var labels = [];
+            var posteriorLastRow = this.getPosterior();
+            var bayesChart;
+            var lastRow = _.filter(posteriorLastRow, function(p) {
+                return p.hypo.key == form;
+            });
+            var bestMatch = this.getBestMatch();
+            var bestHypo = this.getHypothesis(bestMatch);
+            var bestLabel = chord.getRootName(bestHypo) + bestHypo.key + "_i" + bestHypo.inv;
+            labels.push(bestLabel);
+            for (var i = 0; i < lastRow.length; i++) {
+                var hypo = this.getHypothesis(lastRow[i]);
+                var label = chord.getRootName(hypo) + hypo.key + "_i" + hypo.inv;
+                labels.push(label);
+            }
+            bayesChart = new CxChord.BayesChart("visualization", labels);
+            for (var dataSet = 1; dataSet < this.posterior.length; dataSet++) {
+                var data = [];
+                var bestIdx = bestMatch.idx;
+                var bestPost = this.posterior[dataSet][bestIdx].post;
+                data.push(bestPost);
+                for (var i = 0; i < lastRow.length; i++) {
+                    var idx = lastRow[i].idx;
                     var post = this.posterior[dataSet][idx].post;
                     data.push(post);
                 }
@@ -705,6 +738,7 @@ var CxChord;
                 labels = [];
             }
             _super.call(this, labels);
+            document.getElementById(htmlElement).innerHTML = "&nbsp;";
             this.canvas = document.getElementById(htmlElement);
             this.ctx = this.canvas.getContext("2d");
         }
@@ -1117,12 +1151,6 @@ var CxChord;
             inv: 0,
             group: GR.rootLess
         },
-        "Min,6,9,-1(B)": {
-            notes: [ 0, 4, 5, 9 ],
-            root: -10,
-            inv: 0,
-            group: GR.rootLess
-        },
         "Min,7,9,-1(A)": {
             notes: [ 0, 4, 7, 11 ],
             root: -3,
@@ -1135,20 +1163,26 @@ var CxChord;
             inv: 0,
             group: GR.rootLess
         },
-        "Dom,7,9(A)": {
+        "Dom,7,9,-1(A)": {
             notes: [ 0, 4, 6, 11 ],
             root: -10,
             inv: 0,
             group: GR.rootLess
         },
-        "Dom,7,9(B)": {
+        "Dom,7,9,-1(B)": {
             notes: [ 0, 5, 6, 10 ],
             root: -4,
             inv: 0,
             group: GR.rootLess
         },
-        "Dom,7,9,-1": {
-            notes: [ 0, 3, 6, 10 ],
+        "Dom,7,b9,b13,-1(A)": {
+            notes: [ 0, 5, 6, 10 ],
+            root: -4,
+            inv: 0,
+            group: GR.rootLess
+        },
+        "Dom,7,b9,b13,-1(B)": {
+            notes: [ 0, 4, 6, 9 ],
             root: -4,
             inv: 0,
             group: GR.rootLess
@@ -1161,12 +1195,6 @@ var CxChord;
         },
         "Dom,7,#9,-1": {
             notes: [ 0, 3, 6, 11 ],
-            root: -4,
-            inv: 0,
-            group: GR.rootLess
-        },
-        "Dom7Cluster,-1": {
-            notes: [ 0, 4, 6, 9 ],
             root: -4,
             inv: 0,
             group: GR.rootLess
@@ -1267,14 +1295,24 @@ var CxChord;
         "Min,6,-5": [ 1, 4, 6, 7, 8 ],
         "Min,7,-5": [ 1, 4, 6, 7, 8, 11 ],
         "Maj,6,9,-1(A)": [ 0, 1, 3, 5, 6, 8, 10 ],
+        "Maj,6,9,-1(B)": [ 0, 1, 3, 5, 6, 8, 10 ],
+        "Maj,7,9,-1(A)": [ 0, 1, 3, 5, 6, 8, 10 ],
+        "Maj,7,9,-1(B)": [ 0, 1, 3, 5, 6, 8, 10 ],
         "Maj,7,9,-1": [ 0, 1, 3, 5, 6, 8, 10 ],
+        "Min,6,9,-1(A)": [ 0, 4, 6, 8, 10, 11 ],
+        "Min,6,9,-1(B)": [ 0, 4, 6, 8, 10, 11 ],
+        "Min,7,9,-1(A)": [ 0, 4, 6, 8, 11 ],
+        "Min,7,9,-1(B)": [ 0, 4, 6, 8, 11 ],
         "Min,6,9,-1": [ 1, 4, 8 ],
         "Min,7,9,-1": [ 1, 4, 8 ],
+        "Dom,7,9,-1(A)": [ 0, 1, 3, 5, 8, 11 ],
+        "Dom,7,9,-1(B)": [ 0, 1, 3, 5, 8, 11 ],
+        "Dom,7,b9,b13,-1(A)": [ 0, 2, 5, 8, 11 ],
+        "Dom,7,b9,b13,-1(B)": [ 0, 2, 5, 8, 11 ],
         "Dom,7,9,13,-1,-5": [ 0, 5, 7, 11 ],
         "Dom,7,9,-1": [ 0, 5, 7, 11 ],
         "Dom,7,b9,-1": [ 0, 5, 7, 11 ],
-        "Dom,7,#9,-1": [ 0, 5, 7, 11 ],
-        "Dom7Cluster,-1": [ 0, 5, 7, 11 ]
+        "Dom,7,#9,-1": [ 0, 5, 7, 11 ]
     };
     var ChordForms = function() {
         function ChordForms() {
@@ -1404,7 +1442,7 @@ var CxChord;
                             group: hypothesis[inv].group
                         };
                     }
-                    if (key == "Dom,7,9,13,-1,-5") {
+                    if (key == "Min,7,b5") {
                         var debugRoot = true;
                     }
                     chord.matchedNotes[key].rootNotes.push(hypothesis[inv].root);
@@ -1479,10 +1517,6 @@ var CxChord;
             this.bayes.applyRule(ruleM);
             var ruleH = this.rules.get("MustHave");
             this.bayes.applyRule(ruleH);
-            if (this.favorJazzChords) {
-                var ruleJ = this.rules.get("FavorJazz");
-                this.bayes.applyRule(ruleJ);
-            }
             var ruleR = this.rules.get("RootFound");
             this.bayes.applyRule(ruleR);
             return this.chord;
@@ -1560,13 +1594,21 @@ var CxChord;
                     var indexOfRoot = chord.matchedNotes[key].roots[inv];
                     var favorJazz = chord.favorJazzChords;
                     var score;
-                    if (CxChord.isNoRootChord(bayes.hypothesis[col].key)) {
-                        if (favorJazz) score = 1; else score = indexOfRoot >= 0 ? .2 : .8;
+                    var flavor = bayes.hypothesis[col].group;
+                    var jazzChord = flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced;
+                    if (key == "Min,7,b5") {
+                        var debug = true;
+                    }
+                    var inversionTax = .1 * inv;
+                    inversionTax = inversionTax < 1 ? inversionTax : .8;
+                    if (jazzChord) {
+                        score = indexOfRoot >= 0 ? .2 : 1 - inversionTax;
                     } else if (indexOfRoot == 0) {
-                        score = 1;
+                        score = favorJazz ? .7 : 1;
+                    } else if (indexOfRoot > 0) {
+                        score = favorJazz ? .7 - inversionTax : 1 - inversionTax;
                     } else {
-                        var inversionTax = .1 * inv;
-                        score = indexOfRoot > 0 ? 1 - (inversionTax < 1 ? inversionTax : .8) : .2;
+                        score = .6 - inversionTax;
                     }
                     return score;
                 }
@@ -1577,8 +1619,10 @@ var CxChord;
                     var key = bayes.hypothesis[col].key;
                     var flavor = bayes.hypothesis[col].group;
                     var jazzChord = flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced;
+                    if (key == "Maj,7" || key == "Min,7,9,-1(A)") {
+                        var debug = true;
+                    }
                     var score = jazzChord ? 1 : .7;
-                    if (key.match(/^Min,6,9,-1.*/)) score -= .1;
                     return score;
                 }
             });
