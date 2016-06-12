@@ -2,23 +2,23 @@
 namespace CxChord {  
     
     export interface ChordMapEntry {
-        notes: number[],
-        root:  number,
-        inv:   number,
-        group: number,
-        count?: number,
+        notes: number[]
+        root:  number
+        inv:   number
+        group: number
+        count?: number
         probability?: number
     }
     
     export interface MatchedNotes { 
         [key:string] : { 
-            invertions: any[], 
-            extensions: any[], 
-            knockouts:  any[], 
-            mustHave:   any[], 
-            rootNotes:  any[],
-            conflicts:  any[],
-            roots:      number[],
+            invertions: any[] 
+            extensions: any[] 
+            knockouts:  any[] 
+            mustHave:   any[] 
+            rootNotes:  any[]
+            conflicts:  any[]
+            roots:      number[]
             group:      number 
         } 
     } 
@@ -44,18 +44,28 @@ namespace CxChord {
     }
 
     export interface Rule {
-            rule?:      string,
-            chord:     ChordInstance,
-            ruleFx:    RuleFx,
+            rule?:      string
+            chord:     ChordInstance
+            ruleFx:    RuleFx
     }
 
     export interface Hypothesis {
-        idx:  number,
-        key:  string, 
-        inv:  number, 
+        idx:  number
+        key:  string 
+        inv:  number 
         len : number
-        root: number,
+        root: number
+        group: number 
+    }
+    
+    export interface ChordMatchIntf {
+        chord: string
+        root:  string
+        type:  string
+        bass:  string
+        inv:   number
         group: number
+        notes: number[]
     }
             
     export interface Posterior {

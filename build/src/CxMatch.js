@@ -6,6 +6,24 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var CxChord;
 (function (CxChord) {
+    var ChordMatch = (function () {
+        function ChordMatch(hypo, chordEntry, mapEntry, sharpOrFlat) {
+            if (sharpOrFlat === void 0) { sharpOrFlat = 'flat'; }
+            this.notes = [];
+            this.inv = hypo.inv;
+            this.type = hypo.key;
+            for (var i = 0; i < chordEntry.chordInv[0].length; i++) {
+                var note = chordEntry.chordInv[0][i] + chordEntry.offset[0];
+                this.notes.push(note);
+            }
+            this.group = hypo.group;
+            this.bass = CxChord.getNoteName(this.notes[0]);
+            this.root = CxChord.getNoteName(hypo.root);
+            this.chord = CxChord.getChordName(hypo.key, hypo.root, this.notes[0], sharpOrFlat);
+        }
+        return ChordMatch;
+    }());
+    CxChord.ChordMatch = ChordMatch;
     var ChordMatcher = (function (_super) {
         __extends(ChordMatcher, _super);
         function ChordMatcher() {
@@ -15,6 +33,22 @@ var CxChord;
             this.priorChords = [];
             this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
         }
+        ChordMatcher.prototype.getMatches = function (sharpOrFlat) {
+            if (sharpOrFlat === void 0) { sharpOrFlat = 'flat'; }
+            var post = this.bayes.getPosterior();
+            var res = [];
+            for (var i = 0; i < post.length; i++)
+                if (i == 0 || post[i].post == post[i - 1].post) {
+                    var chordEntry = this.chord;
+                    var chordMapEntry = this.chordMapWithInv[post[i].hypo.key][post[i].hypo.inv];
+                    var entry = new ChordMatch(post[i].hypo, chordEntry, chordMapEntry);
+                    res.push(entry);
+                }
+                else {
+                    break;
+                }
+            return res;
+        };
         ChordMatcher.prototype.getPosterior = function () {
             return this.bayes.getPosterior();
         };

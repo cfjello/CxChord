@@ -96,7 +96,7 @@ var CxChord;
             if (idx < 0 || idx >= this.hypothesis.length) throw Error("getHypothesisByIdx index: " + idx + " is out of range");
             return this.hypothesis[idx];
         };
-        BayesCalculator.prototype.getBestMatch = function(idx) {
+        BayesCalculator.prototype.getBestPosterior = function(idx) {
             if (idx === void 0) {
                 idx = 0;
             }
@@ -148,7 +148,7 @@ var CxChord;
             var lastRow = _.filter(posteriorLastRow, function(p) {
                 return p.hypo.key == form;
             });
-            var bestMatch = this.getBestMatch();
+            var bestMatch = this.getBestPosterior();
             var bestHypo = this.getHypothesis(bestMatch);
             var bestLabel = chord.getRootName(bestHypo) + bestHypo.key + "_i" + bestHypo.inv;
             labels.push(bestLabel);
@@ -886,7 +886,7 @@ var CxChord;
         var chordName = CxChord.getNoteName(root, flatOrSharp);
         var extName = CxChord.getExtName(nameWithCommas);
         chordName += extName;
-        if (bass !== 0) {
+        if (bass !== root) {
             var bassName = CxChord.getNoteName(bass, flatOrSharp);
             chordName += "/" + bassName;
         }
@@ -1374,6 +1374,26 @@ var CxChord;
             this.priorChords = [];
             this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
         }
+        ChordMatcher.prototype.getMatches = function(sharpOrFlat) {
+            if (sharpOrFlat === void 0) {
+                sharpOrFlat = "flat";
+            }
+            var post = this.bayes.getPosterior();
+            var res = [];
+            for (var i = 0; i < post.length; i++) if (i == 0 || post[i].post == post[i - 1].post) {
+                var chordEntry = this.chordMapWithInv[post[i].hypo.key][post[i].hypo.inv];
+                var entry;
+                entry.inv = post[i].hypo.inv;
+                entry.type = post[i].hypo.key;
+                entry.notes = chordEntry.notes;
+                entry.group = post[i].hypo.group;
+                entry.bass = CxChord.getNoteName(entry.notes[0]);
+                entry.root = CxChord.getNoteName(post[i].hypo.root);
+                entry.chord = CxChord.getChordName(entry.type, post[i].hypo.root, entry.notes[0], sharpOrFlat);
+                res.push(entry);
+            }
+            return res;
+        };
         ChordMatcher.prototype.getPosterior = function() {
             return this.bayes.getPosterior();
         };

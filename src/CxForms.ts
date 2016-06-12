@@ -23,12 +23,14 @@ namespace CxChord {
 		   return extName
 		}
 				
-		export function getChordName( nameWithCommas : string, root: number = 0 , bass : number = 0, flatOrSharp: string = "flat"  ): string {
+		export function getChordName( nameWithCommas : string, root: number = 0 , bass : number = 255, flatOrSharp: string = "flat"  ): string {
 			var chordName = CxChord.getNoteName(root, flatOrSharp )
 			var extName   = CxChord.getExtName(nameWithCommas)
 			chordName += extName
-			// if ( extName !== "Maj" ) { chordName += extName }
-			if ( bass !==  0 ) {
+			
+			var group = _.isUndefined( CxChord.chordMap[nameWithCommas] ) ? 2 :  CxChord.chordMap[nameWithCommas].group 
+			bass =  bass == 255 ?  root : bass
+			if ( bass !==  root && group != CxChord.GR.rootLess ) {
 				var bassName = CxChord.getNoteName(bass, flatOrSharp)
 				chordName += "/" + bassName
 			}

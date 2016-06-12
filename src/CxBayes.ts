@@ -118,10 +118,21 @@ namespace CxChord {
              return this.hypothesis[idx]
          }
                    
-         getBestMatch(idx: number = 0): Posterior {
+         getBestPosterior(idx: number = 0): Posterior {
              var res = this.getPosterior()
              return res[idx]
          }
+         
+         /*
+         export interface Matches {
+            chord: string
+            root:  string
+            type:  string
+            bass:  string
+            inv:   number
+        }    
+        */ 
+        
          
          getTopX(topX: number = 10 , row: number = this.posterior.length - 1 ): Posterior[] {
              var posterior = this.getPosteriorByRow(row)
@@ -167,7 +178,7 @@ namespace CxChord {
           visualizeForm( form: string, chord: ChordInstance ) {
             // var container = new BayesChart('visualization') // document.getElementById('visualization');
             var labels: string[] = []
-            var posteriorLastRow =this.getPosterior();
+            var posteriorLastRow =this.getPosterior()
             var bayesChart: BayesChart
             
             var lastRow = _.filter( posteriorLastRow, 
@@ -175,7 +186,7 @@ namespace CxChord {
                     return ( p.hypo.key == form ) 
                 })
             
-            var bestMatch = this.getBestMatch()
+            var bestMatch = this.getBestPosterior()
             var bestHypo  = this.getHypothesis(bestMatch)
             var bestLabel = chord.getRootName(bestHypo) + bestHypo.key + "_i" + bestHypo.inv 
             labels.push(bestLabel)

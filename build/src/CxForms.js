@@ -25,13 +25,14 @@ var CxChord;
     CxChord.getExtName = getExtName;
     function getChordName(nameWithCommas, root, bass, flatOrSharp) {
         if (root === void 0) { root = 0; }
-        if (bass === void 0) { bass = 0; }
+        if (bass === void 0) { bass = 255; }
         if (flatOrSharp === void 0) { flatOrSharp = "flat"; }
         var chordName = CxChord.getNoteName(root, flatOrSharp);
         var extName = CxChord.getExtName(nameWithCommas);
         chordName += extName;
-        // if ( extName !== "Maj" ) { chordName += extName }
-        if (bass !== 0) {
+        var group = _.isUndefined(CxChord.chordMap[nameWithCommas]) ? 2 : CxChord.chordMap[nameWithCommas].group;
+        bass = bass == 255 ? root : bass;
+        if (bass !== root && group != CxChord.GR.rootLess) {
             var bassName = CxChord.getNoteName(bass, flatOrSharp);
             chordName += "/" + bassName;
         }

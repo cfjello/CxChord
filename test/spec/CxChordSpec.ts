@@ -160,9 +160,9 @@
           expect(CxChord.getChordName("Maj,7,9,#11,13", -13, 6)).toEqual("BMaj79#1113/Gb")
           expect(CxChord.getChordName("Maj,7,9,#11,13", -13, -6 )).toEqual("BMaj79#1113/Gb")
           
-          expect(CxChord.getChordName("Maj,7", -2,0, "sharp" ) ).toEqual("A#Maj7")
-          expect(CxChord.getChordName("Maj,7,9,#11,13", -2, 0, "flat" ) ).toEqual("BbMaj79#1113")
-          expect(CxChord.getChordName("Min,7,9,11,-1", -2, 0, "sharp") ).toEqual("A#Min7911-no-root")
+          expect(CxChord.getChordName("Maj,7", -2,-2, "sharp" ) ).toEqual("A#Maj7")
+          expect(CxChord.getChordName("Maj,7,9,#11,13", -2, -2, "flat" ) ).toEqual("BbMaj79#1113")
+          expect(CxChord.getChordName("Min,7,9,11,-1", -2, -2, "sharp") ).toEqual("A#Min7911-no-root")
           expect(CxChord.getChordName("Maj,7,9,#11,13", -1, 6, "sharp") ).toEqual("BMaj79#1113/F#")
           expect(CxChord.getChordName("Maj,7,9,#11,13", -2, -7, "flat" ) ).toEqual("BbMaj79#1113/F")
       });
@@ -212,7 +212,7 @@
           expect(psr.length).toBeGreaterThan(0)
          
           
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj') 
           
       });
@@ -223,7 +223,7 @@
           var midiChord = [60, 64, 67, 71, 74, 78, 81]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           // console.log( JSON.stringify( cm.bayes.getTopTeen(), null, 2 ) )
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79#1113')  
           
@@ -231,26 +231,26 @@
           midiChord = [60, 64, 67, 71, 74, 78]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79#11')  
            
           
           midiChord = [60, 64, 67, 71, 74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79')  
           
           midiChord = [60, 64, 67, 69,74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj69')
           
           midiChord = [60, 64, 67, 69]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           // expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj6') // TODO - should be Maj6
 
        });
@@ -261,33 +261,33 @@
           var midiChord = [60, 64, 71, 74, 78, 81]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79#1113')  
           
           
           midiChord = [60, 64,  71, 74, 78]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79#11')  
            
           
           midiChord = [60, 64, 71, 74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79')  
           
           midiChord = [60, 64, 69,74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj69')
           
           midiChord = [60, 64, 69]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           // expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj6') // TODO - should be Maj6 in the right context
           // console.log( JSON.stringify( cm.bayes.getTopTeen(2), null, 2 ) )
     });
@@ -298,13 +298,13 @@
           var midiChord = [64, 67, 71, 72, 74, 78, 81 ]
           var cm =   new CxChord.ChordMatcher()
           var chord = cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(CxChord.getExtName(p0.hypo.key)).toEqual('Maj79#1113') 
           
           midiChord = [67, 71, 72, 74, 76, 78, 81 ]
           cm =   new CxChord.ChordMatcher()
           chord = cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           
           // var res: CxChord.Posterior[] = cm.bayes.getTopX()
            
@@ -315,7 +315,7 @@
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
          
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj,7,9,#11,13')   
           // console.log( JSON.stringify( cm.bayes.getTopTeen(), null, 2 ) )
 
@@ -323,26 +323,26 @@
           midiChord = [60, 64, 67, 71, 74, 78]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj,7,9,#11')  
            
           
           midiChord = [60, 64, 67, 71, 74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj,7,9')  
           
           midiChord = [60, 64, 67, 69,74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj,6,9')
           
           midiChord = [60, 64, 67, 69]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj,6')
          
        });
@@ -360,27 +360,27 @@
           midiChord = [60, 63, 67]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Min')
           
            
           midiChord = [60, 63, 67, 70]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Min,7')  
           // cm.bayes.visualizeTopX("Match -> Min,7", cm.getChord(),  20)
           
           midiChord = [60, 63, 67, 69]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Min,6') 
           
           midiChord = [60, 63, 67, 69, 74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Min,6,9') 
            
       
@@ -392,37 +392,37 @@
           midiChord = [60, 64, 67, 70]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7')  
           
           midiChord = [64, 67, 70, 72]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7')  
           
           midiChord = [67, 70, 72, 76 ]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7')  
           
           midiChord = [60, 64, 67, 70, 74]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9')  
            
           midiChord = [64, 67, 70, 72, 74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9')        
 
           midiChord = [67, 70, 72, 74, 76 ]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9') 
           // cm.bayes.visualizeTopX("Match", cm.getChord(),  20)
  
@@ -432,37 +432,37 @@
           midiChord = [60, 64,  70]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7')  
           
           midiChord = [64,  70, 72]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7')  
           
           midiChord = [ 70, 72, 76 ]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7')  
           
           midiChord = [60, 64, 70, 74]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9')  
            
           midiChord = [64, 70, 72, 74]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9')        
 
           midiChord = [70, 72, 74, 76 ]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9') 
          
  
@@ -473,51 +473,51 @@
           midiChord = [60, 65, 67]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Sus4')  
           
           midiChord = [60, 62, 67]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Sus2')
           
           
           midiChord = [60, 65, 67, 71]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Sus4')  
           
           midiChord = [60, 62, 67, 71]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Sus2')
           
           midiChord = [60, 65, 70]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Sus2')  
           
           midiChord = [67, 72, 74]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Sus4')
           
           
           midiChord = [60, 65, 67, 70]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,sus4')  
           
           midiChord = [60, 62, 67, 70]
           cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,sus2')  
        });
        
@@ -527,7 +527,7 @@
           midiChord = [60, 63, 66]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           
           expect(p0.hypo.key).toEqual('Dim')  
             
@@ -535,13 +535,13 @@
           midiChord = [60, 63, 66, 69]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dim,7') 
           
           midiChord = [60, 63, 66, 69, 71]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dim,7(WH)')  
        
         });  
@@ -550,19 +550,19 @@
           midiChord = [60, 67]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('5')  
           
           midiChord = [55, 60, 67]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('5')  
           
           midiChord = [55, 60, 67, 72]
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('5')  
         
          });
@@ -574,7 +574,7 @@
           var cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true)
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
            
           // cm.bayes.visualizeTopX("Match", cm.getChord(),  20)
           expect(p0.hypo.key).toEqual("Maj,6,9,-1(A)" )           
@@ -584,7 +584,7 @@
           cm.favorJazz(true)
           cm.match(midiChord)
      
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual("Maj,6,9,-1(A)" )  
                
         
@@ -605,14 +605,14 @@
           var cm =   new CxChord.ChordMatcher()
           cm.favorJazz(true)
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual("Min,6,9,-1(A)" ) // invariant of "Min,6,9,-1(A)"
           
           midiChord = [ 63, 67, 70, 74]
           cm =   new CxChord.ChordMatcher()
           cm.favorJazz(true)
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           // cm.bayes.visualizeTopX("Match", cm.getChord(),  10)
  
           expect(p0.hypo.key).toEqual("Min,7,9,-1(A)" ) 
@@ -621,14 +621,14 @@
           var cm =   new CxChord.ChordMatcher()
           cm.match(midiChord)
           cm.favorJazz(true)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual("Min,7,9,-1(B)" ) 
           
           midiChord = [ 60, 64, 65, 69]
           var cm =   new CxChord.ChordMatcher()
           cm.favorJazz(true)
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual("Min,7,9,-1(B)" ) 
           
           
@@ -637,10 +637,10 @@
           var cm =   new CxChord.ChordMatcher()
           // cm.favorJazz(true)
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch()
+          var p0 = cm.bayes.getBestPosterior()
           
           expect(p0.hypo.key).toEqual("Min,6" ) 
-          p0 = cm.bayes.getBestMatch(1)
+          p0 = cm.bayes.getBestPosterior(1)
            expect(p0.hypo.key).toEqual('Min,7,b5' ) 
 
           midiChord = [ 60, 62, 65, 68]
@@ -651,7 +651,7 @@
           // cm.bayes.visualizeForm('Min,7,9,-1(A)', cm.getChord())
          
           //
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual("Min,6" ) 
           // p0 = cm.bayes.getBestMatch(1)
           //  expect(p0.hypo.key).toEqual('Min,7,b5' ) 
@@ -665,7 +665,7 @@
           var cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true )
           cm.match(midiChord)
-          var p0 = cm.bayes.getBestMatch(1) // pick the dominant version rather than the min 6,6 invariant
+          var p0 = cm.bayes.getBestPosterior(1) // pick the dominant version rather than the min 6,6 invariant
           // cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
           // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)')      
@@ -674,7 +674,7 @@
           cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true )
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch(1) // pick the dominant version rather than the min6 invariant
+          p0 = cm.bayes.getBestPosterior(1) // pick the dominant version rather than the min6 invariant
           
           expect(p0.hypo.key == 'Dom,7,9,-1(A)' || p0.hypo.key == 'Min,6,9,-1(A)' ).toBeTruthy()     
 
@@ -682,7 +682,7 @@
           cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true )   
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)')      
           
           
@@ -690,10 +690,20 @@
           cm =   new CxChord.ChordMatcher()
           cm.favorJazz( true )
           cm.match(midiChord)
-          p0 = cm.bayes.getBestMatch()
+          p0 = cm.bayes.getBestPosterior()
           cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
           // cm.bayes.visualizeForm("Min,7,b5", cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)')      
           
+         });
+         
+         it('ChordMatcher can deliver a chord result', function () { 
+          var midiChord = [21, 23, 28 , 29 ]
+          var cm =   new CxChord.ChordMatcher()
+          cm.favorJazz( true )
+          cm.match(midiChord)
+          var res = cm.getMatches()           
+          expect(res[0].type).toEqual('Min,6,9,-1(A)')   
+          expect(res[1].type).toEqual('Dom,7,9,-1(A)')   
          });
   });

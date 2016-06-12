@@ -106,11 +106,20 @@ var CxChord;
                 throw Error("getHypothesisByIdx index: " + idx + " is out of range");
             return this.hypothesis[idx];
         };
-        BayesCalculator.prototype.getBestMatch = function (idx) {
+        BayesCalculator.prototype.getBestPosterior = function (idx) {
             if (idx === void 0) { idx = 0; }
             var res = this.getPosterior();
             return res[idx];
         };
+        /*
+        export interface Matches {
+           chord: string
+           root:  string
+           type:  string
+           bass:  string
+           inv:   number
+       }
+       */
         BayesCalculator.prototype.getTopX = function (topX, row) {
             if (topX === void 0) { topX = 10; }
             if (row === void 0) { row = this.posterior.length - 1; }
@@ -155,7 +164,7 @@ var CxChord;
             var lastRow = _.filter(posteriorLastRow, function (p) {
                 return (p.hypo.key == form);
             });
-            var bestMatch = this.getBestMatch();
+            var bestMatch = this.getBestPosterior();
             var bestHypo = this.getHypothesis(bestMatch);
             var bestLabel = chord.getRootName(bestHypo) + bestHypo.key + "_i" + bestHypo.inv;
             labels.push(bestLabel);

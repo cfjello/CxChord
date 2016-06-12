@@ -1,7 +1,33 @@
 /// <reference path="references.ts" />
 
 namespace CxChord {
-    
+   
+
+   export class ChordMatch implements ChordMatchIntf {
+       
+       inv: number
+       type: string
+       notes: number[] = []
+       group: number
+       chord: string
+       bass:  string
+       root:  string
+       
+       constructor( hypo: Hypothesis, chordEntry: ChordInstance, mapEntry: ChordMapEntry, sharpOrFlat: string = 'flat' ) {        
+            this.inv   = hypo.inv
+            this.type  = hypo.key
+            for ( var i = 0 ; i < chordEntry.chordInv[0].length; i++ ) {
+                var note = chordEntry.chordInv[0][i] + chordEntry.offset[0]
+                this.notes.push(note)
+            }
+            this.group = hypo.group
+            this.bass  = CxChord.getNoteName( this.notes[0] )
+            this.root  = CxChord.getNoteName( hypo.root )
+            this.chord = CxChord.getChordName( hypo.key, hypo.root, this.notes[0], sharpOrFlat ) 
+       }
+   } 
+
+  
    export class ChordMatcher extends CxChord.ChordForms {
         
         chord:          ChordInstance
@@ -15,6 +41,21 @@ namespace CxChord {
             super() 
             this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv)
         } 
+        
+        getMatches( sharpOrFlat: string = 'flat' ): ChordMatch[] {
+             var post = this.bayes.getPosterior() 
+             var res: ChordMatch[] = []
+             for ( var i = 0; i < post.length ; i++ )
+                if ( i == 0 || post[i].post == post[i-1].post ) {
+                   var chordEntry = this.chord 
+                   var chordMapEntry = this.chordMapWithInv[post[i].hypo.key][post[i].hypo.inv]
+                   var entry = new ChordMatch( post[i].hypo, chordEntry, chordMapEntry )
+                    res.push(entry)
+                }
+                else { break }
+                   
+            return res
+        }
         
         getPosterior (): Posterior[] {
             return this.bayes.getPosterior()      
