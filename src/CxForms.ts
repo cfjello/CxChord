@@ -137,7 +137,7 @@ namespace CxChord {
 			"Dom,7,b9,b13,-1(A)": {notes: [0,5,6,10], 			root: -4, inv:0, group: GR.rootLess },
 			"Dom,7,b9,b13,-1(B)": {notes: [0,4,6,9], 			root: -4, inv:0, group:  GR.rootLess },
 			"Dom,7,b9,-1"	    : {notes: [0,3,6,9],  			root: -4, inv:0, group:  GR.rootLess },
-			"Dom,7,#9,-1"	    : {notes: [0,3,6,11], 			root: -4, inv:0, group:  GR.rootLess },
+			"Dom,7,#9,-1"	    : {notes: [0,3,6,11], 			root: -4, inv:0, group:  GR.rootLess }, 
 			// "MinCluster"		   	: {notes: [0,2,3,7],  root: 0, inv:0, group: 3 },
 			// "MajCluster"		   	: {notes: [0,2,4,7],  root: 0, inv:0, group: 3 },
 			// "Dom7Cluster,-1"   : {notes: [0,4,6,9],  			root: -4, inv:0, group:  GR.rootLess }
