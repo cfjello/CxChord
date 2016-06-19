@@ -33,13 +33,11 @@ namespace CxChord {
         chord:          ChordInstance
         bayes:          CxChord.BayesCalculator 
         rules:          CxChord.Rules 
-        fullMatch:      boolean = false
         favorJazzChords:boolean = false
         priorChords:    ChordInstance[] = []
          
-        constructor() { 
+        constructor(public debugKey: string = "Maj" ) { 
             super() 
-            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv)
         } 
         
         getMatches( sharpOrFlat: string = 'flat' ): ChordMatch[] {
@@ -116,7 +114,7 @@ namespace CxChord {
                                                         group: hypothesis[inv].group }
                     }
                     
-                    if ( key == 'Min,7,b5' ) { 
+                    if ( key == self.debugKey ) { 
                         var debugRoot = true 
                     } 
                     // Save the root note for the inversion
@@ -207,16 +205,45 @@ namespace CxChord {
             })
             return chord;
         }    
+        
+        //
+        // Tone number and name support
+        //
+        match( midiChord: any[] ) : ChordInstance {
+            if ( _.isUndefined(midiChord) || _.isEmpty(midiChord) )
+                throw "match: supplied Chord is empty";
+            else {    
+                if ( _.isNumber(midiChord[0]) ) {
+                    return this.matchNotes(midiChord)
+                }
+                else if( _.isString(midiChord[0]) ) {
+                    return this.matchNoteNames(midiChord)
+                }
+            }
+        }
+        
+        matchNoteNames ( midiNames: string[] ) : ChordInstance {
+            var midiChord: number[] = []
+            for ( var i = 0 ; i < midiNames.length; i++ ) 
+                try {
+                    var noteNo = CxChord.getNoteNumber(midiNames[i])
+                    midiChord.push(noteNo)
+                }
+                catch (e) {
+                    throw e
+                }
+            return this.matchNotes( midiChord )
+        }
 
-        match( midiChord: number[] ) : ChordInstance {
-           
+        matchNotes( midiChord: number[] ) : ChordInstance {
+           this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv)
            this.chord  = new ChordInstance(midiChord)
            this.chord.favorJazzChords = this.favorJazzChords  
            //
            // Do chord tone matches 
            //     
            this.doMatch(this.chord) 
-           this.rules = new CxChord.Rules(this.chord);         
+           this.rules = new CxChord.Rules(this.chord, this.debugKey);         
            //
            // Apply the Bayes Rules
            // 

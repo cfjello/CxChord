@@ -54,28 +54,32 @@ describe('Testing CxChord', function () {
             }
         });
     });
-    it('ChordMatcher.doMatch can do a full match', function () {
-        midiChord = [60, 64, 67, 71];
-        chordInst = new CxChord.ChordInstance(midiChord);
-        expect(chordInst.chordInv.length).toEqual(4);
-        expect(chordInst.chordInv[0][0]).toEqual(0);
-        expect(chordInst.chordInv[0][1]).toEqual(4);
-        expect(chordInst.chordInv[0][2]).toEqual(7);
-        expect(chordInst.chordInv[0][3]).toEqual(11);
-        var cm = new CxChord.ChordMatcher();
-        var chordInst2 = cm.doMatch(chordInst);
-        expect(chordInst2).toBeDefined();
-        expect(chordInst2.matchedNotes).toBeDefined();
-        expect(_.keys(chordInst2.matchedNotes).length > 0);
-        _.forIn(chordInst2.matchedNotes, function (value, key) {
-            if (key == "maj,7") {
-                expect(value.invertions[0].length).toEqual(4);
-            }
-            else {
-                expect(value.invertions[0].length > 0).toBeTruthy();
-            }
-        });
-    });
+    /*
+       it('ChordMatcher.doMatch can do a full match', function () {
+           midiChord = [60, 64, 67, 71]
+           chordInst = new CxChord.ChordInstance(midiChord)
+           expect(chordInst.chordInv.length).toEqual(4);
+           expect(chordInst.chordInv[0][0]).toEqual(0);
+           expect(chordInst.chordInv[0][1]).toEqual(4);
+           expect(chordInst.chordInv[0][2]).toEqual(7);
+           expect(chordInst.chordInv[0][3]).toEqual(11);
+            
+           var cm =   new CxChord.ChordMatcher()
+           var chordInst2 : CxChord.ChordInstance = cm.doMatch(chordInst)
+           expect(chordInst2).toBeDefined()
+           expect( chordInst2.matchedNotes ).toBeDefined()
+           expect ( _.keys(chordInst2.matchedNotes).length > 0 )
+ 
+           _.forIn( chordInst2.matchedNotes, function ( value, key ) {
+               if ( key == "maj,7" ) {
+                   expect(value.invertions[0].length).toEqual(4)
+               }
+               else {
+                 expect(value.invertions[0].length > 0).toBeTruthy()
+               }
+           });
+       });
+      */
     it('ChordMatcher.doMatch can do a partial match with chord extensions', function () {
         midiChord = [60, 67, 71, 74];
         chordInst = new CxChord.ChordInstance(midiChord);
@@ -276,11 +280,25 @@ describe('Testing CxChord', function () {
         expect(p0.hypo.key).toEqual('Maj,6');
     });
     it('Standard  Deriviation Works', function () {
+        var midiChord = [60, 64, 67, 69];
         var cm = new CxChord.ChordMatcher();
-        // var chord = cm.match(midiChord)
+        var chord = cm.match(midiChord);
         // var p0 = cm.bayes.getBestMatch()
         var stdDev = cm.bayes.standardDeriviation([1, 2, 3, 4, 5, 6, 7, 8, 9, 25]); // Standard Deviation: 6.48074069840786
         expect(stdDev).toEqual(6.48074069840786);
+    });
+    it('CxChord getNoteNumber works as expected', function () {
+        expect(CxChord.getNoteNumber("C")).toEqual(60);
+        expect(CxChord.getNoteNumber("C6")).toEqual(72);
+        expect(CxChord.getNoteNumber("C#7")).toEqual(85);
+        expect(CxChord.getNoteNumber("db7")).toEqual(85);
+        expect(CxChord.getNoteNumber("g10")).toEqual(127);
+        try {
+            CxChord.getNoteNumber("g11");
+        }
+        catch (e) {
+            expect(e).toEqual("getNoteNumber: Illegal octave number. Legal octaves are 0-10");
+        }
     });
     it('ChordMatcher can match Minor chords', function () {
         midiChord = [60, 63, 67];
@@ -514,7 +532,7 @@ describe('Testing CxChord', function () {
         // p0 = cm.bayes.getBestMatch(1)
         //  expect(p0.hypo.key).toEqual('Min,7,b5' ) 
     });
-    it('ChordMatcher can match dominant jazz block chords', function () {
+    it('A single ChordMatcher can match Jazz Dominant chords', function () {
         var midiChord = [17, 21, 23, 28];
         var cm = new CxChord.ChordMatcher();
         cm.favorJazz(true);
@@ -524,27 +542,21 @@ describe('Testing CxChord', function () {
         // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
         expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)');
         midiChord = [21, 23, 28, 29];
-        cm = new CxChord.ChordMatcher();
-        cm.favorJazz(true);
         cm.match(midiChord);
         p0 = cm.bayes.getBestPosterior(1); // pick the dominant version rather than the min6 invariant
         expect(p0.hypo.key == 'Dom,7,9,-1(A)' || p0.hypo.key == 'Min,6,9,-1(A)').toBeTruthy();
         midiChord = [23, 28, 29, 33];
-        cm = new CxChord.ChordMatcher();
         cm.favorJazz(true);
         cm.match(midiChord);
         p0 = cm.bayes.getBestPosterior();
         expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)');
         midiChord = [28, 29, 33, 35];
-        cm = new CxChord.ChordMatcher();
         cm.favorJazz(true);
         cm.match(midiChord);
         p0 = cm.bayes.getBestPosterior();
-        cm.bayes.visualizeTopX("Match", cm.getChord(), 15);
-        // cm.bayes.visualizeForm("Min,7,b5", cm.getChord())
         expect(p0.hypo.key).toEqual('Dom,7,9,-1(B)');
     });
-    it('ChordMatcher can deliver a chord result', function () {
+    it('ChordMatcher can deliver a multi-chord result', function () {
         var midiChord = [21, 23, 28, 29];
         var cm = new CxChord.ChordMatcher();
         cm.favorJazz(true);
@@ -552,6 +564,49 @@ describe('Testing CxChord', function () {
         var res = cm.getMatches();
         expect(res[0].type).toEqual('Min,6,9,-1(A)');
         expect(res[1].type).toEqual('Dom,7,9,-1(A)');
+    });
+    it('ChordMatcher can match Reduced -5 chords', function () {
+        var midiChord = [60, 64, 71];
+        var cm = new CxChord.ChordMatcher();
+        // cm.favorJazz( true )
+        cm.match(midiChord);
+        var p0 = cm.bayes.getBestPosterior();
+        expect(p0.hypo.key).toEqual("Maj,7,-5");
+        midiChord = [60, 64, 69];
+        cm = new CxChord.ChordMatcher();
+        cm.match(midiChord);
+        p0 = cm.bayes.getBestPosterior();
+        expect(p0.hypo.key).toEqual("Maj,6,-5");
+        midiChord = [60, 63, 69];
+        cm = new CxChord.ChordMatcher('Min,6,-5');
+        cm.match(midiChord);
+        p0 = cm.bayes.getBestPosterior();
+        cm.bayes.visualizeTopX("Match", cm.getChord(), 15);
+        // cm.bayes.visualizeForm("Maj,7,-5", cm.getChord())
+        expect(p0.hypo.key).toEqual("Min,6,-5");
+        midiChord = [60, 63, 70];
+        cm = new CxChord.ChordMatcher();
+        cm.match(midiChord);
+        p0 = cm.bayes.getBestPosterior();
+        expect(p0.hypo.key).toEqual("Min,7,-5");
+    });
+    it('ChordMatcher can match chords given with tone Names', function () {
+        // var midiChord = [17, 21, 23, 28 ]
+        var midiChord = ["F1", "A1", "b1", "e2"];
+        var cm = new CxChord.ChordMatcher();
+        cm.favorJazz(true);
+        cm.match(midiChord);
+        var p0 = cm.bayes.getBestPosterior(1); // pick the dominant version rather than the min 6,6 invariant
+        // cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
+        // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
+        expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)');
+        var midiChord = ["F", "A", "b", "e6"];
+        cm.favorJazz(true);
+        cm.match(midiChord);
+        p0 = cm.bayes.getBestPosterior(1); // pick the dominant version rather than the min 6,6 invariant
+        // cm.bayes.visualizeTopX("Match", cm.getChord(),  15)
+        // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
+        expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)');
     });
 });
 //# sourceMappingURL=CxChordSpec.js.map

@@ -10,6 +10,30 @@ namespace CxChord {
 			flat:  ["C", "Db", "D","Eb","E","F","Gb","G","Ab","A", "Bb", "B" ]
 		}
 		
+		export const noteNames = ["C", "C#", "D","D#","E","F","F#","G","G#","A", "A#", "B",
+								  "c", "c#", "d","d#","e","f","f#","g","g#","a", "a#", "b",
+								  "C", "Db", "D","Eb","E","F","Gb","G","Ab","A", "Bb", "B",
+								  "c", "db", "d","eb","e","f","gb","g","ab","a", "bb", "b" ]
+		
+		export function getNoteNumber ( note: string ): number {
+			var octave: number = 5
+			var _oct = note.replace(/^[A-Ga-g]+[#b]*/,'')
+			if ( ! _.isEmpty(_oct) ) {
+                var _octave = _oct.replace(/[^0-9]+/g, '')
+				if ( _octave.match(/^[0-9]0{0,1}/) ) 
+					octave = parseInt( _octave )
+				else 
+					throw Error ("getNoteNumber: Illegal octave number. Legal octaves are 0-10");
+		    }
+			var noteName = note.replace(/[0-9]/g, '') 
+			var noteNum  = CxChord.noteNames.indexOf(noteName) % 12
+			
+			if ( noteNum < 0 )
+				throw Error ("getNoteNumber: Unknown note name");
+			else
+				return noteNum + ( octave * 12 ) 		
+		}
+		
 		export function getNoteName( note: number = 0, flatOrSharp: string = "flat" ): string  {
 			// For positive bass notes assume an actual bass has been provided
 			// For negative bass notes assume that a ChorMap type root note has been provided
@@ -89,8 +113,8 @@ namespace CxChord {
 			// Jazz reduced chords
 			"Maj,7,-5" 			: {notes: [0,4,11], 			root: 0, inv:0, group: GR.reduced },
 			"Maj,6,-5" 			: {notes: [0,4,9], 				root: 0, inv:0, group: GR.reduced },
-			"Min,6,-5"			: {notes: [0,3,7],    			root: 0, inv:0, group: GR.reduced },
-			"Min,7,-5"			: {notes: [0,3,7,10], 			root: 0, inv:0, group: GR.reduced },	
+			"Min,6,-5"			: {notes: [0,3,9],    			root: 0, inv:0, group: GR.reduced },
+			"Min,7,-5"			: {notes: [0,3,10], 			root: 0, inv:0, group: GR.reduced },	
 			// Jazz block chords
 			// Major A and B Voicings
 			"Maj,6,9,-1(A)"		: {notes: [0,3,5,10],			root: -4, inv:0, group: GR.rootLess },

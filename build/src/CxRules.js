@@ -2,8 +2,10 @@
 var CxChord;
 (function (CxChord) {
     var Rules = (function () {
-        function Rules(_chord) {
+        function Rules(_chord, debugKey) {
             if (_chord === void 0) { _chord = null; }
+            if (debugKey === void 0) { debugKey = 'Maj'; }
+            this.debugKey = debugKey;
             this.ruleMap = {};
             this.size = 0;
             //
@@ -77,12 +79,12 @@ var CxChord;
                     var score;
                     // Check if it is a jazzchord
                     var flavor = bayes.hypothesis[col].group;
-                    var jazzChord = (flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced);
+                    var jazzChord = (flavor == CxChord.GR.rootLess);
                     //
                     // Score root as first note in chord higher than inversions
                     // and special handling for Jazz left hand chords (negative root)
                     // 
-                    if (key == 'Min,7,b5') {
+                    if (key == this.currKey) {
                         var debug = true;
                     }
                     var inversionTax = 0.1 * inv;
@@ -109,7 +111,7 @@ var CxChord;
                     var key = bayes.hypothesis[col].key;
                     var flavor = bayes.hypothesis[col].group;
                     var jazzChord = (flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced);
-                    if (key == 'Maj,7' || key == 'Min,7,9,-1(A)') {
+                    if (key == "Maj,7,-5") {
                         var debug = true;
                     }
                     var score = jazzChord ? 1 : 0.70;

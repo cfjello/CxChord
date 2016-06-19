@@ -26,12 +26,12 @@ var CxChord;
     CxChord.ChordMatch = ChordMatch;
     var ChordMatcher = (function (_super) {
         __extends(ChordMatcher, _super);
-        function ChordMatcher() {
+        function ChordMatcher(debugKey) {
+            if (debugKey === void 0) { debugKey = "Maj"; }
             _super.call(this);
-            this.fullMatch = false;
+            this.debugKey = debugKey;
             this.favorJazzChords = false;
             this.priorChords = [];
-            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
         }
         ChordMatcher.prototype.getMatches = function (sharpOrFlat) {
             if (sharpOrFlat === void 0) { sharpOrFlat = 'flat'; }
@@ -106,7 +106,7 @@ var CxChord;
                             roots: [],
                             group: hypothesis[inv].group };
                     }
-                    if (key == 'Min,7,b5') {
+                    if (key == self.debugKey) {
                         var debugRoot = true;
                     }
                     // Save the root note for the inversion
@@ -198,14 +198,42 @@ var CxChord;
             });
             return chord;
         };
+        //
+        // Tone number and name support
+        //
         ChordMatcher.prototype.match = function (midiChord) {
+            if (_.isUndefined(midiChord) || _.isEmpty(midiChord))
+                throw "match: supplied Chord is empty";
+            else {
+                if (_.isNumber(midiChord[0])) {
+                    return this.matchNotes(midiChord);
+                }
+                else if (_.isString(midiChord[0])) {
+                    return this.matchNoteNames(midiChord);
+                }
+            }
+        };
+        ChordMatcher.prototype.matchNoteNames = function (midiNames) {
+            var midiChord = [];
+            for (var i = 0; i < midiNames.length; i++)
+                try {
+                    var noteNo = CxChord.getNoteNumber(midiNames[i]);
+                    midiChord.push(noteNo);
+                }
+                catch (e) {
+                    throw e;
+                }
+            return this.matchNotes(midiChord);
+        };
+        ChordMatcher.prototype.matchNotes = function (midiChord) {
+            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
             this.chord = new CxChord.ChordInstance(midiChord);
             this.chord.favorJazzChords = this.favorJazzChords;
             //
             // Do chord tone matches 
             //     
             this.doMatch(this.chord);
-            this.rules = new CxChord.Rules(this.chord);
+            this.rules = new CxChord.Rules(this.chord, this.debugKey);
             //
             // Apply the Bayes Rules
             // 

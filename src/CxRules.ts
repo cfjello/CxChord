@@ -14,7 +14,6 @@ namespace CxChord {
    }
     
     export class Rules implements RuleMap<string,Rule> {
-        
         ruleMap = {}
         size: number = 0
         
@@ -33,7 +32,7 @@ namespace CxChord {
             return this.ruleMap[key]
         }
         
-        constructor(_chord: ChordInstance = null) {
+        constructor(_chord: ChordInstance = null, public debugKey: string = 'Maj') {
             //
             // Even Distribution Rule
             // 
@@ -105,12 +104,12 @@ namespace CxChord {
                 var score: number
                 // Check if it is a jazzchord
                 var flavor      = bayes.hypothesis[col].group
-                var jazzChord: boolean = ( flavor ==  GR.rootLess ||  flavor ==  GR.reduced ) 
+                var jazzChord: boolean = ( flavor ==  GR.rootLess ) 
                 //
                 // Score root as first note in chord higher than inversions
                 // and special handling for Jazz left hand chords (negative root)
                 // 
-                if ( key == 'Min,7,b5' ) { 
+                if ( key == this.currKey ) { 
                         var debug = true 
                     }     
                 var inversionTax = 0.1 * inv
@@ -138,7 +137,7 @@ namespace CxChord {
                 var key        = bayes.hypothesis[col].key
                 var flavor     = bayes.hypothesis[col].group
                 var jazzChord: boolean = ( flavor ==  GR.rootLess ||  flavor ==  GR.reduced ) 
-                   if ( key == 'Maj,7' || key == 'Min,7,9,-1(A)' ) { 
+                   if ( key == "Maj,7,-5" ) { 
                         var debug = true 
                     }     
                 var score =  jazzChord ? 1 : 0.70 
