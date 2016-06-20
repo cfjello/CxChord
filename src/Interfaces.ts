@@ -74,7 +74,18 @@ namespace CxChord {
         hypo?: Hypothesis
     }
 
-/*
+    export interface ScaleMapEntry {
+            notes: number[]
+            major: number 
+            minor: number 
+            group: number
+        }
+
+        export interface ScaleMap {
+            [key:string]: ScaleMapEntry   
+        }   
+
+    /*
     //
     // A lodash mixin function - not good with type checking
     //         
