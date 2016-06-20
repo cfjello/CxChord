@@ -97,14 +97,16 @@ var CxChord;
                 for (var inv = 0; inv < hypothesis.length; inv++) {
                     idx += inv;
                     if (!_.has(chord.matchedNotes, key)) {
-                        chord.matchedNotes[key] = { invertions: [],
+                        chord.matchedNotes[key] = {
+                            invertions: [],
                             extensions: [],
                             knockouts: [],
                             mustHave: [],
                             rootNotes: [],
                             conflicts: [],
                             roots: [],
-                            group: hypothesis[inv].group };
+                            group: hypothesis[inv].group
+                        };
                     }
                     if (key == self.debugKey) {
                         var debugRoot = true;

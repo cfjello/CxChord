@@ -11,7 +11,8 @@ var CxChord;
             //
             // Even Distribution Rule
             // 
-            this.set('EvenDistribution', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('EvenDistribution', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var evenDistibution = 1 / bayes.hypothesis.length;
                     return evenDistibution;
                 }
@@ -19,7 +20,8 @@ var CxChord;
             //
             // Count the number of notes and see iof they match with the Hypothesis chord  
             //
-            this.set('CountNotes', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('CountNotes', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var hypoLen = bayes.hypothesis[col].len;
                     var chordLen = chord.chordInv[0].length;
                     var score;
@@ -35,7 +37,8 @@ var CxChord;
             //
             // MustHave Rule  
             //
-            this.set('MustHave', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('MustHave', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var mustHave = chord.matchedNotes[key].mustHave[inv];
@@ -46,7 +49,8 @@ var CxChord;
             //
             // Knockout Rule  
             //
-            this.set('Knockouts', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('Knockouts', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var knockouts = chord.matchedNotes[key].knockouts[inv].length;
@@ -57,7 +61,8 @@ var CxChord;
             //
             // Matched Notes rule
             // 
-            this.set('MatchedNotes', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('MatchedNotes', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var chordLen = chord.chordInv[0].length;
@@ -71,7 +76,8 @@ var CxChord;
             //
             // Root is present Rule  
             //
-            this.set('RootFound', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('RootFound', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var indexOfRoot = chord.matchedNotes[key].roots[inv];
@@ -107,7 +113,8 @@ var CxChord;
             //
             // favor Jazz Rule  
             //
-            this.set('FavorJazz', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('FavorJazz', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var flavor = bayes.hypothesis[col].group;
                     var jazzChord = (flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced);
@@ -121,7 +128,8 @@ var CxChord;
             //
             // Conflict Rule  
             //
-            this.set('Conflicts', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('Conflicts', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var key = bayes.hypothesis[col].key;
                     var inv = bayes.hypothesis[col].inv;
                     var conflicts = chord.matchedNotes[key].conflicts[inv];
@@ -132,7 +140,8 @@ var CxChord;
             //
             // Group Rule  
             //
-            this.set('ChordGroup', { chord: _chord, ruleFx: function (chord, bayes, row, col) {
+            this.set('ChordGroup', {
+                chord: _chord, ruleFx: function (chord, bayes, row, col) {
                     var score = 1 / chord.matchedNotes[bayes.hypothesis[col].key].group;
                     return score;
                 }

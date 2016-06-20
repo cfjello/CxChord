@@ -25,12 +25,14 @@ var CxChord;
             var _self = this.self;
             for (var key in this.bayesChordMap) {
                 for (var inv = 0; inv < this.bayesChordMap[key].length; inv++) {
-                    _self.hypothesis.push({ idx: idx++,
+                    _self.hypothesis.push({
+                        idx: idx++,
                         key: key,
                         inv: inv,
                         group: this.bayesChordMap[key][inv].group,
                         len: this.bayesChordMap[key][inv].notes.length,
-                        root: this.bayesChordMap[key][inv].root });
+                        root: this.bayesChordMap[key][inv].root
+                    });
                 }
             }
         };
