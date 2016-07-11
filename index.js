@@ -856,6 +856,19 @@ var CxChord;
         sharp: [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ],
         flat: [ "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" ]
     };
+    CxChord.noteNames = [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b" ];
+    function getNoteNumber(note) {
+        var octave = 5;
+        var _oct = note.replace(/^[A-Ga-g]+[#b]*/, "");
+        if (!_.isEmpty(_oct)) {
+            var _octave = _oct.replace(/[^0-9]+/g, "");
+            if (_octave.match(/^[0-9]0{0,1}/)) octave = parseInt(_octave); else throw Error("getNoteNumber: Illegal octave number. Legal octaves are 0-10");
+        }
+        var noteName = note.replace(/[0-9]/g, "");
+        var noteNum = CxChord.noteNames.indexOf(noteName) % 12;
+        if (noteNum < 0) throw Error("getNoteNumber: Unknown note name"); else return noteNum + octave * 12;
+    }
+    CxChord.getNoteNumber = getNoteNumber;
     function getNoteName(note, flatOrSharp) {
         if (note === void 0) {
             note = 0;
@@ -878,7 +891,7 @@ var CxChord;
             root = 0;
         }
         if (bass === void 0) {
-            bass = 0;
+            bass = 255;
         }
         if (flatOrSharp === void 0) {
             flatOrSharp = "flat";
@@ -886,7 +899,9 @@ var CxChord;
         var chordName = CxChord.getNoteName(root, flatOrSharp);
         var extName = CxChord.getExtName(nameWithCommas);
         chordName += extName;
-        if (bass !== root) {
+        var group = _.isUndefined(CxChord.chordMap[nameWithCommas]) ? 2 : CxChord.chordMap[nameWithCommas].group;
+        bass = bass == 255 ? root : bass;
+        if (bass !== root && group != CxChord.GR.rootLess) {
             var bassName = CxChord.getNoteName(bass, flatOrSharp);
             chordName += "/" + bassName;
         }
@@ -1110,13 +1125,13 @@ var CxChord;
             group: GR.reduced
         },
         "Min,6,-5": {
-            notes: [ 0, 3, 7 ],
+            notes: [ 0, 3, 9 ],
             root: 0,
             inv: 0,
             group: GR.reduced
         },
         "Min,7,-5": {
-            notes: [ 0, 3, 7, 10 ],
+            notes: [ 0, 3, 10 ],
             root: 0,
             inv: 0,
             group: GR.reduced
@@ -1365,14 +1380,36 @@ var __extends = this && this.__extends || function(d, b) {
 var CxChord;
 
 (function(CxChord) {
+    var ChordMatch = function() {
+        function ChordMatch(hypo, chordEntry, mapEntry, sharpOrFlat) {
+            if (sharpOrFlat === void 0) {
+                sharpOrFlat = "flat";
+            }
+            this.notes = [];
+            this.inv = hypo.inv;
+            this.type = hypo.key;
+            for (var i = 0; i < chordEntry.chordInv[0].length; i++) {
+                var note = chordEntry.chordInv[0][i] + chordEntry.offset[0];
+                this.notes.push(note);
+            }
+            this.group = hypo.group;
+            this.bass = CxChord.getNoteName(this.notes[0]);
+            this.root = CxChord.getNoteName(hypo.root);
+            this.chord = CxChord.getChordName(hypo.key, hypo.root, this.notes[0], sharpOrFlat);
+        }
+        return ChordMatch;
+    }();
+    CxChord.ChordMatch = ChordMatch;
     var ChordMatcher = function(_super) {
         __extends(ChordMatcher, _super);
-        function ChordMatcher() {
+        function ChordMatcher(debugKey) {
+            if (debugKey === void 0) {
+                debugKey = "Maj";
+            }
             _super.call(this);
-            this.fullMatch = false;
+            this.debugKey = debugKey;
             this.favorJazzChords = false;
             this.priorChords = [];
-            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
         }
         ChordMatcher.prototype.getMatches = function(sharpOrFlat) {
             if (sharpOrFlat === void 0) {
@@ -1381,16 +1418,12 @@ var CxChord;
             var post = this.bayes.getPosterior();
             var res = [];
             for (var i = 0; i < post.length; i++) if (i == 0 || post[i].post == post[i - 1].post) {
-                var chordEntry = this.chordMapWithInv[post[i].hypo.key][post[i].hypo.inv];
-                var entry;
-                entry.inv = post[i].hypo.inv;
-                entry.type = post[i].hypo.key;
-                entry.notes = chordEntry.notes;
-                entry.group = post[i].hypo.group;
-                entry.bass = CxChord.getNoteName(entry.notes[0]);
-                entry.root = CxChord.getNoteName(post[i].hypo.root);
-                entry.chord = CxChord.getChordName(entry.type, post[i].hypo.root, entry.notes[0], sharpOrFlat);
+                var chordEntry = this.chord;
+                var chordMapEntry = this.chordMapWithInv[post[i].hypo.key][post[i].hypo.inv];
+                var entry = new ChordMatch(post[i].hypo, chordEntry, chordMapEntry);
                 res.push(entry);
+            } else {
+                break;
             }
             return res;
         };
@@ -1462,7 +1495,7 @@ var CxChord;
                             group: hypothesis[inv].group
                         };
                     }
-                    if (key == "Min,7,b5") {
+                    if (key == self.debugKey) {
                         var debugRoot = true;
                     }
                     chord.matchedNotes[key].rootNotes.push(hypothesis[inv].root);
@@ -1525,10 +1558,30 @@ var CxChord;
             return chord;
         };
         ChordMatcher.prototype.match = function(midiChord) {
+            if (_.isUndefined(midiChord) || _.isEmpty(midiChord)) throw "match: supplied Chord is empty"; else {
+                if (_.isNumber(midiChord[0])) {
+                    return this.matchNotes(midiChord);
+                } else if (_.isString(midiChord[0])) {
+                    return this.matchNoteNames(midiChord);
+                }
+            }
+        };
+        ChordMatcher.prototype.matchNoteNames = function(midiNames) {
+            var midiChord = [];
+            for (var i = 0; i < midiNames.length; i++) try {
+                var noteNo = CxChord.getNoteNumber(midiNames[i]);
+                midiChord.push(noteNo);
+            } catch (e) {
+                throw e;
+            }
+            return this.matchNotes(midiChord);
+        };
+        ChordMatcher.prototype.matchNotes = function(midiChord) {
+            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
             this.chord = new CxChord.ChordInstance(midiChord);
             this.chord.favorJazzChords = this.favorJazzChords;
             this.doMatch(this.chord);
-            this.rules = new CxChord.Rules(this.chord);
+            this.rules = new CxChord.Rules(this.chord, this.debugKey);
             var ruleE = this.rules.get("EvenDistribution");
             this.bayes.applyRule(ruleE);
             var ruleK = this.rules.get("Knockouts");
@@ -1550,10 +1603,14 @@ var CxChord;
 
 (function(CxChord) {
     var Rules = function() {
-        function Rules(_chord) {
+        function Rules(_chord, debugKey) {
             if (_chord === void 0) {
                 _chord = null;
             }
+            if (debugKey === void 0) {
+                debugKey = "Maj";
+            }
+            this.debugKey = debugKey;
             this.ruleMap = {};
             this.size = 0;
             this.set("EvenDistribution", {
@@ -1615,8 +1672,8 @@ var CxChord;
                     var favorJazz = chord.favorJazzChords;
                     var score;
                     var flavor = bayes.hypothesis[col].group;
-                    var jazzChord = flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced;
-                    if (key == "Min,7,b5") {
+                    var jazzChord = flavor == CxChord.GR.rootLess;
+                    if (key == this.currKey) {
                         var debug = true;
                     }
                     var inversionTax = .1 * inv;
@@ -1639,7 +1696,7 @@ var CxChord;
                     var key = bayes.hypothesis[col].key;
                     var flavor = bayes.hypothesis[col].group;
                     var jazzChord = flavor == CxChord.GR.rootLess || flavor == CxChord.GR.reduced;
-                    if (key == "Maj,7" || key == "Min,7,9,-1(A)") {
+                    if (key == "Maj,7,-5") {
                         var debug = true;
                     }
                     var score = jazzChord ? 1 : .7;
@@ -1684,16 +1741,68 @@ var CxChord;
 var CxChord;
 
 (function(CxChord) {
-    CxChord.rootNoteNamesB = {
-        sharp: [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ],
-        flat: [ "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" ]
-    };
-    function getRootNameB(root, sharpOrFlat) {
-        if (sharpOrFlat === void 0) {
-            sharpOrFlat = "flat";
+    (function(Scale_Type) {
+        Scale_Type[Scale_Type["major"] = 1] = "major";
+        Scale_Type[Scale_Type["minor"] = 2] = "minor";
+        Scale_Type[Scale_Type["altered"] = 4] = "altered";
+        Scale_Type[Scale_Type["dominant"] = 8] = "dominant";
+        Scale_Type[Scale_Type["dimished"] = 16] = "dimished";
+    })(CxChord.Scale_Type || (CxChord.Scale_Type = {}));
+    var Scale_Type = CxChord.Scale_Type;
+    CxChord.scaleMap = {
+        Ionian: {
+            notes: [ 0, 2, 4, 5, 7, 9, 11 ],
+            major: 0,
+            minor: -3,
+            group: Scale_Type.major
+        },
+        Dorian: {
+            notes: [ 0, 2, 3, 5, 7, 9, 10 ],
+            major: 3,
+            minor: 0,
+            group: Scale_Type.minor
+        },
+        Phygian: {
+            notes: [ 0, 1, 3, 5, 7, 8, 10 ],
+            major: 3,
+            minor: 0,
+            group: Scale_Type.minor
+        },
+        Lydian: {
+            notes: [ 0, 2, 4, 5, 7, 9, 11 ],
+            major: 0,
+            minor: -3,
+            group: Scale_Type.major
+        },
+        Mixolydian: {
+            notes: [ 0, 2, 4, 5, 7, 9, 11 ],
+            major: 0,
+            minor: -3,
+            group: Scale_Type.dominant
+        },
+        Aeolian: {
+            notes: [ 0, 2, 3, 5, 7, 8, 10 ],
+            major: 0,
+            minor: 3,
+            group: Scale_Type.minor
+        },
+        Locrian: {
+            notes: [ 0, 1, 3, 5, 6, 8, 10 ],
+            major: 0,
+            minor: null,
+            group: Scale_Type.dimished
+        },
+        HarmonicMinor: {
+            notes: [ 0, 2, 3, 5, 7, 8, 11 ],
+            major: 0,
+            minor: null,
+            group: Scale_Type.minor
+        },
+        MelodicMinor: {
+            notes: [ 0, 2, 3, 5, 7, 9, 11 ],
+            major: 0,
+            minor: null,
+            group: Scale_Type.minor
         }
-        var root = root < 0 ? root + 12 : root;
-        return CxChord.rootNoteNamesB[sharpOrFlat][root];
-    }
-    CxChord.getRootNameB = getRootNameB;
+    };
 })(CxChord || (CxChord = {}));
