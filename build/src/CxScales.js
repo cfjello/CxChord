@@ -1,14 +1,14 @@
 /// <reference path="references.ts" />
 var CxChord;
 (function (CxChord) {
+    var Scale_Type;
     (function (Scale_Type) {
         Scale_Type[Scale_Type["major"] = 1] = "major";
         Scale_Type[Scale_Type["minor"] = 2] = "minor";
         Scale_Type[Scale_Type["altered"] = 4] = "altered";
         Scale_Type[Scale_Type["dominant"] = 8] = "dominant";
         Scale_Type[Scale_Type["dimished"] = 16] = "dimished";
-    })(CxChord.Scale_Type || (CxChord.Scale_Type = {}));
-    var Scale_Type = CxChord.Scale_Type;
+    })(Scale_Type = CxChord.Scale_Type || (CxChord.Scale_Type = {}));
     CxChord.scaleMap = {
         "Ionian": { notes: [0, 2, 4, 5, 7, 9, 11], major: 0, minor: -3, group: Scale_Type.major },
         "Dorian": { notes: [0, 2, 3, 5, 7, 9, 10], major: 3, minor: 0, group: Scale_Type.minor },

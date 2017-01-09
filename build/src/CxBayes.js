@@ -1,11 +1,10 @@
 /// <reference path="references.ts" />
 var CxChord;
 (function (CxChord) {
-    var BayesCalculator = (function () {
-        function BayesCalculator(bayesChordMap) {
+    var BayesChordCalculator = (function () {
+        function BayesChordCalculator(bayesChordMap) {
             this.bayesChordMap = bayesChordMap;
             this.self = this;
-            // google:any = null
             this.hypothesis = [];
             this.rules = [];
             this.likelyhoods = [];
@@ -20,7 +19,7 @@ var CxChord;
         //
         // create an even distribution
         // 
-        BayesCalculator.prototype.createHypothesis = function () {
+        BayesChordCalculator.prototype.createHypothesis = function () {
             var idx = 0;
             var _self = this.self;
             for (var key in this.bayesChordMap) {
@@ -36,10 +35,10 @@ var CxChord;
                 }
             }
         };
-        BayesCalculator.prototype.getChordMapNotes = function (idx) {
+        BayesChordCalculator.prototype.getChordMapNotes = function (idx) {
             return this.bayesChordMap[this.hypothesis[idx].key][this.hypothesis[idx].inv].notes;
         };
-        BayesCalculator.prototype.standardDeriviation = function (data) {
+        BayesChordCalculator.prototype.standardDeriviation = function (data) {
             var sum = _.sum(data);
             var avg = sum / data.length;
             var squaredDiffs = _.map(data, function (value) {
@@ -53,7 +52,7 @@ var CxChord;
         //
         // Apply a Rule to the Hypothesis
         // 
-        BayesCalculator.prototype.applyRule = function (rule) {
+        BayesChordCalculator.prototype.applyRule = function (rule) {
             var row = this.likelyhoods.length;
             var firstRow = (row == 0);
             var normalizingConst = 0;
@@ -69,7 +68,7 @@ var CxChord;
             this.likelyhoods[row].push(normalizingConst);
             this.calcPosterior(row);
         };
-        BayesCalculator.prototype.calcPosterior = function (_row) {
+        BayesChordCalculator.prototype.calcPosterior = function (_row) {
             for (var row = _row < 0 ? 0 : _row; row < this.likelyhoods.length; row++) {
                 var firstRow = (row == 0);
                 var colIdx = this.likelyhoods[row].length - 1;
@@ -84,7 +83,7 @@ var CxChord;
                 }
             }
         };
-        BayesCalculator.prototype.getPosteriorByRow = function (rowIdx) {
+        BayesChordCalculator.prototype.getPosteriorByRow = function (rowIdx) {
             if (rowIdx < 0 || rowIdx >= this.posterior.length || _.isUndefined(this.posterior[rowIdx]))
                 throw Error("getPosteriorByRow index: " + rowIdx + " is out of range or undefined");
             // this.posterior[rowIdx][col].rootName = CxChord.getRootName(this.posterior[rowIdx][col].idx)
@@ -93,36 +92,27 @@ var CxChord;
             }
             return _.orderBy(this.posterior[rowIdx], ['post', 'hypo.len', 'hypo.inv'], 'desc');
         };
-        BayesCalculator.prototype.getPosterior = function () {
+        BayesChordCalculator.prototype.getPosterior = function () {
             var lastRow = this.posterior.length - 1;
             if (lastRow < 0)
                 return [];
             else
                 return this.getPosteriorByRow(lastRow);
         };
-        BayesCalculator.prototype.getHypothesis = function (posterior) {
+        BayesChordCalculator.prototype.getHypothesis = function (posterior) {
             return this.hypothesis[posterior.idx];
         };
-        BayesCalculator.prototype.getHypothesisByIdx = function (idx) {
+        BayesChordCalculator.prototype.getHypothesisByIdx = function (idx) {
             if (idx < 0 || idx >= this.hypothesis.length)
                 throw Error("getHypothesisByIdx index: " + idx + " is out of range");
             return this.hypothesis[idx];
         };
-        BayesCalculator.prototype.getBestPosterior = function (idx) {
+        BayesChordCalculator.prototype.getBestPosterior = function (idx) {
             if (idx === void 0) { idx = 0; }
             var res = this.getPosterior();
             return res[idx];
         };
-        /*
-        export interface Matches {
-           chord: string
-           root:  string
-           type:  string
-           bass:  string
-           inv:   number
-       }
-       */
-        BayesCalculator.prototype.getTopX = function (topX, row) {
+        BayesChordCalculator.prototype.getTopX = function (topX, row) {
             if (topX === void 0) { topX = 10; }
             if (row === void 0) { row = this.posterior.length - 1; }
             var posterior = this.getPosteriorByRow(row);
@@ -130,11 +120,10 @@ var CxChord;
         };
         // Returns a random integer between min (included) and max (included)
         // Using Math.round() will give you a non-uniform distribution!
-        BayesCalculator.prototype.getRandomIntInclusive = function (min, max) {
+        BayesChordCalculator.prototype.getRandomIntInclusive = function (min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         };
-        ;
-        BayesCalculator.prototype.visualizeTopX = function (title, chord, topX) {
+        BayesChordCalculator.prototype.visualizeTopX = function (title, chord, topX) {
             if (topX === void 0) { topX = 10; }
             // var container = new BayesChart('visualization') // document.getElementById('visualization');
             var labels = [];
@@ -158,7 +147,7 @@ var CxChord;
             }
             bayesChart.showChart();
         };
-        BayesCalculator.prototype.visualizeForm = function (form, chord) {
+        BayesChordCalculator.prototype.visualizeForm = function (form, chord) {
             // var container = new BayesChart('visualization') // document.getElementById('visualization');
             var labels = [];
             var posteriorLastRow = this.getPosterior();
@@ -191,8 +180,8 @@ var CxChord;
             }
             bayesChart.showChart();
         };
-        return BayesCalculator;
+        return BayesChordCalculator;
     }());
-    CxChord.BayesCalculator = BayesCalculator;
+    CxChord.BayesChordCalculator = BayesChordCalculator;
 })(CxChord || (CxChord = {}));
 //# sourceMappingURL=CxBayes.js.map

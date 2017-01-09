@@ -73,6 +73,7 @@ var CxChord;
         return _.isUndefined(CxChord.knockouts[_key]) ? [] : CxChord.knockouts[_key];
     }
     CxChord.getKnockouts = getKnockouts;
+    var GR;
     (function (GR) {
         GR[GR["shell"] = 1] = "shell";
         GR[GR["standard"] = 2] = "standard";
@@ -82,8 +83,7 @@ var CxChord;
         GR[GR["reduced"] = 32] = "reduced";
         GR[GR["cluster"] = 64] = "cluster";
         GR[GR["passing"] = 128] = "passing";
-    })(CxChord.GR || (CxChord.GR = {}));
-    var GR = CxChord.GR;
+    })(GR = CxChord.GR || (CxChord.GR = {}));
     CxChord.chordMap = {
         "Maj": { notes: [0, 4, 7], root: 0, inv: 0, group: GR.standard },
         "Maj,7": { notes: [0, 4, 7, 11], root: 0, inv: 0, group: GR.standard },

@@ -2,12 +2,12 @@
 <html>
   <head>
     <title>Jasmine CxChord Test</title>
-    <link rel="stylesheet" href="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+    <link rel="stylesheet" href="../node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
   </head>
   <body>
-    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
-    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
-    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+    <script src="../node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+    <script src="../node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+    <script src="../node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
     <!-- script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/boot-without-onload.js"></script -->
     <!-- script type="text/javascript" src="../node_modules/lodash/index.js"></script -->
     <!-- script type="text/javascript" src="../node_modules/lodash/index.js"></script -->
@@ -41,7 +41,7 @@
         the specs separately. In short we need to load the spec files synchronously for this
         to work.
         -->
-        <script type="text/javascript" src="../node_modules/jasmine-node/node_modules/requirejs/require.js"></script>
+        <script type="text/javascript" src="../node_modules/requirejs/require.js"></script>
       
         <!-- 
         I put my require js config inline for simplicity
@@ -84,33 +84,19 @@
           });
           requirejs(['lodash','CxChord', 'CxBayes', 'CxChart','CxRules', 'CxForms','CxMatch', 'CxChordSpec' ],
             function   () {
-                // google.charts.load("current", {packages:['corechart']});
-                // CxChord.BayesCalculator.setGoogle(google);
-                //foo and bar are loaded according to requirejs
-                //config, but if not found, then node's require
-                //is used to load the module.
                 console.log('lodash version: ' + _.VERSION );
-                console.log("Starting Jasmine");
-                // window.executeTests();
+                console.log("Starting Jasmine"); 
+                var jasmineEnv = jasmine.getEnv();
+                jasmineEnv.updateInterval = 1000;
+                var htmlReporter = new jasmine.HtmlReporter();
+                jasmineEnv.addReporter(htmlReporter);
+                jasmineEnv.specFilter = function(spec) {
+                    return htmlReporter.specFilter(spec);
+                };
                 window.onload(); // triggers jasmine test execution
-                // jasmineEnv.execute();
-                // requirejs(['hk', 'test'], 
-                //     function   ( hk, test) { 
-                        //
-                // })
             });
 
         </script>
-    <!-- include source files here... -->
-    <!-- script src="C:/Work/leadsheet/build/src/CxPro.js"></script>
-    <!-- script src="C:/Work/leadsheet/build/src/CXProLeadsheet.js"></script>
-    <script src="C:/Work/leadsheet/build/src/CxProParser.js"></script -->
-    <!-- script src="C:/Work/leadsheet/build/src/HierarKey.js"></script>
-    <!-- script src="C:/Work/leadsheet/build/src/CxLeadSheet.js"></script>
-
-    <!-- include spec files here... -->
-    <!-- script src="C:/Work/leadsheet/build/test/spec/HierarKeySpec.js"></script>
-    <script src="C:/Work/leadsheet/build/test/spec/test.js"></script -->
    
     <blockquote>
         <table>

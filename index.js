@@ -1,8 +1,8 @@
 var CxChord;
 
 (function(CxChord) {
-    var BayesCalculator = function() {
-        function BayesCalculator(bayesChordMap) {
+    var BayesChordCalculator = function() {
+        function BayesChordCalculator(bayesChordMap) {
             this.bayesChordMap = bayesChordMap;
             this.self = this;
             this.hypothesis = [];
@@ -16,7 +16,7 @@ var CxChord;
             };
             this.createHypothesis();
         }
-        BayesCalculator.prototype.createHypothesis = function() {
+        BayesChordCalculator.prototype.createHypothesis = function() {
             var idx = 0;
             var _self = this.self;
             for (var key in this.bayesChordMap) {
@@ -32,10 +32,10 @@ var CxChord;
                 }
             }
         };
-        BayesCalculator.prototype.getChordMapNotes = function(idx) {
+        BayesChordCalculator.prototype.getChordMapNotes = function(idx) {
             return this.bayesChordMap[this.hypothesis[idx].key][this.hypothesis[idx].inv].notes;
         };
-        BayesCalculator.prototype.standardDeriviation = function(data) {
+        BayesChordCalculator.prototype.standardDeriviation = function(data) {
             var sum = _.sum(data);
             var avg = sum / data.length;
             var squaredDiffs = _.map(data, function(value) {
@@ -46,7 +46,7 @@ var CxChord;
             var stdDev = Math.sqrt(avgSquaredDiff);
             return stdDev;
         };
-        BayesCalculator.prototype.applyRule = function(rule) {
+        BayesChordCalculator.prototype.applyRule = function(rule) {
             var row = this.likelyhoods.length;
             var firstRow = row == 0;
             var normalizingConst = 0;
@@ -61,7 +61,7 @@ var CxChord;
             this.likelyhoods[row].push(normalizingConst);
             this.calcPosterior(row);
         };
-        BayesCalculator.prototype.calcPosterior = function(_row) {
+        BayesChordCalculator.prototype.calcPosterior = function(_row) {
             for (var row = _row < 0 ? 0 : _row; row < this.likelyhoods.length; row++) {
                 var firstRow = row == 0;
                 var colIdx = this.likelyhoods[row].length - 1;
@@ -78,32 +78,32 @@ var CxChord;
                 }
             }
         };
-        BayesCalculator.prototype.getPosteriorByRow = function(rowIdx) {
+        BayesChordCalculator.prototype.getPosteriorByRow = function(rowIdx) {
             if (rowIdx < 0 || rowIdx >= this.posterior.length || _.isUndefined(this.posterior[rowIdx])) throw Error("getPosteriorByRow index: " + rowIdx + " is out of range or undefined");
             for (var col = 0; col < this.hypothesis.length; col++) {
                 this.posterior[rowIdx][col].hypo = this.hypothesis[col];
             }
             return _.orderBy(this.posterior[rowIdx], [ "post", "hypo.len", "hypo.inv" ], "desc");
         };
-        BayesCalculator.prototype.getPosterior = function() {
+        BayesChordCalculator.prototype.getPosterior = function() {
             var lastRow = this.posterior.length - 1;
             if (lastRow < 0) return []; else return this.getPosteriorByRow(lastRow);
         };
-        BayesCalculator.prototype.getHypothesis = function(posterior) {
+        BayesChordCalculator.prototype.getHypothesis = function(posterior) {
             return this.hypothesis[posterior.idx];
         };
-        BayesCalculator.prototype.getHypothesisByIdx = function(idx) {
+        BayesChordCalculator.prototype.getHypothesisByIdx = function(idx) {
             if (idx < 0 || idx >= this.hypothesis.length) throw Error("getHypothesisByIdx index: " + idx + " is out of range");
             return this.hypothesis[idx];
         };
-        BayesCalculator.prototype.getBestPosterior = function(idx) {
+        BayesChordCalculator.prototype.getBestPosterior = function(idx) {
             if (idx === void 0) {
                 idx = 0;
             }
             var res = this.getPosterior();
             return res[idx];
         };
-        BayesCalculator.prototype.getTopX = function(topX, row) {
+        BayesChordCalculator.prototype.getTopX = function(topX, row) {
             if (topX === void 0) {
                 topX = 10;
             }
@@ -113,10 +113,10 @@ var CxChord;
             var posterior = this.getPosteriorByRow(row);
             return _.take(posterior, topX);
         };
-        BayesCalculator.prototype.getRandomIntInclusive = function(min, max) {
+        BayesChordCalculator.prototype.getRandomIntInclusive = function(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         };
-        BayesCalculator.prototype.visualizeTopX = function(title, chord, topX) {
+        BayesChordCalculator.prototype.visualizeTopX = function(title, chord, topX) {
             if (topX === void 0) {
                 topX = 10;
             }
@@ -141,7 +141,7 @@ var CxChord;
             }
             bayesChart.showChart();
         };
-        BayesCalculator.prototype.visualizeForm = function(form, chord) {
+        BayesChordCalculator.prototype.visualizeForm = function(form, chord) {
             var labels = [];
             var posteriorLastRow = this.getPosterior();
             var bayesChart;
@@ -173,9 +173,9 @@ var CxChord;
             }
             bayesChart.showChart();
         };
-        return BayesCalculator;
+        return BayesChordCalculator;
     }();
-    CxChord.BayesCalculator = BayesCalculator;
+    CxChord.BayesChordCalculator = BayesChordCalculator;
 })(CxChord || (CxChord = {}));
 
 var __extends = this && this.__extends || function(d, b) {
@@ -737,10 +737,11 @@ var CxChord;
             if (labels === void 0) {
                 labels = [];
             }
-            _super.call(this, labels);
+            var _this = _super.call(this, labels) || this;
             document.getElementById(htmlElement).innerHTML = "&nbsp;";
-            this.canvas = document.getElementById(htmlElement);
-            this.ctx = this.canvas.getContext("2d");
+            _this.canvas = document.getElementById(htmlElement);
+            _this.ctx = _this.canvas.getContext("2d");
+            return _this;
         }
         BayesChart.prototype.showChart = function() {
             this.barChart = new Chart(this.ctx).Bar(this.barData, this._options);
@@ -920,6 +921,7 @@ var CxChord;
         return _.isUndefined(CxChord.knockouts[_key]) ? [] : CxChord.knockouts[_key];
     }
     CxChord.getKnockouts = getKnockouts;
+    var GR;
     (function(GR) {
         GR[GR["shell"] = 1] = "shell";
         GR[GR["standard"] = 2] = "standard";
@@ -929,8 +931,7 @@ var CxChord;
         GR[GR["reduced"] = 32] = "reduced";
         GR[GR["cluster"] = 64] = "cluster";
         GR[GR["passing"] = 128] = "passing";
-    })(CxChord.GR || (CxChord.GR = {}));
-    var GR = CxChord.GR;
+    })(GR = CxChord.GR || (CxChord.GR = {}));
     CxChord.chordMap = {
         Maj: {
             notes: [ 0, 4, 7 ],
@@ -1406,10 +1407,11 @@ var CxChord;
             if (debugKey === void 0) {
                 debugKey = "Maj";
             }
-            _super.call(this);
-            this.debugKey = debugKey;
-            this.favorJazzChords = false;
-            this.priorChords = [];
+            var _this = _super.call(this) || this;
+            _this.debugKey = debugKey;
+            _this.favorJazzChords = false;
+            _this.priorChords = [];
+            return _this;
         }
         ChordMatcher.prototype.getMatches = function(sharpOrFlat) {
             if (sharpOrFlat === void 0) {
@@ -1577,7 +1579,7 @@ var CxChord;
             return this.matchNotes(midiChord);
         };
         ChordMatcher.prototype.matchNotes = function(midiChord) {
-            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
+            this.bayes = new CxChord.BayesChordCalculator(this.chordMapWithInv);
             this.chord = new CxChord.ChordInstance(midiChord);
             this.chord.favorJazzChords = this.favorJazzChords;
             this.doMatch(this.chord);
@@ -1741,14 +1743,14 @@ var CxChord;
 var CxChord;
 
 (function(CxChord) {
+    var Scale_Type;
     (function(Scale_Type) {
         Scale_Type[Scale_Type["major"] = 1] = "major";
         Scale_Type[Scale_Type["minor"] = 2] = "minor";
         Scale_Type[Scale_Type["altered"] = 4] = "altered";
         Scale_Type[Scale_Type["dominant"] = 8] = "dominant";
         Scale_Type[Scale_Type["dimished"] = 16] = "dimished";
-    })(CxChord.Scale_Type || (CxChord.Scale_Type = {}));
-    var Scale_Type = CxChord.Scale_Type;
+    })(Scale_Type = CxChord.Scale_Type || (CxChord.Scale_Type = {}));
     CxChord.scaleMap = {
         Ionian: {
             notes: [ 0, 2, 4, 5, 7, 9, 11 ],

@@ -2,53 +2,17 @@
 <html>
   <head>
     <title>Jasmine CxChord Test</title>
-    <link rel="stylesheet" href="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+     <link rel="stylesheet" href="../node_modules/jasmine-standalone-2.5.2\lib\jasmine-2.5.2/jasmine.css">
   </head>
   <body>
-    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
-    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
-    <script src="../node_modules/jasmine/node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+     <script src="../node_modules/jasmine-standalone-2.5.2\lib\jasmine-2.5.2/jasmine.js"></script>
+    <script src="../node_modules/jasmine-standalone-2.5.2\lib\jasmine-2.5.2/jasmine-html.js"></script>
+    <script src="../node_modules/jasmine-standalone-2.5.2\lib\jasmine-2.5.2/boot.js"></script>
     <script type="text/javascript"   src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
-    <script type="text/javascript" src="../node_modules/jasmine-node/node_modules/requirejs/require.js"></script>
-      
-        <!-- 
-        I put my require js config inline for simplicity
-        -->
-        <script type="text/javascript">
-          
-          require.config({
-            nodeRequire: require,
-            paths: {
-                'lodash': '../node_modules/lodash/lodash',
-                'CxChord'  : '../index',
-                'CxChordSpec': '../build/test/spec/CxChordSpec'     
-            },
-            shim: {
-                'CxChord' : {
-                       deps: ['lodash'],
-                        exports: 'CxChord'   
-                },
-                'CxChordSpec': { 
-                    deps: ['lodash', 'CxChord' ]
-                 },
-                 'lodash': {
-                     exports: '_'
-                 }
-                 // 'googleG': {
-                 //     exports: 'google'
-                 // }
-                 
-            }
-          });
-          requirejs(['lodash','CxChord', 'CxChordSpec' ],
-            function   () {
-                console.log('lodash version: ' + _.VERSION );
-                console.log("Starting Jasmine");
-                window.onload(); // triggers jasmine test execution
-            });
+    <script type="text/javascript"   src="../node_modules/lodash/lodash.js"></script>
 
-        </script>
-   
+    <script type="text/javascript"   src="../index.js"></script>
+    <script type="text/javascript"   src="../build/test/spec/CxChordSpec.js"></script>
     <blockquote>
         <table>
             <tr>

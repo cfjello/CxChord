@@ -28,10 +28,11 @@ var CxChord;
         __extends(ChordMatcher, _super);
         function ChordMatcher(debugKey) {
             if (debugKey === void 0) { debugKey = "Maj"; }
-            _super.call(this);
-            this.debugKey = debugKey;
-            this.favorJazzChords = false;
-            this.priorChords = [];
+            var _this = _super.call(this) || this;
+            _this.debugKey = debugKey;
+            _this.favorJazzChords = false;
+            _this.priorChords = [];
+            return _this;
         }
         ChordMatcher.prototype.getMatches = function (sharpOrFlat) {
             if (sharpOrFlat === void 0) { sharpOrFlat = 'flat'; }
@@ -228,7 +229,7 @@ var CxChord;
             return this.matchNotes(midiChord);
         };
         ChordMatcher.prototype.matchNotes = function (midiChord) {
-            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv);
+            this.bayes = new CxChord.BayesChordCalculator(this.chordMapWithInv);
             this.chord = new CxChord.ChordInstance(midiChord);
             this.chord.favorJazzChords = this.favorJazzChords;
             //
@@ -264,7 +265,7 @@ var CxChord;
             var ruleH = this.rules.get('MustHave');
             this.bayes.applyRule(ruleH);
             //
-            // FAvor Jazz Chords
+            // Favor Jazz Chords
             // 
             // if ( this.favorJazzChords ) { 
             //      var ruleJ: Rule = this.rules.get('FavorJazz') 

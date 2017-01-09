@@ -2,7 +2,7 @@
   "name": "cxchord",
   "version": "1.0.0",
   "description": "Midi Chord Recognizer",
-  "main": "index.js",
+  "main": "main.js",
   "directories": {
     "test": "test"
   },
@@ -14,17 +14,18 @@
     "jasmine-node": "^1.14.5",
     "jasmine": "^2.4.1",
     "uglifyjs": "latest",
-    "watch": "latest"
+    "watch": "latest",
+    "electron": "^1.4.1"
   },
   "scripts": {
-    "test": "specRunner.html",
+    "start": "electron .",
     "build:tsc": "tsc -p ./",
     "uglify:dist": "uglifyjs build/src/CxBayes.js build/src/CxChart.js build/src/CxChord.js build/src/CxForms.js build/src/CxMatch.js build/src/CxRules.js build/src/CxScales.js build/src/Interfaces.js build/src/references.js -b > ./index.js",
     "build": "npm run build:tsc && npm run uglify:dist",
-    "build:watch": "watch \"npm run build\" src/ test/spec/"
+    "watch": "watch \"npm run build\" src/ test/spec/"
   },
   "keywords": [
-    "Midi",
+    "Midi", 
     "Chords",
     "Recognition"
   ],

@@ -2,15 +2,14 @@
 
 namespace CxChord {
 
-    export class BayesCalculator {
+    export class BayesChordCalculator {
         self = this
-        // google:any = null
-        hypothesis: Hypothesis[] = []
-        rules: Rule[] = []
-        likelyhoods: number[][] = []
-        normalizingConst: number[] = []
-        posterior: Posterior[][] = []
-        chartsCount: number = 0
+        hypothesis:         Hypothesis[]    = []
+        rules:              Rule[]          = []
+        likelyhoods:        number[][]      = []
+        normalizingConst:   number[]        = []
+        posterior:          Posterior[][]   = []
+        chartsCount:        number          = 0
 
         constructor(public bayesChordMap: ChordMapTable) {
             this.createHypothesis()
@@ -41,7 +40,6 @@ namespace CxChord {
         getChordMapNotes(idx: number): number[] {
             return this.bayesChordMap[this.hypothesis[idx].key][this.hypothesis[idx].inv].notes
         }
-
 
         standardDeriviation(data: number[]): number {
             var sum = _.sum(data)
@@ -125,17 +123,6 @@ namespace CxChord {
             return res[idx]
         }
 
-        /*
-        export interface Matches {
-           chord: string
-           root:  string
-           type:  string
-           bass:  string
-           inv:   number
-       }    
-       */
-
-
         getTopX(topX: number = 10, row: number = this.posterior.length - 1): Posterior[] {
             var posterior = this.getPosteriorByRow(row)
             return _.take(posterior, topX)
@@ -149,7 +136,7 @@ namespace CxChord {
 
         randomColorFactor = function () {
             return Math.round(Math.random() * 255);
-        };;
+        }
 
         visualizeTopX(title: string, chord: ChordInstance, topX: number = 10) {
             // var container = new BayesChart('visualization') // document.getElementById('visualization');
@@ -215,6 +202,5 @@ namespace CxChord {
             }
             bayesChart.showChart()
         }
-
     }
 }

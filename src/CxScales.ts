@@ -2,7 +2,6 @@
 
 namespace CxChord {
 
-
 	export enum Scale_Type { major = 1, minor = 2, altered = 4, dominant = 8, dimished = 16 }
 
 	export const scaleMap: ScaleMap = {

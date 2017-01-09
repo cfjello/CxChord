@@ -1,4 +1,5 @@
 /// <reference path="CxBayes.ts" />
+
 namespace CxChord {  
     
     export interface ChordMapEntry {
@@ -40,11 +41,11 @@ namespace CxChord {
     } 
     
     export interface RuleFx {
-        (  chord?: ChordInstance, bayes?: CxChord.BayesCalculator, row?: number, col?: number ) : number
+        (  chord?: ChordInstance, bayes?: CxChord.BayesChordCalculator, row?: number, col?: number ) : number
     }
 
     export interface Rule {
-            rule?:      string
+            rule?:     string
             chord:     ChordInstance
             ruleFx:    RuleFx
     }
@@ -81,21 +82,7 @@ namespace CxChord {
             group: number
         }
 
-        export interface ScaleMap {
-            [key:string]: ScaleMapEntry   
-        }   
-
-    /*
-    //
-    // A lodash mixin function - not good with type checking
-    //         
-    export function addNum (_arr: number [], _val: number) {
-            var arr = []
-            for ( var _i = 0 ; _i < _arr.length; _i++ ) {
-                arr.push(_arr[_i] + _val )
-            }
-            return arr;
-        }
-        _.mixin( {'addNum': CxChord.addNum })
-  */
+    export interface ScaleMap {
+        [key:string]: ScaleMapEntry   
+    }   
 }

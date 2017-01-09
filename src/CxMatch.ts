@@ -2,7 +2,6 @@
 
 namespace CxChord {
 
-
     export class ChordMatch implements ChordMatchIntf {
 
         inv: number
@@ -27,11 +26,10 @@ namespace CxChord {
         }
     }
 
-
     export class ChordMatcher extends CxChord.ChordForms {
 
         chord: ChordInstance
-        bayes: CxChord.BayesCalculator
+        bayes: CxChord.BayesChordCalculator
         rules: CxChord.Rules
         favorJazzChords: boolean = false
         priorChords: ChordInstance[] = []
@@ -171,7 +169,6 @@ namespace CxChord {
                     var remainingNotes = _.difference(chord.chordInv[0], intersection)
                     var extensionMatch = _.intersection(remainingNotes, extensionNotes)
                     chord.matchedNotes[key].extensions.push(extensionMatch)
-
                     //
                     // Now check the knockouts
                     // 
@@ -187,7 +184,6 @@ namespace CxChord {
                     // 
                     // Check for Conflicting notes
                     //
-
                     var conflictCount: number = 0
                     var conflictTrans: number[]
                     var conflictLen = 0
@@ -238,7 +234,7 @@ namespace CxChord {
         }
 
         matchNotes(midiChord: number[]): ChordInstance {
-            this.bayes = new CxChord.BayesCalculator(this.chordMapWithInv)
+            this.bayes = new CxChord.BayesChordCalculator(this.chordMapWithInv)
             this.chord = new ChordInstance(midiChord)
             this.chord.favorJazzChords = this.favorJazzChords
             //
@@ -274,7 +270,7 @@ namespace CxChord {
             var ruleH: Rule = this.rules.get('MustHave')
             this.bayes.applyRule(ruleH)
             //
-            // FAvor Jazz Chords
+            // Favor Jazz Chords
             // 
             // if ( this.favorJazzChords ) { 
             //      var ruleJ: Rule = this.rules.get('FavorJazz') 
