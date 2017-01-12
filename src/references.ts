@@ -4,6 +4,7 @@
 /// <reference path="CxChart.ts" />
 /// <reference path="CxForms.ts" />
 /// <reference path="CxScales.ts" />
+/// <reference path="CxProg.ts" />
 /// <reference path="CxRules.ts" />
 /// <reference path="CxBayes.ts" />
 /// <reference path="CxChord.ts" />
