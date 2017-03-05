@@ -1,0 +1,3 @@
+# CxChord
+Midi chord recognizer
+Do not use this packege just yet...
