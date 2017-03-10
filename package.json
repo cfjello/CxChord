@@ -2,7 +2,7 @@
   "name": "cxchord",
   "version": "1.0.0",
   "description": "Midi Chord Recognizer",
-  "main": "main.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
