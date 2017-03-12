@@ -1,8 +1,8 @@
 {
   "name": "cxchord",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Midi Chord Recognizer",
-  "main": "index.js",
+  "main": "lib/CxChord.js",
   "directories": {
     "test": "test"
   },
@@ -11,21 +11,22 @@
     "lodash": "^4.6.1"
   },
   "devDependencies": {
-    "jasmine-node": "^1.14.5",
-    "jasmine": "^2.4.1",
+    "electron": "^1.4.1",
+    "jasmine": "^2.5.3",
     "uglifyjs": "latest",
-    "watch": "latest",
-    "electron": "^1.4.1"
+    "watch": "latest"
   },
   "scripts": {
     "start": "electron .",
-    "build:tsc": "tsc -p ./",
-    "uglify:dist": "uglifyjs build/src/CxBayes.js build/src/CxChart.js build/src/CxChord.js build/src/CxForms.js build/src/CxMatch.js build/src/CxRules.js build/src/CxScales.js build/src/Interfaces.js build/src/references.js -b > ./index.js",
-    "build": "npm run build:tsc && npm run uglify:dist",
-    "watch": "watch \"npm run build\" src/ test/spec/"
+    "clean": "rimraf lib/CxChord*",
+    "build:tsc": "tsc -p ./ --declaration -t es5 --outFile lib/CxChord.js --module system",
+    "build:test": "tsc -p ./test/spec/ --declaration -t es5 --outFile lib/CxChordSpec.js --module system",
+    "build": "npm run clean && npm run build:tsc && npm run build:test",
+    "predist": "npm run build",
+    "dist": "uglifyjs lib/CxChord.js  > lib/CxChord.min.js"
   },
   "keywords": [
-    "Midi", 
+    "Midi",
     "Chords",
     "Recognition"
   ],

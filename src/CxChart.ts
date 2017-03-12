@@ -3,6 +3,7 @@
 
 namespace CxChord {
 
+    /*
     export var colorSchema = {
         "Mahogany": { hex: "#CD4A4A", rgb: "205,74,74" },
         "FuzzyWuzzyBrown": { hex: "#CC6666", rgb: "204,102,102" },
@@ -125,7 +126,7 @@ namespace CxChord {
         "Gray": { hex: "#95918C", rgb: "149,145,140" },
         "Black": { hex: "#232323", rgb: "35,35,35" }
     }
-
+    */
     export class BarDataSet {
 
         _options = {

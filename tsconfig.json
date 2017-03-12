@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"module": "commonjs",
+		"module": "system",
 		// "module": "amd",
 		"sourceMap": true,
 		"outDir": "build"
@@ -16,7 +16,6 @@
 	 	"src/CxChord.ts", 
 		"src/CxMatch.ts",
 		"src/CxRules.ts",
-	    "src/CxBayes.ts",
-        "test/spec/CxChordSpec.ts"
+	    "src/CxBayes.ts"
     ]
 }

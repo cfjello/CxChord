@@ -3,7 +3,7 @@
 namespace CxChord {
 
 
-    interface RuleMap<K, V> {
+    export interface RuleMap<K, V> {
         // clear(): void;
         // delete(key: K): boolean;
         // forEach(callbackfn: (value: V, index: K, map: Map<K, V>) => void, thisArg?: any): void;
