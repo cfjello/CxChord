@@ -1,12 +1,11 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"module": "system",
-		// "module": "amd",
+		"module": "commonjs",
 		"sourceMap": true,
-		"outDir": "build"
-		// ,
-		// "outFile": "CxChord.js"
+		"outDir": "build",
+		"declaration": true,
+		"declarationDir": "declarations"
 	} ,
 	"files": [
 		"src/Interfaces.ts",
@@ -16,6 +15,7 @@
 	 	"src/CxChord.ts", 
 		"src/CxMatch.ts",
 		"src/CxRules.ts",
-	    "src/CxBayes.ts"
+	    "src/CxBayes.ts",
+		"test/spec/CxChordSpec.ts"
     ]
 }
