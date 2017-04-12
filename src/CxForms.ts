@@ -321,8 +321,7 @@ namespace CxChord {
 			// "Dom7Cluster,-1": [0,5,7,11]
 		} 
 		
-	export class ChordForms {
-			
+	export class ChordForms {	
 		public chordMapWithInv: ChordMapTable = {}
 				
 		constructor() { 

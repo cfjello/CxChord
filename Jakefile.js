@@ -64,13 +64,21 @@ function buildPackageJsFile() {
     var jsFiles = jsFromConfig(tsConfig);
     var allContent = [];
     allContent.push("var CxChord;\n");
+    // if the package is running with nodejs we need lodash in the global namespace
+    allContent.push("if (typeof window === 'undefined') { global._ = require('lodash') }\n");
     _.forEach(jsFiles, function(inFile) {
         console.log("Read <-- " + inFile);
         var content = fs.readFileSync(inFile).toString();    
-        var contentB = content.replace(/^\/\/\/[^>]+>/gm, "").replace(/^var CxChord;\s*$/gm,"").replace(/^# .*\.map\s*$/gm, "");
+        var contentB = content.replace(/^\/\/\/[^>]+>/gm, "")
+                              .replace(/^var CxChord;\s*$/gm,"")
+                              // .replace(/\(function \(\CxChord\)\s*\{$/gm,"")
+                              // .replace(/^\}\)\(CxChord .*\}\)\);\)\s*$/gm, "")
+                              .replace(/^\/\/# .*\.map\s*$/gm, "");
         // console.log(contentB);
         allContent.push(contentB);
     });  
+    // Support for nodejs modeule export 
+    allContent.push("if (typeof window === 'undefined') { module.exports = CxChord; }\n");
     return allContent.join("");
 }
 

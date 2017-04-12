@@ -19,4 +19,5 @@ namespace CxChord {
 
 	export enum Chord_Type { major, majorb5, majorAug, minor, minorb5, dominant, dominantAlt , dimished, halfDiminished } 
 
+	// TODO: implemenation pending
 }

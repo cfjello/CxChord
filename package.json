@@ -7,7 +7,8 @@
   "directories": {
     "src": "src",
     "build": "build",
-    "declarations": "declarations",
+    "example": "example",
+    "declarations": "declare",
     "test": "test",
     "lib": "lib"
   },
@@ -23,13 +24,14 @@
   },
   "scripts": {
     "start": "electron .",
-    "clean": "rimraf src/*.js && rimraf src/*.js.map && rimraf lib/CxChord* && rimraf declarations/*.d.ts && rimraf build/*.js && rimraf build/*.js.map",
+    "clean": "rimraf src/*.js && rimraf src/*.js.map && rimraf lib/CxChord* && rimraf declare/*.d.ts && rimraf build/*.js && rimraf build/*.js.map",
     "build:tsc": "tsc -p ./",
     "build": "npm run clean && npm run build:tsc",
     "predist": "npm run build",
     "dist": "jake libJS && jake typings && uglifyjs lib/CxChord.js  > lib/CxChord.min.js"
   },
   "keywords": [
+
     "Midi",
     "Chords",
     "Recognition"
