@@ -37,11 +37,12 @@ namespace CxChord {
 		}
 
 		getBassName(hypo: Hypothesis, sharpOrFlat: string = 'flat'): string {
-			var bass = this.offset[hypo.inv]
+			var bass = this.offset[0] % 12
 			var bassName: string = CxChord.rootNoteNames[sharpOrFlat][bass]
 			return bassName
 		}
 
+		getBassNumber(): number { return this.offset[0]	}
 
 		getRootName(hypo: Hypothesis, sharpOrFlat: string = 'flat'): string {
 			var _offset = (this.offset[0] + hypo.root) % 12

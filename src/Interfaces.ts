@@ -1,4 +1,5 @@
 /// <reference path="CxBayes.ts" />
+/// <reference path="CxForms.ts" />
 
 namespace CxChord {  
     
@@ -60,13 +61,14 @@ namespace CxChord {
     }
     
     export interface ChordMatchIntf {
+        hypo:  Hypothesis,
         chord: string
         root:  string
         type:  string
         bass:  string
         inv:   number
-        group: number
         notes: number[]
+        list:  string
     }
             
     export interface Posterior {

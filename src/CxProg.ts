@@ -13,6 +13,7 @@ namespace CxChord {
             // size: number;
     // }
 
+    // TODO: Implementation pending
     export class Progresions {
         constructor() {
             this.buildProgressions()

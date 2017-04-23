@@ -1,6 +1,7 @@
 declare module CxChord {
 
 
+
     interface ChordMapEntry {
         notes: number[];
         root: number;
@@ -50,13 +51,14 @@ declare module CxChord {
         group: number;
     }
     interface ChordMatchIntf {
+        hypo: Hypothesis;
         chord: string;
         root: string;
         type: string;
         bass: string;
         inv: number;
-        group: number;
         notes: number[];
+        list: string;
     }
     interface Posterior {
         post: number;
@@ -198,6 +200,7 @@ declare module CxChord {
         addRootOffset(chord: number[], root: number): number[];
         getOffset(inv: number): number;
         getBassName(hypo: Hypothesis, sharpOrFlat?: string): string;
+        getBassNumber(): number;
         getRootName(hypo: Hypothesis, sharpOrFlat?: string): string;
         getInversion(inv: number): number[];
         validate(notes: number[]): void;
@@ -208,13 +211,14 @@ declare module CxChord {
 
 
     class ChordMatch implements ChordMatchIntf {
+        hypo: Hypothesis;
         inv: number;
         type: string;
         notes: number[];
-        group: number;
         chord: string;
         bass: string;
         root: string;
+        list: string;
         constructor(hypo: Hypothesis, chordEntry: ChordInstance, mapEntry: ChordMapEntry, sharpOrFlat?: string);
     }
     class ChordMatcher extends CxChord.ChordForms {
@@ -226,6 +230,7 @@ declare module CxChord {
         priorChords: ChordInstance[];
         constructor(debugKey?: string);
         getMatches(sharpOrFlat?: string): ChordMatch[];
+        getMatch(idx?: number, sharpOrFlat?: string): ChordMatch;
         getPosterior(): Posterior[];
         getChord(): ChordInstance;
         favorJazz(favor?: boolean): void;
@@ -277,7 +282,8 @@ declare module CxChord {
         getHypothesis(posterior: Posterior): Hypothesis;
         getHypothesisByIdx(idx: number): Hypothesis;
         getBestPosterior(idx?: number): Posterior;
-        getTopX(topX?: number, row?: number): Posterior[];
+        normalize(posterior: Posterior[]): void;
+        getTopX(topX?: number, row?: number, normalize?: boolean): Posterior[];
         getRandomIntInclusive(min: number, max: number): number;
         randomColorFactor: () => number;
         visualizeTopX(title: string, chord: ChordInstance, topX?: number): void;

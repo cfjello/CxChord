@@ -20,7 +20,8 @@ declare namespace CxChord {
         getHypothesis(posterior: Posterior): Hypothesis;
         getHypothesisByIdx(idx: number): Hypothesis;
         getBestPosterior(idx?: number): Posterior;
-        getTopX(topX?: number, row?: number): Posterior[];
+        normalize(posterior: Posterior[]): void;
+        getTopX(topX?: number, row?: number, normalize?: boolean): Posterior[];
         getRandomIntInclusive(min: number, max: number): number;
         randomColorFactor: () => number;
         visualizeTopX(title: string, chord: ChordInstance, topX?: number): void;

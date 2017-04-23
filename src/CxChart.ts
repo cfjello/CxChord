@@ -203,14 +203,24 @@ namespace CxChord {
 
         constructor(htmlElement: string = 'visualization', labels: string[] = []) {
             super(labels)
-            document.getElementById(htmlElement).innerHTML = '&nbsp;';
-            this.canvas = <HTMLCanvasElement>document.getElementById(htmlElement)
-            this.ctx = this.canvas.getContext('2d')
+            try {
+                document.getElementById(htmlElement).innerHTML = '&nbsp;';
+                this.canvas = <HTMLCanvasElement>document.getElementById(htmlElement)
+                this.ctx = this.canvas.getContext('2d')
+            }
+            catch(e) {
+                throw Error("BayesChart: No Visualization HtmlElement " + htmlElement  + " found.")
+            }
         }
 
         showChart() {
-            this.barChart = new Chart(this.ctx).Bar(this.barData, this._options);
-            document.getElementById('legend').innerHTML = this.barChart.generateLegend();
+            try {
+                this.barChart = new Chart(this.ctx).Bar(this.barData, this._options);
+                document.getElementById('legend').innerHTML = this.barChart.generateLegend();
+            }
+            catch(e) {
+                throw Error("BayesChart.showChart: Failed to show Chart element.")
+            }
         }
     }
 } 

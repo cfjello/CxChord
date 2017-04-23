@@ -120,12 +120,32 @@ namespace CxChord {
 
         getBestPosterior(idx: number = 0): Posterior {
             var res = this.getPosterior()
-            return res[idx]
+            if ( idx < 0 || idx >= res.length ) 
+                throw Error("getBestPosterior index: " + idx + " is out of range")
+            return res[idx] 
         }
 
-        getTopX(topX: number = 10, row: number = this.posterior.length - 1): Posterior[] {
+        normalize( posterior: Posterior[]  ) {
+            var postArr: number[] = []
+             _.forEach(posterior, function(val) { 
+                 postArr.push(val.post)
+             })
+            var sum = _.sum(postArr)
+            var checkSum = 0
+            for ( var i = 0; i < postArr.length; i++ ) {
+                posterior[i].post = postArr[i] / sum
+                checkSum += posterior[i].post
+            }
+            // console.log( "checkSum: " + checkSum )
+        }
+
+        getTopX(topX: number = 10, row: number = this.posterior.length - 1, normalize: boolean = true): Posterior[] {
             var posterior = this.getPosteriorByRow(row)
-            return _.take(posterior, topX)
+            var postTopX = _.take(posterior, topX)
+            if ( normalize ) {
+               this.normalize(postTopX) 
+            }
+            return postTopX
         }
 
         // Returns a random integer between min (included) and max (included)

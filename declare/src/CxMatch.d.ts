@@ -1,13 +1,14 @@
 /// <reference path="references.d.ts" />
 declare namespace CxChord {
     class ChordMatch implements ChordMatchIntf {
+        hypo: Hypothesis;
         inv: number;
         type: string;
         notes: number[];
-        group: number;
         chord: string;
         bass: string;
         root: string;
+        list: string;
         constructor(hypo: Hypothesis, chordEntry: ChordInstance, mapEntry: ChordMapEntry, sharpOrFlat?: string);
     }
     class ChordMatcher extends CxChord.ChordForms {
@@ -19,6 +20,7 @@ declare namespace CxChord {
         priorChords: ChordInstance[];
         constructor(debugKey?: string);
         getMatches(sharpOrFlat?: string): ChordMatch[];
+        getMatch(idx?: number, sharpOrFlat?: string): ChordMatch;
         getPosterior(): Posterior[];
         getChord(): ChordInstance;
         favorJazz(favor?: boolean): void;

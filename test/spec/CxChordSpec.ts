@@ -69,33 +69,6 @@
           });
       });
       
-   /*
-      it('ChordMatcher.doMatch can do a full match', function () {
-          midiChord = [60, 64, 67, 71]
-          chordInst = new CxChord.ChordInstance(midiChord) 
-          expect(chordInst.chordInv.length).toEqual(4);
-          expect(chordInst.chordInv[0][0]).toEqual(0);
-          expect(chordInst.chordInv[0][1]).toEqual(4);
-          expect(chordInst.chordInv[0][2]).toEqual(7);
-          expect(chordInst.chordInv[0][3]).toEqual(11);
-           
-          var cm =   new CxChord.ChordMatcher()
-          var chordInst2 : CxChord.ChordInstance = cm.doMatch(chordInst)
-          expect(chordInst2).toBeDefined()
-          expect( chordInst2.matchedNotes ).toBeDefined()
-          expect ( _.keys(chordInst2.matchedNotes).length > 0 )
-
-          _.forIn( chordInst2.matchedNotes, function ( value, key ) {
-              if ( key == "maj,7" ) {
-                  expect(value.invertions[0].length).toEqual(4)
-              }
-              else {
-                expect(value.invertions[0].length > 0).toBeTruthy()
-              }
-          });
-      });
-     */ 
-     
       it('ChordMatcher.doMatch can do a partial match with chord extensions', function () {
           midiChord = [60, 67, 71, 74 ]
           chordInst = new CxChord.ChordInstance(midiChord) 
@@ -169,9 +142,6 @@
           expect(CxChord.getChordName("Maj,7,9,#11,13", -2, -7, "flat" ) ).toEqual("BbMaj79#1113/F")
       });
     
-     
-
-
      it('ChordMatcher moves a root correctly', function () {
         var cm =   new CxChord.ChordMatcher()  // [0, 4, 5, 9]
         var inv0 = cm.chordMapWithInv["Min,7,9,-1(B)"][0]
@@ -195,7 +165,6 @@
         expect(inv0.inv).toEqual(0)
         expect(inv0.root).toEqual(-4)
         var newChord = cm.addRootOffset(inv0.notes, inv0.root)
-        
 
         var inv1 = cm.chordMapWithInv["Min,7,9,-1(B)"][1]
         expect(inv1.inv).toEqual(1)
@@ -207,16 +176,12 @@
           midiChord = [60, 64, 67]
           // var chord : CxChord.ChordInstance = new CxChord.ChordInstance(midiChord)        
           var cm =   new CxChord.ChordMatcher()
-          cm.match(midiChord)
-         
+          cm.match(midiChord) 
           var psr = cm.getPosterior()
           expect(psr).toBeDefined()
           expect(psr.length).toBeGreaterThan(0)
-         
-          
           var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual('Maj') 
-          
       });
       
       

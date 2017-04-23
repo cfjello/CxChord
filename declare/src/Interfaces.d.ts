@@ -1,4 +1,5 @@
 /// <reference path="CxBayes.d.ts" />
+/// <reference path="CxForms.d.ts" />
 declare namespace CxChord {
     interface ChordMapEntry {
         notes: number[];
@@ -49,13 +50,14 @@ declare namespace CxChord {
         group: number;
     }
     interface ChordMatchIntf {
+        hypo: Hypothesis;
         chord: string;
         root: string;
         type: string;
         bass: string;
         inv: number;
-        group: number;
         notes: number[];
+        list: string;
     }
     interface Posterior {
         post: number;

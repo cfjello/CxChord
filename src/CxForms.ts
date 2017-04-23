@@ -51,7 +51,7 @@ namespace CxChord {
 			var chordName = CxChord.getNoteName(root, flatOrSharp )
 			var extName   = CxChord.getExtName(nameWithCommas)
 			chordName += extName
-			
+			console.log("chordName(1):'" + chordName + "'")
 			var group = _.isUndefined( CxChord.chordMap[nameWithCommas] ) ? 2 :  CxChord.chordMap[nameWithCommas].group 
 			bass =  bass == 255 ?  root : bass
 			if ( bass !==  root && group != CxChord.GR.rootLess ) {

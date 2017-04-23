@@ -7,22 +7,25 @@ namespace CxChord {
         inv: number
         type: string
         notes: number[] = []
-        group: number
         chord: string
         bass: string
         root: string
+        list: string
 
-        constructor(hypo: Hypothesis, chordEntry: ChordInstance, mapEntry: ChordMapEntry, sharpOrFlat: string = 'flat') {
+        constructor(public hypo: Hypothesis, chordEntry: ChordInstance, mapEntry: ChordMapEntry, sharpOrFlat: string = 'flat') {
             this.inv = hypo.inv
             this.type = hypo.key
             for (var i = 0; i < chordEntry.chordInv[0].length; i++) {
                 var note = chordEntry.chordInv[0][i] + chordEntry.offset[0]
                 this.notes.push(note)
             }
-            this.group = hypo.group
-            this.bass = CxChord.getNoteName(this.notes[0])
-            this.root = CxChord.getNoteName(hypo.root)
-            this.chord = CxChord.getChordName(hypo.key, hypo.root, this.notes[0], sharpOrFlat)
+            this.bass = chordEntry.getBassName(hypo, sharpOrFlat)
+            this.root = chordEntry.getRootName(hypo, sharpOrFlat)           
+            this.list  = this.root + "," + this.hypo.key
+            if ( this.bass !== this.root ) {
+                this.list += ",/" +  this.bass
+            }
+            this.chord = CxChord.getExtName(this.list);
         }
     }
 
@@ -38,14 +41,14 @@ namespace CxChord {
             super()
         }
 
-        getMatches(sharpOrFlat: string = 'flat'): ChordMatch[] {
+        getMatches(sharpOrFlat: string = 'flat'): ChordMatch[] { //TODO: Implement sharpOrFlat
             var post = this.bayes.getPosterior()
             var res: ChordMatch[] = []
             for (var i = 0; i < post.length; i++)
                 if (i == 0 || post[i].post == post[i - 1].post) {
                     var chordEntry = this.chord
                     var chordMapEntry = this.chordMapWithInv[post[i].hypo.key][post[i].hypo.inv]
-                    var entry = new ChordMatch(post[i].hypo, chordEntry, chordMapEntry)
+                    var entry = new ChordMatch(post[i].hypo, chordEntry, chordMapEntry, sharpOrFlat)
                     res.push(entry)
                 }
                 else { break }
@@ -53,9 +56,15 @@ namespace CxChord {
             return res
         }
 
-        getPosterior(): Posterior[] {
-            return this.bayes.getPosterior()
+        getMatch(idx: number = 0, sharpOrFlat: string = 'flat'): ChordMatch {
+            var res: ChordMatch[] = this.getMatches(sharpOrFlat)
+            if ( idx < 0 || idx >= res.length ) 
+                throw Error("getMatch index: " + idx + " is out of range")
+            else 
+                return res[idx]
         }
+
+        getPosterior(): Posterior[] { return this.bayes.getPosterior() }
 
         getChord() { return this.chord }
 
@@ -233,10 +242,12 @@ namespace CxChord {
             return this.matchNotes(midiChord)
         }
 
-        matchNotes(midiChord: number[]): ChordInstance {
+        matchNotes(midiChord: number[]): ChordInstance { 
             this.bayes = new CxChord.BayesChordCalculator(this.chordMapWithInv)
             this.chord = new ChordInstance(midiChord)
             this.chord.favorJazzChords = this.favorJazzChords
+            //
+            // TODO: Application of rules should be configurable or even dynamic for best matching capabilities
             //
             // Do chord tone matches 
             //     

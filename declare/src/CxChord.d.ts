@@ -12,6 +12,7 @@ declare namespace CxChord {
         addRootOffset(chord: number[], root: number): number[];
         getOffset(inv: number): number;
         getBassName(hypo: Hypothesis, sharpOrFlat?: string): string;
+        getBassNumber(): number;
         getRootName(hypo: Hypothesis, sharpOrFlat?: string): string;
         getInversion(inv: number): number[];
         validate(notes: number[]): void;

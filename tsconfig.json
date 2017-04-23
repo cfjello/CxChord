@@ -5,7 +5,7 @@
 		"sourceMap": true,
 		"outDir": "build",
 		"declaration": true,
-		"declarationDir": "declarations"
+		"declarationDir": "declare"
 	} ,
 	"files": [
 		"src/Interfaces.ts",

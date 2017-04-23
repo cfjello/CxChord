@@ -34,6 +34,9 @@ namespace CxChord {
 
         constructor(_chord: ChordInstance = null, public debugKey: string = 'Maj') {
             //
+            // TODO: Scores and Penalties (tax) should be configurable or even dynamic for best matching capability
+            //
+            //
             // Even Distribution Rule
             // 
             this.set('EvenDistribution', {
