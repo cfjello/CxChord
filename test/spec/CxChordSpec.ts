@@ -2,7 +2,7 @@
 /// <reference path="../../src/references.ts" />
 
 // import jasmine = require("C:/Users/Claus/AppData/Roaming/npm/node_modules/lib/jasmine.js");
-  
+import  * as _ from "lodash"; 
   
   // jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
   
