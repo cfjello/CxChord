@@ -42,9 +42,4 @@ cm.match(midiChord);
 mached = cm.getMatch();
 console.log( JSON.stringify(mached, null, " ") );
 ```
-See the examples directory for more examples or ./test/spec/CxChordSpec.ts for more details.
-
-Run the test cases
-------------------
-
-In your browser, open the specRunnerJS.html page: "file:///<your own full path>/CxChord/test/specRunnerJS.html"
+See the examples directory of the package under node_modules for more examples or ./test/spec/CxChordSpec.ts for more details.
