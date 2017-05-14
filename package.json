@@ -1,6 +1,6 @@
 {
   "name": "cxchord",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Midi Chord Recognizer",
   "main": "lib/CxChord.js",
   "types": "lib/CxChord.d.ts",
@@ -34,10 +34,20 @@
     "dist": "jake libJS && jake types && uglifyjs lib/CxChord.js  > lib/CxChord.min.js"
   },
   "keywords": [
-    "Midi",
-    "Chords",
-    "Recognition"
+    "midi",
+    "midinote",
+    "chords",
+    "recognition",
+    "Bayes"
   ],
   "author": "Claus Fjelloe-Jensen <claus.fjello@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.com/BernhardPaw/CxChord.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BernhardPaw/CxChord/issues"
+  }
+  
 }

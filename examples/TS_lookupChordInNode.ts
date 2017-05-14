@@ -1,7 +1,7 @@
-///<reference path="../node_modules/@types/node/index.d.ts" />
-///<reference path="../typings/lodash/lodash.d.ts" />
-///<reference path="../typings/chartjs/chart.d.ts" />
-///<reference path="../lib/CxChord.d.ts" />
+///<reference types="../node_modules/@types/node" />
+///<reference types="../node_modules/@types/lodash" />
+///<reference types="../node_modules/@types/chartjs" />
+///<reference types="../lib/CxChord" />
 
 import * as _ from "lodash"
 var  CxChord = require("../lib/CxChord.js")
