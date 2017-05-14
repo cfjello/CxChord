@@ -11,9 +11,6 @@ Installation
 -------------
 
     $ npm install cxchord
-    $ cd cxchord
-    $ npm install
-
 
 Usage JavaScript
 ----------------
@@ -21,54 +18,30 @@ Usage JavaScript
 //
 // Lookup Chords for midi notes
 // 
-var CxChord = require('../lib/CxChord.js');
+var CxChord = require('cxchord');
 
 console.log("-------------------");
 var midiChord = [64, 67, 71, 72, 74, 78, 81 ];
 var cm =  new CxChord.ChordMatcher()
 cm.match(midiChord)
 var mached = cm.getMatch();
-console.log( JSON.stringify(mached, null, " ") )
-```
+console.log( JSON.stringify(mached, null, " ") );
 
-With a Favor Jazz (rootless block chords option):
-
-```javascript
 console.log("-------------------");
 console.log("First match a normal Major Chord:");
-var midiChord = [ 63, 67, 69, 74] 
-var cm =  new CxChord.ChordMatcher()
-cm.match(midiChord)
+var midiChord = [ 63, 67, 69, 74];
+var cm =  new CxChord.ChordMatcher();
+cm.match(midiChord);
 mached = cm.getMatch();
-console.log( JSON.stringify(mached, null, " ") )
+console.log( JSON.stringify(mached, null, " ") );
 
 console.log("-------------------");
 console.log("Then the same notes, but this time favor a Jazz block chord interpretation:");
-cm.favorJazz(true)
-cm.match(midiChord)
+cm.favorJazz(true);
+cm.match(midiChord);
 mached = cm.getMatch();
-console.log( JSON.stringify(mached, null, " ") )
+console.log( JSON.stringify(mached, null, " ") );
 ```
-
-Usage TypeScript
-----------------
-```javascript
-///<reference types="../node_modules/@types/node" />
-///<reference types="../node_modules/@types/lodash" />
-///<reference types="../node_modules/@types/chartjs" />
-///<reference types="../lib/CxChord" />
-
-import * as _ from "lodash"
-var  CxChord = require("../lib/CxChord.js")
-
-console.log("-------------------");
-var midiChord = [64, 67, 71, 72, 74, 78, 81 ];
-var cm =  new CxChord.ChordMatcher()
-cm.match(midiChord)
-var mached = cm.getMatch();
-console.log( JSON.stringify(mached, null, " ") )
-```
-
 See the examples directory for more examples or ./test/spec/CxChordSpec.ts for more details.
 
 Run the test cases

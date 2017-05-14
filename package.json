@@ -1,6 +1,6 @@
 {
   "name": "cxchord",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Midi Chord Recognizer",
   "main": "lib/CxChord.js",
   "types": "lib/CxChord.d.ts",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@types/chartjs": "0.0.29",
-    "@types/lodash": "^4.14.50",
+    "@types/lodash@ts2.0": "^4.14.50",
     "@types/node": "^7.0.13",
     "chart.js": "^2.1.3",
     "lodash": "^4.6.1"
