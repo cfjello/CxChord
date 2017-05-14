@@ -1,7 +1,7 @@
-///<reference path="../node_modules/@types/node/index.d.ts" />
-///<reference path="../typings/lodash/lodash.d.ts" />
-///<reference path="../typings/chartjs/chart.d.ts" />
-///<reference path="../lib/CxChord.d.ts" />
+///<reference types="node" />
+///<reference types="lodash" />
+///<reference types="chartjs" />
+///<reference types="../lib/CxChord" />
 "use strict";
 var CxChord = require("../lib/CxChord.js");
 console.log("-------------------");
@@ -10,3 +10,4 @@ var cm = new CxChord.ChordMatcher();
 cm.match(midiChord);
 var mached = cm.getMatch();
 console.log(JSON.stringify(mached, null, " "));
+//# sourceMappingURL=TS_lookupChordInNode.js.map

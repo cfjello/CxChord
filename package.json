@@ -1,6 +1,6 @@
 {
   "name": "cxchord",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Midi Chord Recognizer",
   "main": "lib/CxChord.js",
   "types": "lib/CxChord.d.ts",

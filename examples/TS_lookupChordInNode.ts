@@ -1,6 +1,6 @@
-///<reference types="../node_modules/@types/node" />
-///<reference types="../node_modules/@types/lodash" />
-///<reference types="../node_modules/@types/chartjs" />
+///<reference types="node" />
+///<reference types="lodash" />
+///<reference types="chartjs" />
 ///<reference types="../lib/CxChord" />
 
 import * as _ from "lodash"

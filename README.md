@@ -10,8 +10,8 @@ Do not use this package just yet
 Installation
 -------------
 
-    $ npm install CxChord
-    $ cd CxChord
+    $ npm install cxchord
+    $ cd cxchord
     $ npm install
 
 
