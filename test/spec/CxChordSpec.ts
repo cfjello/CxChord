@@ -1,4 +1,4 @@
-/// <reference path="../../typings/jasmine/jasmine.d.ts"/>
+/// <reference types="../../node_modules/@types/jasmine"/>
 /// <reference path="../../src/references.ts" />
 
 // import jasmine = require("C:/Users/Claus/AppData/Roaming/npm/node_modules/lib/jasmine.js");

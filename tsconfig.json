@@ -5,7 +5,10 @@
 		"sourceMap": true,
 		"outDir": "build",
 		"declaration": true,
-		"declarationDir": "declare"
+		"declarationDir": "declare",
+		"typeRoots": [
+			"node_modules/@types"
+	    ]
 	} ,
 	"files": [
 		"src/Interfaces.ts",

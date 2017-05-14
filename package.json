@@ -14,12 +14,13 @@
   },
   "dependencies": {
     "@types/chartjs": "0.0.29",
-    "@types/lodash": "^4.14.63",
+    "@types/lodash": "^4.14.50",
     "@types/node": "^7.0.13",
     "chart.js": "^2.1.3",
     "lodash": "^4.6.1"
   },
   "devDependencies": {
+    "@types/jasmine": "^2.5.47",
     "electron": "^1.4.1",
     "jasmine": "^2.5.3",
     "uglifyjs": "latest"
@@ -30,7 +31,7 @@
     "build:tsc": "tsc -p ./",
     "build": "npm run clean && npm run build:tsc",
     "predist": "npm run build",
-    "dist": "jake libJS && jake typings && uglifyjs lib/CxChord.js  > lib/CxChord.min.js"
+    "dist": "jake libJS && jake types && uglifyjs lib/CxChord.js  > lib/CxChord.min.js"
   },
   "keywords": [
     "Midi",

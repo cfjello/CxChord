@@ -1,5 +1,5 @@
-/// <reference path="../typings/lodash/lodash.d.ts" />
-/// <reference path="../typings/chartjs/chart.d.ts" />
+/// <reference types="../node_modules/@types/lodash" />
+/// <reference types="../node_modules/@types/chartjs" />
 /// <reference path="Interfaces.ts" />
 /// <reference path="CxChart.ts" />
 /// <reference path="CxForms.ts" />
@@ -9,6 +9,3 @@
 /// <reference path="CxBayes.ts" />
 /// <reference path="CxChord.ts" />
 /// <reference path="CxMatch.ts" />
-
-
-

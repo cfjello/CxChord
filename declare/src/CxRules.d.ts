@@ -1,4 +1,5 @@
 /// <reference path="references.d.ts" />
+/// <reference types="lodash" />
 declare namespace CxChord {
     interface RuleMap<K, V> {
         get(key: K): V;

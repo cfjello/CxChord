@@ -1,5 +1,3 @@
-/// <reference path="../../typings/lodash/lodash.d.ts" />
-/// <reference path="../../typings/chartjs/chart.d.ts" />
 /// <reference path="Interfaces.d.ts" />
 /// <reference path="CxChart.d.ts" />
 /// <reference path="CxForms.d.ts" />

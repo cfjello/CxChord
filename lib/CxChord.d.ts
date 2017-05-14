@@ -77,6 +77,7 @@ declare module CxChord {
 
 
 
+
     class BarDataSet {
         labels: string[];
         _options: {
@@ -241,6 +242,7 @@ declare module CxChord {
         matchNoteNames(midiNames: string[]): ChordInstance;
         matchNotes(midiChord: number[]): ChordInstance;
     }
+
 
 
 

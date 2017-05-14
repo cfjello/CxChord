@@ -1,4 +1,5 @@
 /// <reference path="references.d.ts" />
+/// <reference types="chartjs" />
 declare namespace CxChord {
     class BarDataSet {
         labels: string[];

@@ -1,6 +1,5 @@
 /// <reference path="references.ts" />
 
-
 namespace CxChord {
 
     /*

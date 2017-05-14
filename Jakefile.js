@@ -87,10 +87,10 @@ function buildPackageJsFile() {
 //
 
 desc('This task build the Typescript CxChord.d.ts definition file')
-task('typings', function() {
+task('types', function() {
     var typingsContent = buildPackageTypingsFile();
     // var typingsFile    = packageFile.directories["lib"] + "/" + packageName + '.d.ts';
-    var typingsFile = packageFile.typings  + '.d.ts';
+    var typingsFile = packageFile.types;
     console.log("Write --> " + typingsFile);
     fs.writeFileSync(typingsFile, typingsContent);
 });
