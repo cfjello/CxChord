@@ -1,18 +1,14 @@
-# CxChord - TESTING THE DISTRIBUTION Do NOT USE JUST YET
+# CxChord
 ## Midi chord recognizer ##
 
 Recognizes Chords from an array of midi notes and uses a Bayes probalistic method to find the most likely matches.
--------------
-
-Do not use this package just yet 
-
 
 Installation
 -------------
 
     $ npm install cxchord
 
-Usage JavaScript
+Usage JavaScript:
 ----------------
 ```javascript
 //
@@ -42,4 +38,4 @@ cm.match(midiChord);
 mached = cm.getMatch();
 console.log( JSON.stringify(mached, null, " ") );
 ```
-See the examples directory of the package under node_modules for more examples or ./test/spec/CxChordSpec.ts for more details.
+See also the examples directory of the package under node_modules or the test specification under ./test/spec/CxChordSpec.ts for more details.
