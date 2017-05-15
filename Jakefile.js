@@ -46,17 +46,18 @@ function jsFromConfig(configPath) {
 }
 
 function buildPackageTypingsFile() {
-    var declarationFiles = declarationsFromConfig(tsConfig);
+    var declarationFiles =  declarationsFromConfig(tsConfig);
     var allContent = [];
-    allContent.push("declare module CxChord {\n");
+    allContent.push("declare namespace CxChord {\n");
     _.forEach(declarationFiles, function(inFile) {
         console.log("Read <-- " + inFile);
         var content = fs.readFileSync(inFile).toString();    
-        var contentB = content.replace(/^\/\/\/[^>]+>/gm, "").replace(/^declare (namespace|module) CxChord \{/gm,"").replace(/^\}/gm,"");
+        var contentB = content.replace(/^\/\/\/[^>]+>/gm, "").replace(/^\s*declare\s+namespace\s+CxChord\s+\{\s*$/gim,"").replace(/^\}/gm,"");
         // console.log(contentB);
         allContent.push(contentB);
     });  
-    allContent.push("}\n");   
+    allContent.push("}\n");  
+    allContent.push("declare module \"CxChord\" {\n export = CxChord;\n}" ); 
     return allContent.join("");
 }
 
@@ -82,6 +83,24 @@ function buildPackageJsFile() {
     return allContent.join("");
 }
 
+function buildPackageTsFile() {
+    var tsFiles = filesFromConfig(tsConfig);
+    var allContent = [];
+    allContent.push("if (typeof window === 'undefined') { import * as _ from \"lodash\" }\n");
+    _.forEach(tsFiles, function(inFile) {
+        if ( inFile.match(/^src\//) ) {
+            console.log("Read <-- " + inFile);
+            var content = fs.readFileSync(inFile).toString();    
+            var contentB = content.replace(/^\/\/\/[^>]+>/gm, "").replace(/^\s*namespace\s+CxChord\s+\{/gm,"").replace(/^\}/gm,"");
+            // console.log(contentB);
+            if ( ! contentB.match(/^\s*$/) ) {
+                allContent.push(contentB);
+            }
+        }
+    });    
+    return allContent.join("");
+}
+
 //
 // Tasks
 //
@@ -99,6 +118,15 @@ desc('This task build the CxChord.js file')
 task('libJS', function() {
     var jsContent = buildPackageJsFile();
     var jsFile    = packageFile.directories["lib"] + "/" + packageName + '.js';
+    console.log("Write --> " + jsFile);
+    fs.writeFileSync(jsFile, jsContent);
+});
+
+
+desc('This task build the CxChord.ts file')
+task('libTS', function() {
+    var jsContent = buildPackageTsFile();
+    var jsFile    = packageFile.directories["lib"] + "/" + packageName + '.ts';
     console.log("Write --> " + jsFile);
     fs.writeFileSync(jsFile, jsContent);
 });

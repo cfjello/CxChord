@@ -1,6 +1,4 @@
-declare module CxChord {
-
-
+declare namespace CxChord {
 
     interface ChordMapEntry {
         notes: number[];
@@ -76,8 +74,6 @@ declare module CxChord {
     }
 
 
-
-
     class BarDataSet {
         labels: string[];
         _options: {
@@ -127,7 +123,6 @@ declare module CxChord {
     }
 
 
-
     const rootNoteNames: RootNoteNames;
     const noteNames: string[];
     function getNoteNumber(note: string): number;
@@ -165,7 +160,6 @@ declare module CxChord {
     }
 
 
-
     enum Scale_Type {
         major = 1,
         minor = 2,
@@ -188,7 +182,6 @@ declare module CxChord {
     }
 
 
-
     class ChordInstance {
         midiChord: number[];
         normalizeChord: boolean;
@@ -208,7 +201,6 @@ declare module CxChord {
         normalize(notes: number[]): number[];
         invert(notes: number[]): number[][];
     }
-
 
 
     class ChordMatch implements ChordMatchIntf {
@@ -244,8 +236,6 @@ declare module CxChord {
     }
 
 
-
-
     interface RuleMap<K, V> {
         get(key: K): V;
         has(key: K): boolean;
@@ -261,7 +251,6 @@ declare module CxChord {
         set(key: any, value: any): any;
         constructor(_chord?: ChordInstance, debugKey?: string);
     }
-
 
 
     class BayesChordCalculator {
@@ -292,4 +281,7 @@ declare module CxChord {
         visualizeForm(form: string, chord: ChordInstance): void;
     }
 
+}
+declare module "CxChord" {
+ export = CxChord;
 }
