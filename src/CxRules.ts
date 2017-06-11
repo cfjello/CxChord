@@ -130,7 +130,12 @@ namespace CxChord {
                     var inversionTax = 0.1 * inv
                     inversionTax = inversionTax < 1 ? inversionTax : 0.8
                     if (jazzChord) {
-                        score = indexOfRoot >= 0 ? 0.2 : 1 - inversionTax
+                        if ( jazzChord && ! favorJazz ) {
+                            score = 0.2 
+                        }
+                        else {
+                            score = indexOfRoot >= 0 ? 0.2 : 1 - inversionTax
+                        }
                     }
                     else if (indexOfRoot == 0) {
                         score = favorJazz ? 0.7 : 1

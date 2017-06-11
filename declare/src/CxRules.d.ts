@@ -12,7 +12,7 @@ declare namespace CxChord {
         ruleMap: {};
         size: number;
         get(key: any): any;
-        has(key: any): boolean;
+        has(key: any): any;
         set(key: any, value: any): any;
         constructor(_chord?: ChordInstance, debugKey?: string);
     }

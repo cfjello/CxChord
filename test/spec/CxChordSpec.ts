@@ -2,7 +2,9 @@
 /// <reference path="../../src/references.ts" />
 
 // import jasmine = require("C:/Users/Claus/AppData/Roaming/npm/node_modules/lib/jasmine.js");
-import  * as _ from "lodash"; 
+ 
+// import  * as _ from "lodash"; 
+if (typeof window === 'undefined') { var _ = require('lodash') }
   
   // jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
   
@@ -600,8 +602,8 @@ import  * as _ from "lodash";
   
           midiChord = [ 60, 64, 65, 69]
           var cm =   new CxChord.ChordMatcher()
-          cm.match(midiChord)
           cm.favorJazz(true)
+          cm.match(midiChord)
           var p0 = cm.bayes.getBestPosterior()
           expect(p0.hypo.key).toEqual("Min,7,9,-1(B)" ) 
           
@@ -736,5 +738,18 @@ import  * as _ from "lodash";
           // cm.bayes.visualizeForm('Dom,7,9,-1(A)', cm.getChord())
           expect(p0.hypo.key).toEqual('Dom,7,9,-1(A)')    
           
+         }); 
+
+         it('ChordMatcher can match multiple chords with a single match instance', function () { 
+          var cm =   new CxChord.ChordMatcher()
+          var midiChord = [17, 21, 23, 28 ]
+          for (var i= 0 ; i < 400 ; i++) {
+            for ( var d = 0; d < midiChord.length; d++ ) {
+                midiChord[d] = ( Math.round( Math.random() * 127 ) )   
+            }
+            cm.match(midiChord)
+            var p0 = cm.bayes.getBestPosterior(1) 
+            expect(p0.hypo.key).toBeDefined()
+          }
          }); 
   });
