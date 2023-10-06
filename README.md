@@ -1,6 +1,8 @@
 # CxChord
 ## Midi chord recognizer ##
 
+THIS PROJECT IS NO LONGER MAINTAINED - I WILL BE MOVING IT TO DENO AT SOME POINT IN THE FUTURE.
+
 Recognizes Chords from an array of midi notes and uses a Bayes probalistic method to find the most likely matches.
 
 [An explaination of Midi Note Numbers can be seen here.](http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm)
