@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
-		"target": "es5",
-		"module": "commonjs",
-		"sourceMap": true,
-		"outDir": "build",
+		"module": "CommonJS",
+		"target": "es5", 
+        "lib": [ "ESNext","es5", "es6", "dom"],
+		"outDir": "lib",
 		"declaration": true,
 		"declarationDir": "declare",
 		"typeRoots": [
@@ -15,10 +15,11 @@
 		"src/CxChart.ts",
 		"src/CxForms.ts",
 		"src/CxScales.ts",
-	 	"src/CxChord.ts", 
+	 	"src/CxChordInst.ts", 
 		"src/CxMatch.ts",
 		"src/CxRules.ts",
 	    "src/CxBayes.ts",
-		"test/spec/CxChordSpec.ts"
+		"src/CxChord.ts",
+		"src/CxChordSpec.ts"
     ]
 }

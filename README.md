@@ -3,7 +3,7 @@
 
 Recognizes Chords from an array of midi notes and uses a Bayes probalistic method to find the most likely matches.
 
-[An explaination of Midi Note Numbers can be seen here.](http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm)
+[An explaination of Midi Note Numbers can be seen here.](https://computermusicresource.com/midikeys.html)
 
 Installation
 -------------
@@ -12,11 +12,17 @@ Installation
 
 Usage JavaScript (sample.js):
 ----------------
+
+Go into the example directory:
+```
+cd examples
+```
+
 ```javascript
 //
 // Lookup Chords for midi notes
 // 
-var CxChord = require('cxchord');
+var CxChord = require('../lib/CxChord');
 
 console.log("-------------------");
 var midiChord = [64, 67, 71, 72, 74, 78, 81 ];
@@ -45,10 +51,10 @@ Execute the script at the command prompt:
 $ node sample.js
 ```
 
-Usage TypeScript (TsSample.ts):
+Usage TypeScript (tsSample.ts):
 ----------------
 ```javascript
-import * as CxChord from "CxChord"
+import * as CxChord from "../lib/CxChord"
 
 console.log("-------------------");
 var midiChord = [64, 67, 71, 72, 74, 78, 81 ];
@@ -59,31 +65,25 @@ console.log( JSON.stringify(mached, null, " ") )
 ```
 Compile and execute the script at the command prompt:
 ```javascript
-$ tsc TsSample.ts
-$ node TsSample.js
+$ tsc tsSample.ts
+$ node tsSample.js
 ```
 
 Usage HTML (sample.html):
 ----------------
+This `sample.html` file will generate the following web-page:
+
+![Sample Output](./examples/webSample.png)
+
 ```javascript
 <!doctype html>
 <html>
   <head>
     <title>CxChord HTML Example</title>
+    <meta http-equiv="content-type" content="text/html; image/svg; charset=utf-8 ;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
   </head>
   <body>
-    <script type="text/javascript"   src="./node_modules/cxchord/lib/Chart.min.js"></script>
-    <script type="text/javascript"   src="./node_modules/lodash/lodash.js"></script>
-    <script type="text/javascript"   src="./node_modules/cxchord/lib/CxChord.js"></script>
-    <script type="text/javascript">
-        window.onload = function() {
-            midiChord = [64, 67, 71, 72, 74, 78, 81];
-            cm =   new CxChord.ChordMatcher();
-            cm.match(midiChord);
-            p0 = cm.bayes.getBestPosterior();
-            cm.bayes.visualizeTopX("Match", cm.getChord(), 15);
-        }
-    </script>
     <h2> Math midi notes 64, 67, 71, 72, 74, 78, 81  ( E, G, B, C, D, F#, A ) </h2>
     <blockquote>
         Identifies a Cmaj type chord in first inversion (here displaying the first 15 chord-posibilities ranked): 
@@ -98,9 +98,10 @@ Usage HTML (sample.html):
              </tr>
          </table>
     </blockquote>
+    <script type="text/javascript"  src="./sample.html.bundle.js"></script>
    </body>
 </html>
 ```
-Open the html file in your browser.
+Open the html file in your browser. Note that the `examples/sample.html.bundle.js` is a browseryfied and bablified version of `examples\sample.html.js` in order to work in the browser. Have a look at `BrowserifyBuild.js` to see how this works.
 
-For more details see the test specification under node_modules/cxchord/test/spec/CxChordSpec.ts for more details.
+You can have a look at the test specification src/CxChordSpec.ts for more details.

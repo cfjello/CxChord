@@ -6,32 +6,37 @@
   "types": "lib/CxChord.d.ts",
   "directories": {
     "src": "src",
-    "build": "build",
+    "build": "lib",
     "example": "example",
     "declarations": "declare",
     "test": "test",
     "lib": "lib"
   },
   "dependencies": {
-    "@types/chartjs": "0.0.29",
-    "@types/lodash": "ts2.0",
+    "@types/lodash": "latest",
     "@types/node": "^7.0.13",
     "chart.js": "^2.1.3",
-    "lodash": "^4.6.1"
+    "lodash": "^4.6.1",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.22.20",
+    "@types/chart.js": "^2.9.39",
     "@types/jasmine": "^2.5.47",
-    "electron": "^1.4.1",
-    "jasmine": "^2.5.3",
-    "uglifyjs": "latest"
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "jasmine": "^2.99.0",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "start": "electron .",
-    "clean": "rimraf src/*.js && rimraf src/*.js.map && rimraf lib/CxChord* && rimraf declare/src/*.d.ts  && rimraf declare/test/spec/*.d.ts && rimraf build/*.js && rimraf build/*.js.map",
-    "build:tsc": "tsc -p ./",
-    "build": "npm run clean && npm run build:tsc",
-    "predist": "npm run build",
-    "dist": "jake libJS && jake types && uglifyjs lib/CxChord.js  > lib/CxChord.min.js"
+    "pretest": "npm run build",
+    "test": "jasmine lib/CxChordSpec.js",
+    "build": "tsc -p tsconfig.json",
+    "predist": "npm run test",
+    "dist": "node BrowserifyBuild.js"
   },
   "keywords": [
     "midi",
@@ -42,9 +47,9 @@
   ],
   "author": "Claus Fjelloe-Jensen <claus.fjello@gmail.com>",
   "license": "ISC",
-  "repository" : { 
-    "type" : "git",
-    "url" : "https://github.com/BernhardPaw/CxChord.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BernhardPaw/CxChord.git"
   },
   "bugs": {
     "url": "https://github.com/BernhardPaw/CxChord/issues"

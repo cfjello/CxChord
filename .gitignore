@@ -1,5 +1,5 @@
-
+old/
 node_modules/
 build/
-declarations/
+declare/
 typings/

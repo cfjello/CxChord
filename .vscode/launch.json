@@ -15,7 +15,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}/examples/testNode.js"
+            "program": "${workspaceRoot}/BrowserifyBuild.js"
         },
         {
             "type": "node",
