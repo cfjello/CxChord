@@ -3,12 +3,7 @@
 
 Recognizes Chords from an array of midi notes and uses a Bayes probalistic method to find the most likely matches.
 
-[An explaination of Midi Note Numbers can be seen here.](https://computermusicresource.com/midikeys.html)
-
-Installation
--------------
-
-    $ npm install cxchord
+[An explaination of Midi Note Numbers can be seen here.](https://www.computermusicresource.com/midikeys.html)
 
 Usage JavaScript (sample.js):
 ----------------
