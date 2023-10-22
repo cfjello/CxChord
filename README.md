@@ -5,6 +5,16 @@ Recognizes Chords from an array of midi notes and uses a Bayes probalistic metho
 
 [An explaination of Midi Note Numbers can be seen here.](https://www.computermusicresource.com/midikeys.html)
 
+This `examples/sample.html` file will generate the following web-page:
+
+![Sample Output](./examples/webSample.png)
+
+
+Installation:
+```
+npm install cxchord
+```
+
 Usage JavaScript (sample.js):
 ----------------
 
@@ -64,11 +74,8 @@ $ tsc tsSample.ts
 $ node tsSample.js
 ```
 
-Usage HTML (sample.html):
+Usage HTML (examples/sample.html):
 ----------------
-This `sample.html` file will generate the following web-page:
-
-![Sample Output](./examples/webSample.png)
 
 ```javascript
 <!doctype html>
@@ -79,7 +86,7 @@ This `sample.html` file will generate the following web-page:
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
   </head>
   <body>
-    <h2> Math midi notes 64, 67, 71, 72, 74, 78, 81  ( E, G, B, C, D, F#, A ) </h2>
+    <h2> Match midi notes 64, 67, 71, 72, 74, 78, 81  ( E, G, B, C, D, F#, A ) </h2>
     <blockquote>
         Identifies a Cmaj type chord in first inversion (here displaying the first 15 chord-posibilities ranked): 
         <table>
@@ -97,6 +104,6 @@ This `sample.html` file will generate the following web-page:
    </body>
 </html>
 ```
-Open the html file in your browser. Note that the `examples/sample.html.bundle.js` is a browseryfied and bablified version of `examples\sample.html.js` in order to work in the browser. Have a look at `BrowserifyBuild.js` to see how this works.
+Open the html file in your browser, e.g. in `vscode` right and choose `Open In Default Browser`. Note that the `examples/sample.html.bundle.js` is a browseryfied and bablified version of `examples\sample.html.js` in order to work in the browser. Have a look at `BrowserifyBuild.js` to see how that works.
 
 You can have a look at the test specification src/CxChordSpec.ts for more details.

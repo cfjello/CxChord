@@ -19,7 +19,7 @@
 		"src/CxMatch.ts",
 		"src/CxRules.ts",
 	    "src/CxBayes.ts",
-		"src/CxChord.ts",
+		"src/cxchord.ts",
 		"src/CxChordSpec.ts"
     ]
 }

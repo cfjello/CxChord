@@ -1,4 +1,4 @@
-import { ChordInstance, ChordMatcher, getChordName, getExtName, getNoteNumber } from "./CxChord"
+import { ChordInstance, ChordMatcher, getChordName, getExtName, getNoteNumber } from "./cxchord"
 import * as _ from 'lodash'
   
   // jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));

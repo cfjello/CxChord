@@ -44,7 +44,7 @@ function jsFromConfig() {
 browserify("lib/CxChord.js")
   .transform("babelify")
   .bundle()
-  .pipe(fs.createWriteStream("lib/CxChord.bundle.js"));
+  .pipe(fs.createWriteStream("lib/cxchord.bundle.js"));
 
 browserify("lib/CxChordSpec.js")
   .transform("babelify")
